@@ -1,0 +1,1 @@
+export { MusicTasteCard } from "./MusicTasteCard";

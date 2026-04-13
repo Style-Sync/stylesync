@@ -1,0 +1,111 @@
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: #e4beb1;
+  }
+
+  :root {
+    --background: #faf9f6;
+    --foreground: #1a1c1a;
+    --card: #ffffff;
+    --card-foreground: #1a1c1a;
+    --popover: #ffffff;
+    --popover-foreground: #1a1c1a;
+    --primary: #ff5c00;
+    --primary-foreground: #ffffff;
+    --secondary: #f4f3f1;
+    --secondary-foreground: #1a1c1a;
+    --muted: #efeeeb;
+    --muted-foreground: #5b4137;
+    --accent: #e9e8e5;
+    --accent-foreground: #1a1c1a;
+    --destructive: #ba1a1a;
+    --border: #e4beb1;
+    --input: #f4f3f1;
+    --ring: #ff5c00;
+    --radius: 1rem;
+  }
+
+  body {
+    background-color: #faf9f6;
+    color: #1a1c1a;
+    font-family: var(--font-body), "Plus Jakarta Sans", "Noto Sans KR", sans-serif;
+  }
+}
+
+@layer utilities {
+  /* Headline kerning */
+  .kerning-tight {
+    letter-spacing: -0.04em;
+  }
+
+  /* Korean word break */
+  .keep-all {
+    word-break: keep-all;
+  }
+
+  /* Editorial card shadow */
+  .editorial-shadow {
+    box-shadow: 0 40px 80px rgba(26, 28, 26, 0.08);
+  }
+
+  /* Auth card shadow */
+  .signup-card-shadow {
+    box-shadow: 0px 40px 80px rgba(26, 28, 26, 0.1);
+  }
+
+  /* Share card shadow */
+  .share-card-shadow {
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+  }
+
+  /* CTA glow */
+  .cta-glow:hover {
+    box-shadow: 0 10px 30px rgba(255, 92, 0, 0.3);
+  }
+
+  /* Neon glow */
+  .neon-glow {
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+  }
+
+  /* Mascot squircle */
+  .mascot-squircle {
+    border-radius: 4rem;
+  }
+
+  /* Scrim gradient (card overlay) */
+  .scrim-gradient {
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  /* Profile card shadow */
+  .profile-card-shadow {
+    box-shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.08);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}

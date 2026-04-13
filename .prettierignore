@@ -1,0 +1,7 @@
+node_modules
+.next
+out
+build
+storybook-static
+pnpm-lock.yaml
+public

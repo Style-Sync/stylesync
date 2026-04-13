@@ -1,3 +1,102 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:storybook/recommended",
+    "prettier"
+  ],
+  "plugins": ["@typescript-eslint", "import"],
+  "rules": {
+    // var 사용 금지
+    "no-var": "error",
+
+    // Double quote 강제
+    "quotes": ["error", "double", { "avoidEscape": true }],
+    "jsx-quotes": ["error", "prefer-double"],
+
+    // 세미콜론 허용 (필수)
+    "semi": ["error", "always"],
+
+    // console.log 경고
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+
+    // any 타입 경고
+    "@typescript-eslint/no-explicit-any": "warn",
+
+    // 미사용 변수 경고 (언더스코어 접두사 허용)
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+    ],
+
+    // export default 금지 (페이지/레이아웃 제외)
+    "import/no-default-export": "off",
+
+    // import 순서 정렬
+    "import/order": [
+      "warn",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          ["parent", "sibling"],
+          "index",
+          "type"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "next/**",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "@/**",
+            "group": "internal"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": { "order": "asc", "caseInsensitive": true }
+      }
+    ],
+
+    // 1뎁스 이상 상대 경로 금지 → @ alias 사용
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["../../*"],
+            "message": "2뎁스 이상 상대 경로는 @/ alias를 사용하세요."
+          }
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    // 페이지, 레이아웃, API 라우트는 export default 허용
+    {
+      "files": [
+        "src/app/**/page.tsx",
+        "src/app/**/layout.tsx",
+        "src/app/**/route.ts",
+        "src/app/**/loading.tsx",
+        "src/app/**/error.tsx",
+        "src/app/**/not-found.tsx",
+        "next.config.*",
+        "tailwind.config.*",
+        "postcss.config.*",
+        ".storybook/**"
+      ],
+      "rules": {
+        "import/no-default-export": "off"
+      }
+    }
+  ]
 }

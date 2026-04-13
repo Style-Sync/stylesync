@@ -1,0 +1,1 @@
+export { MovieTasteCard } from "./MovieTasteCard";
