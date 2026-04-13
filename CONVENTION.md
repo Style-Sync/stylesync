@@ -145,11 +145,49 @@ SS-12-DomainSelectCard → dev
 | 대상 | 규칙 | 예시 |
 |------|------|------|
 | 컴포넌트 | PascalCase | `DomainSelectCard.tsx` |
+| 컴포넌트 타입/인터페이스 | `{컴포넌트명}.types.ts` | `Button.types.ts` |
+| 컴포넌트 스타일 variants | `{컴포넌트명}.variants.ts` | `Button.variants.ts` |
 | 훅 | camelCase (`use` 접두사) | `useSpotify.ts` |
 | 라우팅 폴더, 정적 파일 | kebab-case | `loading-result/`, `og-image.png` |
 | 동적 라우팅 폴더 | camelCase | `[domain]/`, `[username]/` |
 | 그 외 | camelCase | `tasteStore.ts`, `supabase.ts` |
 | 역할이 긴 파일 | dot notation | `createTodo.usecase.ts`, `todo.test.ts` |
+
+### 컴포넌트 폴더 구조
+
+컴포넌트 폴더는 아래 구조를 기준으로 작성합니다.
+
+```
+src/components/ui/Button/
+├── Button.tsx           ← 컴포넌트 본체
+├── Button.types.ts      ← interface (I 접두사) 정의
+├── Button.variants.ts   ← 스타일 variants 객체
+├── Button.stories.tsx   ← Storybook
+└── index.ts             ← 전체 re-export
+```
+
+```typescript
+// Button.types.ts — interface는 반드시 I 접두사
+export interface IButtonProps {
+  variant?: "primary" | "dark" | "light";
+  children: React.ReactNode;
+  disabled?: boolean;
+}
+
+// Button.variants.ts — Tailwind 클래스 변형 모음
+export const buttonVariants: Record<"primary" | "dark" | "light", string> = {
+  primary: "bg-primary-container text-white cta-glow",
+  dark: "bg-on-background text-white",
+  light: "bg-white text-on-background border border-black/5",
+};
+
+// index.ts — 컴포넌트, 타입, variants 모두 re-export
+export { Button } from "./Button";
+export type { IButtonProps } from "./Button.types";
+export { buttonVariants } from "./Button.variants";
+```
+
+> `interface` → 반드시 `I` 접두사. `type` 별칭(union, primitive 등)은 접두사 없이 PascalCase 유지.
 
 ### HTML 클래스 & ID
 

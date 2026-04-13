@@ -1,3 +1,3 @@
-export function MusicTasteCard() {
+export const MusicTasteCard = () => {
   return null;
-}
+};

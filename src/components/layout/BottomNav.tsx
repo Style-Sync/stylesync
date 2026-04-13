@@ -1,3 +1,3 @@
-export function BottomNav() {
+export const BottomNav = () => {
   return null;
-}
+};

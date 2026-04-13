@@ -1,3 +1,3 @@
-export function MascotEyes() {
+export const MascotEyes = () => {
   return null;
-}
+};

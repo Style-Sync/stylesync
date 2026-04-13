@@ -1,3 +1,3 @@
-export function MovieTasteCard() {
+export const MovieTasteCard = () => {
   return null;
-}
+};

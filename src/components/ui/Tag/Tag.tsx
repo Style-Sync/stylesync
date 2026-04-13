@@ -1,3 +1,3 @@
-export function Tag() {
+export const Tag = () => {
   return null;
-}
+};

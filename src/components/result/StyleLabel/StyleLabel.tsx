@@ -1,3 +1,3 @@
-export function StyleLabel() {
+export const StyleLabel = () => {
   return null;
-}
+};

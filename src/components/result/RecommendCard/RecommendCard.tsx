@@ -1,3 +1,3 @@
-export function RecommendCard() {
+export const RecommendCard = () => {
   return null;
-}
+};

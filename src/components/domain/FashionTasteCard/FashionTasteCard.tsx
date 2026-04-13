@@ -1,3 +1,3 @@
-export function FashionTasteCard() {
+export const FashionTasteCard = () => {
   return null;
-}
+};

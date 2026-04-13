@@ -1,3 +1,3 @@
-export function DomainSelectCard() {
+export const DomainSelectCard = () => {
   return null;
-}
+};

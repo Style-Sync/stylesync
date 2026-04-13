@@ -1,3 +1,3 @@
-export function Badge() {
+export const Badge = () => {
   return null;
-}
+};

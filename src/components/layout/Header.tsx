@@ -1,3 +1,3 @@
-export function Header() {
+export const Header = () => {
   return null;
-}
+};

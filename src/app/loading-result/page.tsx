@@ -1,3 +1,9 @@
 export default function LoadingResultPage() {
-  return <div>AI 분석 중...</div>;
+  return (
+    <main>
+      <section>
+        <h2>AI 분석 중...</h2>
+      </section>
+    </main>
+  );
 }

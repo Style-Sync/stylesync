@@ -1,3 +1,3 @@
-export function Input() {
+export const Input = () => {
   return null;
-}
+};

@@ -1,3 +1,3 @@
-export function Card() {
+export const Card = () => {
   return null;
-}
+};

@@ -1,3 +1,3 @@
-export function ProgressBar() {
+export const ProgressBar = () => {
   return null;
-}
+};

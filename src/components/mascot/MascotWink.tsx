@@ -1,3 +1,3 @@
-export function MascotWink() {
+export const MascotWink = () => {
   return null;
-}
+};
