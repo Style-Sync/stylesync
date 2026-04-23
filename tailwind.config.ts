@@ -8,45 +8,40 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    // ─── 반응형 브레이크포인트 (StyleSync 디자인 시스템 기준) ───────────────
+    // Mobile-First: sm → md → lg → xl 순서로 작성
+    // sm  390px  모바일  (4컬럼 / 마진 20px / 거터 16px)
+    // md  768px  태블릿  (8컬럼 / 마진 32px / 거터 20px)
+    // lg 1280px  데스크탑 (12컬럼 / 마진 80px / 거터 24px)
+    // xl 1920px  와이드  (12컬럼 / 마진 auto / 최대 1440px 컨테이너)
+    screens: {
+      sm:  "390px",
+      md:  "768px",
+      lg:  "1280px",
+      xl:  "1920px",
+    },
     extend: {
       colors: {
-        // Core
+        // Core — CTA & Brand
         "primary-container": "#FF5C00",
         "primary": "#A73A00",
-        "background": "#FAF9F6",
-        "surface": "#FAF9F6",
-        "on-background": "#1A1C1A",
-        "on-surface": "#1A1C1A",
-        // Surface hierarchy
-        "surface-container-lowest": "#FFFFFF",
-        "surface-container-low": "#F4F3F1",
-        "surface-container": "#EFEEEB",
-        "surface-container-high": "#E9E8E5",
-        "surface-container-highest": "#E3E2E0",
-        "surface-dim": "#DBDAD7",
-        "surface-bright": "#FAF9F6",
-        // Text variants
-        "on-surface-variant": "#5B4137",
         "on-primary": "#FFFFFF",
-        "on-primary-container": "#521800",
-        // Borders
+        // Background & Surface (3단계)
+        "background": "#FAF9F6",
+        "surface": "#FFFFFF",
+        "surface-variant": "#F4F3F1",
+        // Text
+        "on-background": "#1A1C1A",
+        "on-surface-variant": "#5B4137",
+        // Border
         "outline-variant": "#E4BEB1",
-        "outline": "#8F7065",
-        // Tertiary (blue)
-        "tertiary": "#005BC0",
-        "tertiary-container": "#4E90FF",
-        // Inverse
+        // Inverse (공유카드·다크 컨텍스트)
         "inverse-surface": "#2F312F",
-        "inverse-primary": "#FFB59A",
-        "inverse-on-surface": "#F2F1EE",
-        // Fixed tones
-        "primary-fixed": "#FFDBCE",
-        "primary-fixed-dim": "#FFB59A",
-        // Error
+        // State
         "error": "#BA1A1A",
-        "error-container": "#FFDAD6",
         // Special
         "neon-cyan": "#00F3FF",
+        "scrim": "#000000",
       },
       fontFamily: {
         "headline": ["Epilogue", "Noto Sans KR", "sans-serif"],
@@ -54,6 +49,28 @@ const config: Config = {
         "label": ["Plus Jakarta Sans", "Noto Sans KR", "sans-serif"],
         "korean": ["Noto Sans KR", "sans-serif"],
         "mono": ["JetBrains Mono", "monospace"],
+      },
+      fontSize: {
+        // Display — 대형 히어로 텍스트 (Epilogue Black)
+        "display-lg": ["72px", { lineHeight: "72px", letterSpacing: "-0.05em" }],
+        "display-md": ["60px", { lineHeight: "60px", letterSpacing: "-0.05em" }],
+        "display-sm": ["48px", { lineHeight: "48px", letterSpacing: "-0.05em" }],
+        // Headline — 페이지/섹션 제목 (Epilogue Black)
+        "headline-lg": ["36px", { lineHeight: "40px", letterSpacing: "-0.05em" }],
+        "headline-md": ["30px", { lineHeight: "36px", letterSpacing: "-0.04em" }],
+        "headline-sm": ["24px", { lineHeight: "32px", letterSpacing: "-0.05em" }],
+        // Title — UI 제목 (Plus Jakarta Sans Bold / Noto Sans KR Bold)
+        "title-lg": ["20px", { lineHeight: "28px", letterSpacing: "-0.02em" }],
+        "title-md": ["18px", { lineHeight: "28px", letterSpacing: "0" }],
+        "title-sm": ["16px", { lineHeight: "24px", letterSpacing: "0" }],
+        // Body — 본문 (Plus Jakarta Sans / Noto Sans KR)
+        "body-lg": ["18px", { lineHeight: "28px", letterSpacing: "0" }],
+        "body-md": ["16px", { lineHeight: "24px", letterSpacing: "0" }],
+        "body-sm": ["14px", { lineHeight: "20px", letterSpacing: "0" }],
+        // Label — 배지, 태그, 버튼 라벨 (Plus Jakarta Sans ExtraBold, uppercase)
+        "label-lg": ["14px", { lineHeight: "20px", letterSpacing: "0.1em" }],
+        "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.1em" }],
+        "label-sm": ["10px", { lineHeight: "15px", letterSpacing: "0.1em" }],
       },
       borderRadius: {
         DEFAULT: "1rem",

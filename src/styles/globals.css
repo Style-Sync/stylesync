@@ -12,21 +12,37 @@
   }
 
   :root {
+    /* Core */
+    --primary-container: #ff5c00;
+    --primary: #a73a00;
+    --on-primary: #ffffff;
+    /* Background & Surface */
     --background: #faf9f6;
+    --surface: #ffffff;
+    --surface-variant: #f4f3f1;
+    /* Text */
     --foreground: #1a1c1a;
+    --on-surface-variant: #5b4137;
+    /* Border */
+    --outline-variant: #e4beb1;
+    /* Inverse */
+    --inverse-surface: #2f312f;
+    /* State */
+    --destructive: #ba1a1a;
+    /* Special */
+    --neon-cyan: #00f3ff;
+    /* Shadcn/ui 호환 aliases */
     --card: #ffffff;
     --card-foreground: #1a1c1a;
     --popover: #ffffff;
     --popover-foreground: #1a1c1a;
-    --primary: #ff5c00;
     --primary-foreground: #ffffff;
     --secondary: #f4f3f1;
     --secondary-foreground: #1a1c1a;
-    --muted: #efeeeb;
+    --muted: #f4f3f1;
     --muted-foreground: #5b4137;
-    --accent: #e9e8e5;
+    --accent: #f4f3f1;
     --accent-foreground: #1a1c1a;
-    --destructive: #ba1a1a;
     --border: #e4beb1;
     --input: #f4f3f1;
     --ring: #ff5c00;
@@ -40,7 +56,211 @@
   }
 }
 
+@layer components {
+  /* ─── Typography System ────────────────────────────────────────────────────
+   * WenQuanYi Zen Hei → Epilogue (EN) / Noto Sans KR (KR) 로 대체
+   * 피그마 42개 폰트 사이즈를 15개 토큰으로 정리
+   * ─────────────────────────────────────────────────────────────────────── */
+
+  /* Display */
+  .type-display-lg {
+    font-family: var(--font-headline), "Epilogue", "Noto Sans KR", sans-serif;
+    font-size: 72px;
+    line-height: 72px;
+    letter-spacing: -0.05em;
+    font-weight: 900;
+  }
+  .type-display-md {
+    font-family: var(--font-headline), "Epilogue", "Noto Sans KR", sans-serif;
+    font-size: 60px;
+    line-height: 60px;
+    letter-spacing: -0.05em;
+    font-weight: 900;
+  }
+  .type-display-sm {
+    font-family: var(--font-headline), "Epilogue", "Noto Sans KR", sans-serif;
+    font-size: 48px;
+    line-height: 48px;
+    letter-spacing: -0.05em;
+    font-weight: 900;
+  }
+
+  /* Headline */
+  .type-headline-lg {
+    font-family: var(--font-headline), "Epilogue", "Noto Sans KR", sans-serif;
+    font-size: 36px;
+    line-height: 40px;
+    letter-spacing: -0.05em;
+    font-weight: 900;
+  }
+  .type-headline-md {
+    font-family: var(--font-headline), "Epilogue", "Noto Sans KR", sans-serif;
+    font-size: 30px;
+    line-height: 36px;
+    letter-spacing: -0.04em;
+    font-weight: 900;
+  }
+  .type-headline-sm {
+    font-family: var(--font-headline), "Epilogue", "Noto Sans KR", sans-serif;
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.05em;
+    font-weight: 900;
+  }
+
+  /* Title */
+  .type-title-lg {
+    font-family: var(--font-body), "Plus Jakarta Sans", "Noto Sans KR", sans-serif;
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+  .type-title-md {
+    font-family: var(--font-body), "Plus Jakarta Sans", "Noto Sans KR", sans-serif;
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: 0;
+    font-weight: 600;
+  }
+  .type-title-sm {
+    font-family: var(--font-body), "Plus Jakarta Sans", "Noto Sans KR", sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0;
+    font-weight: 600;
+  }
+
+  /* Body */
+  .type-body-lg {
+    font-family: var(--font-body), "Plus Jakarta Sans", "Noto Sans KR", sans-serif;
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+  .type-body-md {
+    font-family: var(--font-body), "Plus Jakarta Sans", "Noto Sans KR", sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+  .type-body-sm {
+    font-family: var(--font-body), "Plus Jakarta Sans", "Noto Sans KR", sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+
+  /* Label — uppercase, wide tracking */
+  .type-label-lg {
+    font-family: var(--font-label), "Plus Jakarta Sans", sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1em;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+  .type-label-md {
+    font-family: var(--font-label), "Plus Jakarta Sans", sans-serif;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.1em;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+  .type-label-sm {
+    font-family: var(--font-label), "Plus Jakarta Sans", sans-serif;
+    font-size: 10px;
+    line-height: 15px;
+    letter-spacing: 0.1em;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+}
+
 @layer utilities {
+  /* ─── 반응형 레이아웃 시스템 ─────────────────────────────────────────────
+   * Breakpoints: sm 390px / md 768px / lg 1280px / xl 1920px
+   * Mobile-First: 기본값(390px 기준) → md: → lg: → xl: 순으로 작성
+   *
+   * [컨테이너]
+   * .page-container  — 페이지 최상위 래퍼 (마진/패딩 포함)
+   * .section-wrapper — 섹션 구분 래퍼 (상하 패딩)
+   *
+   * [레이아웃 그리드]
+   * .grid-cols-responsive — 반응형 카드 그리드 (1→2→3 컬럼)
+   * .grid-cols-2-responsive — 2분할 그리드 (1→2 컬럼)
+   *
+   * [타이포그래피 반응형]
+   * .heading-display — 가장 큰 히어로 헤드라인
+   * .heading-section — 섹션 제목
+   * .heading-card    — 카드 내 제목
+   *
+   * [공통 컴포넌트 너비]
+   * .card-width      — 반응형 카드 너비 (w-full → 고정 없음, grid로 제어)
+   * .cta-width       — CTA 버튼 너비 (w-full → w-auto)
+   * ─────────────────────────────────────────────────────────────────────── */
+
+  /* ── 페이지 컨테이너 ─────────────────────────────────────────────────── */
+  .page-container {
+    @apply w-full mx-auto px-5; /* Mobile:  20px 좌우 패딩 */
+    @apply md:px-8; /* Tablet:  32px */
+    @apply lg:px-20; /* Desktop: 80px */
+    @apply xl:max-w-[1440px] xl:px-20; /* Wide:    최대 1440px, 가운데 정렬 */
+  }
+
+  /* ── 섹션 래퍼 (상하 여백) ──────────────────────────────────────────── */
+  .section-wrapper {
+    @apply py-12; /* Mobile:  48px */
+    @apply md:py-16; /* Tablet:  64px */
+    @apply lg:py-24; /* Desktop: 96px */
+  }
+
+  /* ── 반응형 카드 그리드 (1 → 2 → 3 컬럼) ───────────────────────────── */
+  .grid-cols-responsive {
+    @apply grid grid-cols-1 gap-4;
+    @apply md:grid-cols-2 md:gap-5;
+    @apply lg:grid-cols-3 lg:gap-6;
+  }
+
+  /* ── 반응형 2분할 그리드 (1 → 2 컬럼) ──────────────────────────────── */
+  .grid-cols-2-responsive {
+    @apply grid grid-cols-1 gap-4;
+    @apply md:grid-cols-2 md:gap-6;
+  }
+
+  /* ── 타이포그래피 반응형 ────────────────────────────────────────────── */
+  /* 히어로 Display 텍스트 */
+  .heading-display {
+    @apply text-display-sm font-black tracking-tighter font-headline; /* Mobile  */
+    @apply md:text-display-md; /* Tablet  */
+    @apply lg:text-display-lg; /* Desktop */
+  }
+
+  /* 섹션 Headline 텍스트 */
+  .heading-section {
+    @apply text-headline-sm font-black tracking-tighter font-headline;
+    @apply md:text-headline-md;
+    @apply lg:text-headline-lg;
+  }
+
+  /* 카드 내부 Title 텍스트 */
+  .heading-card {
+    @apply text-title-sm font-bold font-body;
+    @apply md:text-title-md;
+    @apply lg:text-title-lg;
+  }
+
+  /* ── CTA 버튼 너비 ──────────────────────────────────────────────────── */
+  /* 모바일: 풀 너비 / 태블릿 이상: 내용에 맞게 */
+  .cta-width {
+    @apply w-full;
+    @apply md:w-auto;
+  }
+
   /* Headline kerning */
   .kerning-tight {
     letter-spacing: -0.04em;
