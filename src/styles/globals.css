@@ -154,30 +154,46 @@
     font-weight: 400;
   }
 
-  /* Label — uppercase, wide tracking */
+  /* Label — uppercase, wide tracking (배지·태그·버튼 라벨) */
   .type-label-lg {
-    font-family: var(--font-label), "Plus Jakarta Sans", sans-serif;
+    font-family: var(--font-korean), "Noto Sans KR", sans-serif;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: 0.1em;
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
   }
   .type-label-md {
-    font-family: var(--font-label), "Plus Jakarta Sans", sans-serif;
+    font-family: var(--font-korean), "Noto Sans KR", sans-serif;
     font-size: 12px;
     line-height: 16px;
     letter-spacing: 0.1em;
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
   }
   .type-label-sm {
-    font-family: var(--font-label), "Plus Jakarta Sans", sans-serif;
+    font-family: var(--font-korean), "Noto Sans KR", sans-serif;
     font-size: 10px;
     line-height: 15px;
     letter-spacing: 0.1em;
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
+  }
+
+  /* Label variants — uppercase 없음 (보조 소형 텍스트, 캡션 등) */
+  .type-label-md-regular {
+    font-family: var(--font-korean), "Noto Sans KR", sans-serif;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+  .type-label-xs {
+    font-family: var(--font-korean), "Noto Sans KR", sans-serif;
+    font-size: 10px;
+    line-height: 15px;
+    letter-spacing: 0;
+    font-weight: 400;
   }
 }
 
@@ -186,9 +202,10 @@
    * Breakpoints: sm 390px / md 768px / lg 1280px / xl 1920px
    * Mobile-First: 기본값(390px 기준) → md: → lg: → xl: 순으로 작성
    *
-   * [컨테이너]
-   * .page-container  — 페이지 최상위 래퍼 (마진/패딩 포함)
-   * .section-wrapper — 섹션 구분 래퍼 (상하 패딩)
+   * [컨테이너] — Figma 실측값 기준
+   * .page-container  — 페이지 최상위 래퍼 (inner 양쪽 여백: 16px/36px/120px)
+   * .section-wrapper — 섹션·헤더 아래 여백 (48px mobile / 128px desktop)
+   * .header-gap      — 헤더 아래 첫 섹션 여백 (section-wrapper와 동일 값)
    *
    * [레이아웃 그리드]
    * .grid-cols-responsive — 반응형 카드 그리드 (1→2→3 컬럼)
@@ -205,18 +222,25 @@
    * ─────────────────────────────────────────────────────────────────────── */
 
   /* ── 페이지 컨테이너 ─────────────────────────────────────────────────── */
+  /* Figma inner 양쪽 여백: mobile 16px / tablet 36px / desktop 120px      */
   .page-container {
-    @apply w-full mx-auto px-5; /* Mobile:  20px 좌우 패딩 */
-    @apply md:px-8; /* Tablet:  32px */
-    @apply lg:px-20; /* Desktop: 80px */
-    @apply xl:max-w-[1440px] xl:px-20; /* Wide:    최대 1440px, 가운데 정렬 */
+    @apply w-full mx-auto px-4; /* Mobile:  16px */
+    @apply md:px-9; /* Tablet:  36px */
+    @apply lg:px-[120px]; /* Desktop: 120px */
+    @apply xl:max-w-[1440px] xl:px-[120px]; /* Wide: 최대 1440px, 가운데 정렬 */
   }
 
-  /* ── 섹션 래퍼 (상하 여백) ──────────────────────────────────────────── */
+  /* ── 섹션·헤더 아래 여백 ────────────────────────────────────────────── */
+  /* Figma 섹션 여백 / 헤더 아래 여백: mobile 48px / desktop 128px 통일   */
   .section-wrapper {
     @apply py-12; /* Mobile:  48px */
-    @apply md:py-16; /* Tablet:  64px */
-    @apply lg:py-24; /* Desktop: 96px */
+    @apply lg:py-32; /* Desktop: 128px */
+  }
+
+  /* ── 헤더 아래 첫 콘텐츠 여백 ──────────────────────────────────────── */
+  .header-gap {
+    @apply mt-12; /* Mobile:  48px */
+    @apply lg:mt-32; /* Desktop: 128px */
   }
 
   /* ── 반응형 카드 그리드 (1 → 2 → 3 컬럼) ───────────────────────────── */

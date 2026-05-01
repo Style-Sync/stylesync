@@ -10,10 +10,10 @@ const config: Config = {
   theme: {
     // ─── 반응형 브레이크포인트 (StyleSync 디자인 시스템 기준) ───────────────
     // Mobile-First: sm → md → lg → xl 순서로 작성
-    // sm  390px  모바일  (4컬럼 / 마진 20px / 거터 16px)
-    // md  768px  태블릿  (8컬럼 / 마진 32px / 거터 20px)
-    // lg 1280px  데스크탑 (12컬럼 / 마진 80px / 거터 24px)
-    // xl 1920px  와이드  (12컬럼 / 마진 auto / 최대 1440px 컨테이너)
+    // sm  390px  모바일   inner 여백 16px
+    // md  768px  태블릿   inner 여백 36px
+    // lg 1280px  데스크탑  inner 여백 120px
+    // xl 1920px  와이드   최대 1440px 컨테이너
     screens: {
       sm:  "390px",
       md:  "768px",
@@ -42,6 +42,8 @@ const config: Config = {
         // Special
         "neon-cyan": "#00F3FF",
         "scrim": "#000000",
+        // Overlay — 카드 hover, 미묘한 배경 (black 5%)
+        "surface-overlay": "rgba(0,0,0,0.05)",
       },
       fontFamily: {
         "headline": ["Epilogue", "Noto Sans KR", "sans-serif"],
@@ -67,10 +69,13 @@ const config: Config = {
         "body-lg": ["18px", { lineHeight: "28px", letterSpacing: "0" }],
         "body-md": ["16px", { lineHeight: "24px", letterSpacing: "0" }],
         "body-sm": ["14px", { lineHeight: "20px", letterSpacing: "0" }],
-        // Label — 배지, 태그, 버튼 라벨 (Plus Jakarta Sans ExtraBold, uppercase)
+        // Label — 배지, 태그, 버튼 라벨 (Noto Sans KR Bold, uppercase)
         "label-lg": ["14px", { lineHeight: "20px", letterSpacing: "0.1em" }],
         "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.1em" }],
         "label-sm": ["10px", { lineHeight: "15px", letterSpacing: "0.1em" }],
+        // Label variants — uppercase 없음 (일반 소형 텍스트)
+        "label-md-regular": ["12px", { lineHeight: "16px", letterSpacing: "0" }],
+        "label-xs":          ["10px", { lineHeight: "15px", letterSpacing: "0" }],
       },
       borderRadius: {
         DEFAULT: "1rem",
