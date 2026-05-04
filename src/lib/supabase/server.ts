@@ -1,16 +1,11 @@
 import { cookies } from "next/headers";
 
-import { createBrowserClient, createServerClient } from "@supabase/ssr";
+import { createServerClient } from "@supabase/ssr";
 
-// 브라우저 (Client Component)
-export function createClient() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-}
-
-// 서버 (Server Component / Route Handler)
+/**
+ * 서버(Server Component / Route Handler / Server Action)용 Supabase 클라이언트
+ * 서버 컨텍스트에서만 호출 가능 (next/headers 사용)
+ */
 export async function createServerSupabaseClient() {
   const cookieStore = await cookies();
   return createServerClient(
