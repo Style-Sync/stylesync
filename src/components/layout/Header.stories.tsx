@@ -9,7 +9,12 @@ const meta: Meta<typeof Header> = {
   parameters: {
     layout: "fullscreen",
     backgrounds: { default: "stylesync" },
+    // inline: false → iframe 렌더링 → Tailwind media query가 iframe viewport 기준으로 작동
     docs: {
+      story: {
+        inline: false,
+        height: "80px",
+      },
       description: {
         component: `
 공통 헤더 컴포넌트입니다.
@@ -50,7 +55,7 @@ const meta: Meta<typeof Header> = {
 export default meta;
 type Story = StoryObj<typeof Header>;
 
-/* ── Docs 기본 스토리 (Controls 패널로 조작) ─────────────────── */
+/* ── Docs 기본 스토리 (Controls 패널로 상태 변경) ────────────── */
 
 export const Default: Story = {
   name: "기본 (Controls로 상태 변경)",

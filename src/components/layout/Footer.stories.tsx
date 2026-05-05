@@ -9,7 +9,12 @@ const meta: Meta<typeof Footer> = {
   parameters: {
     layout: "fullscreen",
     backgrounds: { default: "stylesync" },
+    // inline: false → iframe 렌더링 → Tailwind media query가 iframe viewport 기준으로 작동
     docs: {
+      story: {
+        inline: false,
+        height: "280px",
+      },
       description: {
         component: `
 공통 푸터 컴포넌트입니다.
