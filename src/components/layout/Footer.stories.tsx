@@ -21,7 +21,7 @@ const meta: Meta<typeof Footer> = {
     backgrounds: { default: "stylesync" },
     docs: {
       story: {
-        height: "280px",
+        height: "250px",
       },
       description: {
         component: `
@@ -59,7 +59,6 @@ type Story = StoryObj<typeof Footer>;
 
 export const PC: Story = {
   name: "PC · 1920px",
-  decorators: [withWidth(1440)],
   parameters: { viewport: { defaultViewport: "pc1920" } },
 };
 
