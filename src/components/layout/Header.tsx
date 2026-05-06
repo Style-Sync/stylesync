@@ -35,7 +35,7 @@ export const Header = ({ isLoggedIn = false }: HeaderProps) => {
           WebkitBackdropFilter: "blur(24px)",
         }}
       >
-        <nav className="flex items-center justify-between px-8 py-5">
+        <nav className="flex h-[80px] items-center justify-between px-8">
           {/* ── 로고 ── */}
           <Link href="/" className="flex items-center" aria-label="StyleSync 홈으로">
             <span className="font-headline font-black text-headline-sm tracking-tighter text-on-background">

@@ -75,14 +75,12 @@ export const Default: Story = {
 export const PC_비로그인: Story = {
   name: "PC · 비로그인",
   args: { isLoggedIn: false },
-  decorators: [withWidth(1440)],
   parameters: { viewport: { defaultViewport: "pc1920" } },
 };
 
 export const PC_로그인후: Story = {
   name: "PC · 로그인 후",
   args: { isLoggedIn: true },
-  decorators: [withWidth(1440)],
   parameters: { viewport: { defaultViewport: "pc1920" } },
 };
 
