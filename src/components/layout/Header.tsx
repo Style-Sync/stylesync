@@ -22,11 +22,12 @@ interface HeaderProps {
  * │  TODO: #11 아이콘 컴포넌트 완성 후 교체                       │
  * └─────────────────────────────────────────────────────────────┘
  *
+ * @container 기반 반응형: md(768px), lg(1280px)
  * 배경: rgba(250,249,246,0.8) + blur(24px) / 패딩: 20px 32px (전 구간 동일)
  */
 export const Header = ({ isLoggedIn = false }: HeaderProps) => {
   return (
-    <header className="sticky top-0 z-50 w-full">
+    <header className="sticky top-0 z-50 w-full @container">
       <div
         style={{
           background: "rgba(250, 249, 246, 0.8)",
@@ -51,7 +52,7 @@ export const Header = ({ isLoggedIn = false }: HeaderProps) => {
               {/* Mobile: 유저 아이콘만 */}
               <Link
                 href="/login"
-                className="flex items-center justify-center w-6 h-6 md:hidden"
+                className="flex items-center justify-center w-6 h-6 @md:hidden"
                 aria-label="로그인"
               >
                 {/* TODO: <UserIcon /> — 아이콘 컴포넌트 완성 후 교체 */}
@@ -59,10 +60,10 @@ export const Header = ({ isLoggedIn = false }: HeaderProps) => {
               </Link>
 
               {/* Tablet / PC: 로그인 링크 + 시작하기 버튼 */}
-              <div className="hidden md:flex items-center gap-3 lg:gap-4">
+              <div className="hidden @md:flex items-center gap-3 @lg:gap-4">
                 <Link
                   href="/login"
-                  className="px-4 py-2 text-label-md-regular lg:text-body-sm text-on-background hover:opacity-70 transition-opacity keep-all"
+                  className="px-4 py-2 text-label-md-regular @lg:text-body-sm text-on-background hover:opacity-70 transition-opacity keep-all"
                 >
                   로그인
                 </Link>
@@ -70,7 +71,7 @@ export const Header = ({ isLoggedIn = false }: HeaderProps) => {
                   href="/signup"
                   className="rounded-full bg-primary-container text-white hover:scale-105 transition-transform keep-all
                              px-6 py-2 text-label-md-regular
-                             lg:px-8 lg:py-3 lg:text-body-sm"
+                             @lg:px-8 @lg:py-3 @lg:text-body-sm"
                 >
                   시작하기
                 </Link>

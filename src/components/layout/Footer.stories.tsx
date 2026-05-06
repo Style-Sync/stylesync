@@ -2,6 +2,16 @@ import { Footer } from "./Footer";
 
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
+/** 컨테이너 폭을 고정해 @container 쿼리가 정확히 반응하게 만드는 데코레이터 */
+const withWidth = (width: number) =>
+  function WidthWrapper(Story: React.ComponentType) {
+    return (
+      <div style={{ width: `${width}px`, overflow: "hidden" }}>
+        <Story />
+      </div>
+    );
+  };
+
 const meta: Meta<typeof Footer> = {
   title: "Layout/Footer",
   component: Footer,
@@ -9,10 +19,8 @@ const meta: Meta<typeof Footer> = {
   parameters: {
     layout: "fullscreen",
     backgrounds: { default: "stylesync" },
-    // inline: false → iframe 렌더링 → Tailwind media query가 iframe viewport 기준으로 작동
     docs: {
       story: {
-        inline: false,
         height: "280px",
       },
       description: {
@@ -51,25 +59,22 @@ type Story = StoryObj<typeof Footer>;
 
 export const PC: Story = {
   name: "PC · 1920px",
-  parameters: {
-    viewport: { defaultViewport: "pc1920" },
-  },
+  decorators: [withWidth(1440)],
+  parameters: { viewport: { defaultViewport: "pc1920" } },
 };
 
 /* ── Tablet (768px) ──────────────────────────────────────────── */
 
 export const Tablet: Story = {
   name: "Tablet · 768px",
-  parameters: {
-    viewport: { defaultViewport: "tablet768" },
-  },
+  decorators: [withWidth(768)],
+  parameters: { viewport: { defaultViewport: "tablet768" } },
 };
 
 /* ── Mobile (390px) ──────────────────────────────────────────── */
 
 export const Mobile: Story = {
   name: "Mobile · 390px",
-  parameters: {
-    viewport: { defaultViewport: "mobile390" },
-  },
+  decorators: [withWidth(390)],
+  parameters: { viewport: { defaultViewport: "mobile390" } },
 };

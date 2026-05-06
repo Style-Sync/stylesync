@@ -2,6 +2,16 @@ import { Header } from "./Header";
 
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
+/** 컨테이너 폭을 고정해 @container 쿼리가 정확히 반응하게 만드는 데코레이터 */
+const withWidth = (width: number) =>
+  function WidthWrapper(Story: React.ComponentType) {
+    return (
+      <div style={{ width: `${width}px`, overflow: "hidden" }}>
+        <Story />
+      </div>
+    );
+  };
+
 const meta: Meta<typeof Header> = {
   title: "Layout/Header",
   component: Header,
@@ -9,10 +19,8 @@ const meta: Meta<typeof Header> = {
   parameters: {
     layout: "fullscreen",
     backgrounds: { default: "stylesync" },
-    // inline: false → iframe 렌더링 → Tailwind media query가 iframe viewport 기준으로 작동
     docs: {
       story: {
-        inline: false,
         height: "80px",
       },
       description: {
@@ -60,9 +68,6 @@ type Story = StoryObj<typeof Header>;
 export const Default: Story = {
   name: "기본 (Controls로 상태 변경)",
   args: { isLoggedIn: false },
-  parameters: {
-    viewport: { defaultViewport: "pc1920" },
-  },
 };
 
 /* ── PC (1920px) ─────────────────────────────────────────────── */
@@ -70,17 +75,15 @@ export const Default: Story = {
 export const PC_비로그인: Story = {
   name: "PC · 비로그인",
   args: { isLoggedIn: false },
-  parameters: {
-    viewport: { defaultViewport: "pc1920" },
-  },
+  decorators: [withWidth(1440)],
+  parameters: { viewport: { defaultViewport: "pc1920" } },
 };
 
 export const PC_로그인후: Story = {
   name: "PC · 로그인 후",
   args: { isLoggedIn: true },
-  parameters: {
-    viewport: { defaultViewport: "pc1920" },
-  },
+  decorators: [withWidth(1440)],
+  parameters: { viewport: { defaultViewport: "pc1920" } },
 };
 
 /* ── Tablet (768px) ──────────────────────────────────────────── */
@@ -88,17 +91,15 @@ export const PC_로그인후: Story = {
 export const Tablet_비로그인: Story = {
   name: "Tablet · 비로그인",
   args: { isLoggedIn: false },
-  parameters: {
-    viewport: { defaultViewport: "tablet768" },
-  },
+  decorators: [withWidth(768)],
+  parameters: { viewport: { defaultViewport: "tablet768" } },
 };
 
 export const Tablet_로그인후: Story = {
   name: "Tablet · 로그인 후",
   args: { isLoggedIn: true },
-  parameters: {
-    viewport: { defaultViewport: "tablet768" },
-  },
+  decorators: [withWidth(768)],
+  parameters: { viewport: { defaultViewport: "tablet768" } },
 };
 
 /* ── Mobile (390px) ──────────────────────────────────────────── */
@@ -106,15 +107,13 @@ export const Tablet_로그인후: Story = {
 export const Mobile_비로그인: Story = {
   name: "Mobile · 비로그인",
   args: { isLoggedIn: false },
-  parameters: {
-    viewport: { defaultViewport: "mobile390" },
-  },
+  decorators: [withWidth(390)],
+  parameters: { viewport: { defaultViewport: "mobile390" } },
 };
 
 export const Mobile_로그인후: Story = {
   name: "Mobile · 로그인 후",
   args: { isLoggedIn: true },
-  parameters: {
-    viewport: { defaultViewport: "mobile390" },
-  },
+  decorators: [withWidth(390)],
+  parameters: { viewport: { defaultViewport: "mobile390" } },
 };
