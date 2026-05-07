@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 
-interface HeaderProps {
-  /** 로그인 상태 여부. 기본값 false (비로그인)
-   * TODO: #100 auth session store 구현 후 useUserStore()로 교체 */
-  isLoggedIn?: boolean;
-}
+import { SettingsIcon, UserIcon } from "@/components/ui/icons";
+
+import type { IHeaderProps } from "./Header.types";
 
 /**
  * 공통 헤더 컴포넌트 — Figma: StyleSync-v2 / node 391:1407
@@ -18,14 +16,14 @@ interface HeaderProps {
  * │  PC      (lg~)  : 로고 + "로그인" + "시작하기" (14px)        │
  * ├─────────────────────────────────────────────────────────────┤
  * │  로그인 후                                                   │
- * │  전 브레이크포인트: 로고 + 아이콘 영역 (placeholder)          │
- * │  TODO: #11 아이콘 컴포넌트 완성 후 교체                       │
+ * │  전 브레이크포인트: 로고 + 유저 아이콘 + 설정 아이콘          │
+ * │  TODO: #100 auth session store 연결 후 isLoggedIn 제거       │
  * └─────────────────────────────────────────────────────────────┘
  *
  * @container 기반 반응형: md(768px), lg(1280px)
- * 배경: rgba(250,249,246,0.8) + blur(24px) / 패딩: 20px 32px (전 구간 동일)
+ * 배경: rgba(250,249,246,0.8) + blur(24px) / 높이: 80px (전 구간 동일)
  */
-export const Header = ({ isLoggedIn = false }: HeaderProps) => {
+export const Header = ({ isLoggedIn = false }: IHeaderProps) => {
   return (
     <header className="sticky top-0 z-50 w-full @container">
       <div
@@ -52,11 +50,10 @@ export const Header = ({ isLoggedIn = false }: HeaderProps) => {
               {/* Mobile: 유저 아이콘만 */}
               <Link
                 href="/login"
-                className="flex items-center justify-center w-6 h-6 @md:hidden"
+                className="flex items-center justify-center w-6 h-6 @md:hidden text-on-background hover:opacity-70 transition-opacity"
                 aria-label="로그인"
               >
-                {/* TODO: <UserIcon /> — 아이콘 컴포넌트 완성 후 교체 */}
-                <div className="w-6 h-6 rounded-full bg-outline-variant" aria-hidden="true" />
+                <UserIcon />
               </Link>
 
               {/* Tablet / PC: 로그인 링크 + 시작하기 버튼 */}
@@ -82,10 +79,22 @@ export const Header = ({ isLoggedIn = false }: HeaderProps) => {
           {/* ── 로그인 후 ── */}
           {isLoggedIn && (
             <div className="flex items-center gap-6">
-              {/* TODO: <SettingsIconButton /> — #11 완성 후 교체 */}
-              <div className="w-6 h-6 rounded bg-outline-variant" aria-hidden="true" />
-              {/* TODO: <UserAvatarMenu /> — #11 완성 후 교체 */}
-              <div className="w-6 h-6 rounded-full bg-outline-variant" aria-hidden="true" />
+              {/* 유저 아이콘 */}
+              <Link
+                href="/profile"
+                className="flex items-center justify-center text-on-background hover:opacity-70 transition-opacity"
+                aria-label="내 프로필"
+              >
+                <UserIcon />
+              </Link>
+              {/* 설정 아이콘 */}
+              <Link
+                href="/settings"
+                className="flex items-center justify-center text-on-background hover:opacity-70 transition-opacity"
+                aria-label="설정"
+              >
+                <SettingsIcon />
+              </Link>
             </div>
           )}
         </nav>
