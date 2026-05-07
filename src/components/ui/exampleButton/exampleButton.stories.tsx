@@ -1,10 +1,10 @@
-import { Button } from "./Button";
+import { ExampleButton } from "./ExampleButton";
 
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-const meta: Meta<typeof Button> = {
-  title: "UI/Button",
-  component: Button,
+const meta: Meta<typeof ExampleButton> = {
+  title: "UI/ExampleButton",
+  component: ExampleButton,
   tags: ["autodocs"],
   parameters: {
     backgrounds: { default: "stylesync" },
@@ -12,7 +12,7 @@ const meta: Meta<typeof Button> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj<typeof ExampleButton>;
 
 export const Primary: Story = {
   args: {
@@ -54,12 +54,12 @@ export const FullWidth: Story = {
 export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-col gap-4 p-8 max-w-sm">
-      <Button variant="primary">지금 시작하기</Button>
-      <Button variant="dark">다음으로</Button>
-      <Button variant="light">이전으로</Button>
-      <Button variant="primary" disabled>
+      <ExampleButton variant="primary">지금 시작하기</ExampleButton>
+      <ExampleButton variant="dark">다음으로</ExampleButton>
+      <ExampleButton variant="light">이전으로</ExampleButton>
+      <ExampleButton variant="primary" disabled>
         선택해주세요
-      </Button>
+      </ExampleButton>
     </div>
   ),
 };

@@ -1,28 +1,17 @@
 "use client";
 
-interface IButtonProps {
-  variant?: "primary" | "dark" | "light";
-  children: React.ReactNode;
-  disabled?: boolean;
-  fullWidth?: boolean;
-  onClick?: () => void;
-  type?: "button" | "submit" | "reset";
-}
+import { exampleButtonVariants } from "./exampleButton.variants";
 
-const buttonVariants: Record<"primary" | "dark" | "light", string> = {
-  primary: "bg-primary-container text-white cta-glow",
-  dark: "bg-on-background text-white",
-  light: "bg-white text-on-background border border-black/5",
-};
+import type { IExampleButtonProps } from "./exampleButton.types";
 
-export const Button = ({
+export const ExampleButton = ({
   variant = "primary",
   children,
   disabled = false,
   fullWidth = false,
   onClick,
   type = "button",
-}: IButtonProps) => {
+}: IExampleButtonProps) => {
   return (
     <button
       type={type}
@@ -34,7 +23,7 @@ export const Button = ({
         transition-all duration-300
         hover:scale-105 active:scale-[0.98]
         disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100
-        ${buttonVariants[variant]}
+        ${exampleButtonVariants[variant]}
       `}
     >
       {children}
