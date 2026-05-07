@@ -1,17 +1,17 @@
 "use client";
 
-import { buttonVariants } from "./Button.variants";
+import { exampleButtonVariants } from "./exampleButton.variants";
 
-import type { IButtonProps } from "./Button.types";
+import type { IExampleButtonProps } from "./exampleButton.types";
 
-export const Button = ({
+export const ExampleButton = ({
   variant = "primary",
   children,
   disabled = false,
   fullWidth = false,
   onClick,
   type = "button",
-}: IButtonProps) => {
+}: IExampleButtonProps) => {
   return (
     <button
       type={type}
@@ -23,7 +23,7 @@ export const Button = ({
         transition-all duration-300
         hover:scale-105 active:scale-[0.98]
         disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100
-        ${buttonVariants[variant]}
+        ${exampleButtonVariants[variant]}
       `}
     >
       {children}

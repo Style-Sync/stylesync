@@ -1,7 +1,10 @@
 import { Epilogue, Plus_Jakarta_Sans, Noto_Sans_KR, JetBrains_Mono } from "next/font/google";
 
-import type { Metadata } from "next";
+import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
 import "@/styles/globals.css";
+
+import type { Metadata } from "next";
 
 const epilogue = Epilogue({
   subsets: ["latin"],
@@ -51,7 +54,11 @@ export default function RootLayout({
       lang="ko"
       className={`${epilogue.variable} ${plusJakartaSans.variable} ${notoSansKR.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="antialiased">{children}</body>
+      <body className="antialiased flex min-h-screen flex-col">
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }

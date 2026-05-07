@@ -47,3 +47,7 @@ docs/skills/
 storybook-static/
 
 *storybook.log
+
+# Figma font-replace temp files
+font-replace-targets.json
+text-style-mappings.json

@@ -1,4 +1,4 @@
-export interface IButtonProps {
+export interface IExampleButtonProps {
   variant?: "primary" | "dark" | "light";
   children: React.ReactNode;
   disabled?: boolean;
