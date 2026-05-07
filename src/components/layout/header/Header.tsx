@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { SettingsIcon, UserIcon } from "@/components/ui/icons";
 
-import type { IHeaderProps } from "./Header.types";
+import type { IHeaderProps } from "./header.types";
 
 /**
  * 공통 헤더 컴포넌트 — Figma: StyleSync-v2 / node 391:1407

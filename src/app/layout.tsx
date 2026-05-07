@@ -1,7 +1,7 @@
 import { Epilogue, Plus_Jakarta_Sans, Noto_Sans_KR, JetBrains_Mono } from "next/font/google";
 
-import { Footer } from "@/components/layout/Footer";
-import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
 import "@/styles/globals.css";
 
 import type { Metadata } from "next";

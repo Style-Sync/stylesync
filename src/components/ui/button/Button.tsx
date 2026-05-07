@@ -1,8 +1,8 @@
 "use client";
 
-import { buttonVariants } from "./Button.variants";
+import { buttonVariants } from "./button.variants";
 
-import type { IButtonProps } from "./Button.types";
+import type { IButtonProps } from "./button.types";
 
 export const Button = ({
   variant = "primary",
