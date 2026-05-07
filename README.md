@@ -28,7 +28,7 @@
 | AI 추론 | Grok AI |
 | 음악 데이터 | Spotify Web API |
 | 영상 데이터 | TMDB API |
-| 패션 데이터 | 네이버 쇼핑 API |
+| 패션 데이터 | Unsplash API |
 | 패키지 매니저 | pnpm |
 | 배포 | Vercel |
 
@@ -76,9 +76,8 @@ SPOTIFY_CLIENT_SECRET=
 # TMDB
 TMDB_API_KEY=
 
-# 네이버 쇼핑
-NAVER_CLIENT_ID=
-NAVER_CLIENT_SECRET=
+# Unsplash
+UNSPLASH_ACCESS_KEY=
 ```
 
 ### 개발 서버 실행
