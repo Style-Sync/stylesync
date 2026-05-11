@@ -158,23 +158,23 @@ SS-12-DomainSelectCard → dev
 컴포넌트 폴더는 아래 구조를 기준으로 작성합니다.
 
 ```
-src/components/ui/Button/
+src/components/ui/button/
 ├── Button.tsx           ← 컴포넌트 본체
-├── Button.types.ts      ← interface (I 접두사) 정의
-├── Button.variants.ts   ← 스타일 variants 객체
-├── Button.stories.tsx   ← Storybook
+├── button.types.ts      ← interface (I 접두사) 정의
+├── button.variants.ts   ← 스타일 variants 객체
+├── button.stories.tsx   ← Storybook
 └── index.ts             ← 전체 re-export
 ```
 
 ```typescript
-// Button.types.ts — interface는 반드시 I 접두사
+// button.types.ts — interface는 반드시 I 접두사
 export interface IButtonProps {
   variant?: "primary" | "dark" | "light";
   children: React.ReactNode;
   disabled?: boolean;
 }
 
-// Button.variants.ts — Tailwind 클래스 변형 모음
+// button.variants.ts — Tailwind 클래스 변형 모음
 export const buttonVariants: Record<"primary" | "dark" | "light", string> = {
   primary: "bg-primary-container text-white cta-glow",
   dark: "bg-on-background text-white",
@@ -183,8 +183,8 @@ export const buttonVariants: Record<"primary" | "dark" | "light", string> = {
 
 // index.ts — 컴포넌트, 타입, variants 모두 re-export
 export { Button } from "./Button";
-export type { IButtonProps } from "./Button.types";
-export { buttonVariants } from "./Button.variants";
+export type { IButtonProps } from "./button.types";
+export { buttonVariants } from "./button.variants";
 ```
 
 > `interface` → 반드시 `I` 접두사. `type` 별칭(union, primitive 등)은 접두사 없이 PascalCase 유지.
