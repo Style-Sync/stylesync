@@ -1,3 +1,2 @@
-export const MovieTasteCard = () => {
-  return null;
-};
+// TasteCard 공통 컴포넌트로 통합 — SS-155
+export { TasteCard as MovieTasteCard } from "@/components/domain/tasteCard";
