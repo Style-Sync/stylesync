@@ -17,7 +17,7 @@ const PlayIcon = () => (
     xmlns="http://www.w3.org/2000/svg"
     aria-hidden="true"
   >
-    <path d="M0 0L10 6L0 12V0Z" fill="#1A1C1A" />
+    <path d="M0 0L10 6L0 12V0Z" fill="currentColor" />
   </svg>
 );
 
@@ -40,7 +40,8 @@ const MusicCardContent = ({
       {/* ── 이미지 영역 ───────────────────────────────────────────────────── */}
       <div className="flex flex-1 min-h-0 flex-col items-center justify-center gap-4 px-10 pt-10 pb-4">
         {/* 앨범아트 */}
-        <div className="relative w-40 h-40 rounded-2xl overflow-hidden bg-on-background shrink-0">
+        {/* rounded = DEFAULT = 1rem = 16px (design system token) */}
+        <div className="relative w-40 h-40 rounded overflow-hidden bg-on-background shrink-0">
           {imageUrl ? (
             <Image src={imageUrl} alt={title} fill sizes="160px" className="object-cover" />
           ) : (
@@ -81,15 +82,17 @@ const MusicCardContent = ({
           disabled={!hasPreview}
           aria-label={hasPreview ? `${title} 30초 미리듣기` : "미리듣기를 사용할 수 없습니다"}
           className={[
-            "w-full h-[57px] rounded-2xl",
+            // rounded = DEFAULT = 1rem = 16px (design system token)
+            "w-full h-[57px] rounded",
             "flex items-center justify-center gap-3",
             "font-body font-medium text-body-sm text-on-background",
             "transition-all duration-200",
             hasPreview
-              ? "bg-white hover:bg-white/80 active:scale-[0.98]"
-              : "bg-white/40 cursor-not-allowed opacity-50",
+              ? "bg-surface hover:bg-surface/80 active:scale-[0.98]"
+              : "bg-surface/40 cursor-not-allowed opacity-50",
           ].join(" ")}
         >
+          {/* PlayIcon fill="currentColor" → 부모 text-on-background 색상 상속 */}
           <PlayIcon />
           <span className="tracking-widest uppercase">30S PREVIEW</span>
         </button>
@@ -113,12 +116,7 @@ const DarkCardContent = ({
       {imageUrl ? (
         <Image src={imageUrl} alt={title} fill sizes="315px" className="object-cover" />
       ) : (
-        <div
-          className={[
-            "w-full h-full flex items-center justify-center",
-            domain === "movie" ? "bg-[#1a1c1a]" : "bg-[#2a1f1a]",
-          ].join(" ")}
-        >
+        <div className="w-full h-full flex items-center justify-center bg-on-background">
           {domain === "movie" ? (
             <svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true">
               <rect
