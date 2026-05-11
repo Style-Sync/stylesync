@@ -12,7 +12,7 @@ const meta: Meta<typeof TasteCard> = {
   argTypes: {
     domain: {
       control: "select",
-      options: ["music", "movie", "fashion"],
+      options: ["music", "movie"],
     },
     selected: {
       control: "boolean",
@@ -63,26 +63,6 @@ export const MovieSelected: Story = {
   },
 };
 
-// ── Fashion ───────────────────────────────────────────────────────────────────
-
-export const FashionDefault: Story = {
-  args: {
-    domain: "fashion",
-    title: "인트로스펙티브 시크",
-    genre: "테일러드",
-    selected: false,
-  },
-};
-
-export const FashionSelected: Story = {
-  args: {
-    domain: "fashion",
-    title: "어스 톤 오버사이즈",
-    genre: "캐주얼",
-    selected: true,
-  },
-};
-
 // ── 전체 비교 ─────────────────────────────────────────────────────────────────
 
 export const AllDefault: Story = {
@@ -90,7 +70,6 @@ export const AllDefault: Story = {
     <div className="flex flex-wrap gap-6 p-8 bg-background">
       <TasteCard domain="music" title="The Weeknd" genre="R&B / POP" />
       <TasteCard domain="movie" title="Parasite" genre="Thriller" />
-      <TasteCard domain="fashion" title="인트로스펙티브 시크" genre="테일러드" />
     </div>
   ),
 };
@@ -100,7 +79,6 @@ export const AllSelected: Story = {
     <div className="flex flex-wrap gap-6 p-8 bg-background">
       <TasteCard domain="music" title="The Weeknd" genre="R&B / POP" selected />
       <TasteCard domain="movie" title="Parasite" genre="Thriller" selected />
-      <TasteCard domain="fashion" title="인트로스펙티브 시크" genre="테일러드" selected />
     </div>
   ),
 };

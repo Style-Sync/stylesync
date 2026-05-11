@@ -69,23 +69,10 @@ const MovieFallback = () => (
   </svg>
 );
 
-const FashionFallback = () => (
-  <svg width="56" height="56" viewBox="0 0 56 56" fill="none" aria-hidden="true">
-    <path
-      d="M28 7C28 7 19 13 9 16L15 25L19 22V49H37V22L41 25L47 16C37 13 28 7 28 7Z"
-      stroke="white"
-      strokeOpacity="0.4"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const fallbackIcons: Record<"music" | "movie" | "fashion", React.FC> = {
+// 패션 취향 선택은 리스트+프리뷰 UI → TasteCard 미사용
+const fallbackIcons: Record<"music" | "movie", React.FC> = {
   music: MusicFallback,
   movie: MovieFallback,
-  fashion: FashionFallback,
 };
 
 // ── TasteCard ─────────────────────────────────────────────────────────────────

@@ -1,10 +1,10 @@
 export interface ITasteCardProps {
-  domain: "music" | "movie" | "fashion";
-  /** 아티스트명 / 영화 제목 / 패션 룩 이름 */
+  domain: "music" | "movie";
+  /** 아티스트명 / 영화 제목 */
   title: string;
-  /** 장르 배지 텍스트 (예: "R&B / POP", "Sci-Fi", "테일러드") */
+  /** 장르 배지 텍스트 (예: "R&B / POP", "Sci-Fi") */
   genre?: string;
-  /** 아티스트 사진 / 포스터 / 패션 이미지 URL */
+  /** 아티스트 사진 / 포스터 URL */
   imageUrl?: string;
   /** 선택 여부 */
   selected?: boolean;
