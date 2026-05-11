@@ -131,8 +131,8 @@ export const DomainSelectCard = ({ domain, selected = false, onClick }: IDomainS
         "w-full h-[434px]",
         "md:w-[224px] md:h-[320px]",
         "lg:w-[384px] lg:h-[512px]",
-        // Shape
-        "rounded-[2rem]",
+        // Shape — rounded-lg = 2rem = 32px (design system token)
+        "rounded-lg",
         // Transitions
         "transition-all duration-300",
         // Hover
@@ -170,7 +170,7 @@ export const DomainSelectCard = ({ domain, selected = false, onClick }: IDomainS
           <h3
             className={[
               "font-headline font-black tracking-tighter keep-all",
-              "text-headline-sm md:text-[18px] lg:text-headline-md",
+              "text-headline-sm md:text-title-md lg:text-headline-md",
               "text-on-background leading-tight",
             ].join(" ")}
           >
