@@ -6,88 +6,26 @@ import { domainTagVariants } from "./shareCard.variants";
 
 import type { IShareCardProps } from "./shareCard.types";
 
-// ── Domain Tag ─────────────────────────────────────────────────────────────────
+// ── Eye Mascot (검은 원 + 흰 글레어) ─────────────────────────────────────────
+// Figma 487:2420 기준: 128×128 white circle
+// left eye: black 24×24 at (44,52), glare 6×6 at (54,59)
+// right eye: black 24×24 at (76,52), glare 6×6 at (86,59)
+// mouth: 24×2 at (52,86), 20% opacity
 
-const DomainTag = ({
-  domain,
-  isInput,
-}: {
-  domain: "music" | "movie" | "fashion";
-  isInput: boolean;
-}) => {
-  const variant = domainTagVariants[domain];
-
-  return (
-    <span
-      className={[
-        "inline-flex items-center gap-1.5",
-        "px-3 py-1.5 rounded-full",
-        "font-body font-semibold text-body-xs uppercase tracking-widest",
-        "transition-colors",
-        isInput
-          ? "bg-primary-container text-white"
-          : "bg-surface-container-low text-on-surface-variant border border-outline-variant",
-      ].join(" ")}
-    >
-      <span aria-hidden="true">{variant.icon}</span>
-      {variant.label}
-    </span>
-  );
-};
-
-// ── Avatar Fallback ────────────────────────────────────────────────────────────
-
-const AvatarFallback = ({ username }: { username?: string }) => (
-  <div className="w-8 h-8 rounded-full bg-on-background flex items-center justify-center">
-    <span className="font-body font-bold text-body-xs text-white uppercase">
-      {username ? username.charAt(0) : "S"}
-    </span>
-  </div>
-);
-
-// ── Mascot Area ────────────────────────────────────────────────────────────────
-
-const MascotArea = () => (
-  <div
-    className={[
-      "relative w-full rounded-[2.5rem] overflow-hidden",
-      "bg-[#e6e6fa]",
-      "flex flex-col items-center justify-end",
-      "h-[220px]",
-    ].join(" ")}
+const MascotFace = () => (
+  <svg
+    viewBox="0 0 128 128"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-full h-full"
     aria-hidden="true"
   >
-    {/* 마스코트 자리 — 실제 마스코트 컴포넌트 연결 전 placeholder */}
-    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[100px] h-[120px] flex items-end justify-center pb-2">
-      <div className="w-[80px] h-[80px] rounded-full bg-on-background/10 flex items-center justify-center">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-          <circle cx="20" cy="20" r="18" stroke="#1A1C1A" strokeOpacity="0.3" strokeWidth="2" />
-          <circle cx="14" cy="18" r="3" fill="#1A1C1A" fillOpacity="0.5" />
-          <circle cx="26" cy="18" r="3" fill="#1A1C1A" fillOpacity="0.5" />
-          <path
-            d="M14 26C14 26 16.5 28.5 20 28.5C23.5 28.5 26 26 26 26"
-            stroke="#1A1C1A"
-            strokeOpacity="0.5"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-        </svg>
-      </div>
-    </div>
-
-    {/* CURATED FEELS 배지 */}
-    <div
-      className={[
-        "absolute top-5 left-1/2 -translate-x-1/2",
-        "px-4 py-1.5 rounded-full",
-        "bg-primary-container",
-        "font-body font-semibold text-body-xs text-white uppercase tracking-widest",
-        "whitespace-nowrap",
-      ].join(" ")}
-    >
-      CURATED FEELS
-    </div>
-  </div>
+    <rect x="44" y="52" width="24" height="24" rx="12" fill="#1A1C1A" />
+    <rect x="54" y="59" width="6" height="6" rx="3" fill="white" />
+    <rect x="76" y="52" width="24" height="24" rx="12" fill="#1A1C1A" />
+    <rect x="86" y="59" width="6" height="6" rx="3" fill="white" />
+    <rect x="52" y="86" width="24" height="2" rx="1" fill="rgba(26,28,26,0.2)" />
+  </svg>
 );
 
 // ── ShareCard ──────────────────────────────────────────────────────────────────
@@ -99,263 +37,177 @@ export const ShareCard = ({
   music,
   movie,
   fashion,
-  username,
-  avatarUrl,
 }: IShareCardProps) => {
-  const domains: Array<"music" | "movie" | "fashion"> = ["music", "movie", "fashion"];
+  // 배경 수직 텍스트: styleTitle 두 번째 줄 uppercase
+  // Figma 예시: "Cyberpunk\nArchivist" → "ARCHIVIST"
+  const bgText = (styleTitle.split("\n")[1] ?? styleTitle).toUpperCase();
+
+  // inputDomain은 현재 카드 디자인에서는 시각적으로 사용 안 함 (페이지에서 사용)
+  void inputDomain;
+
+  // 도메인 태그 텍스트
+  const tagText = {
+    music: music?.artist ?? domainTagVariants.music.label,
+    movie: movie?.title ?? domainTagVariants.movie.label,
+    fashion: fashion?.keyword ?? domainTagVariants.fashion.label,
+  };
+
+  const tagImage = {
+    music: music?.imageUrl,
+    movie: movie?.imageUrl,
+    fashion: fashion?.imageUrl,
+  };
 
   return (
-    <div
-      className={[
-        // Layout
-        "relative flex overflow-hidden",
-        // Size — Figma: 400×680, cornerRadius: 48
-        "w-[400px] h-[680px]",
-        "rounded-[3rem]",
-        // Background
-        "bg-background",
-        // Shadow
-        "editorial-shadow",
-      ].join(" ")}
-    >
-      {/* ── 우측 장식 세로 텍스트 영역 ────────────────────────────────── */}
+    <div className="relative w-full md:w-[400px] h-[554px] md:h-[680px] bg-white rounded-[3rem] overflow-hidden">
+      {/* ── 배경 수직 텍스트 ─────────────────────────────────────────── */}
+      {/* ARCHIVIST: Epilogue Black 72px, 5% opacity, top-[68px] right-[22px] */}
       <div
-        className="absolute top-0 right-0 h-full w-[52px] flex flex-col items-center justify-between py-8 select-none"
+        className="absolute top-[68px] right-[22px] pointer-events-none select-none"
         aria-hidden="true"
       >
-        {/* ARCHIVIST 세로 텍스트 (Epilogue Black, 5% opacity) */}
         <span
-          className="font-headline font-black text-on-background opacity-[0.05] uppercase tracking-widest"
-          style={{
-            writingMode: "vertical-rl",
-            textOrientation: "mixed",
-            fontSize: "52px",
-            lineHeight: 1,
-          }}
+          className="font-headline font-black text-[72px] leading-none text-on-background/5"
+          style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
         >
-          ARCHIVIST
+          {bgText}
         </span>
+      </div>
 
-        {/* STYLE SYNC PASS 세로 텍스트 (orange) */}
+      {/* STYLE SYNC PASS: Plus Jakarta Sans ExtraBold 12px, orange
+            Figma 768px 기준 top=343px right=36px → sm 비율 보정 */}
+      <div
+        className="absolute top-[280px] md:top-[343px] right-[30px] md:right-[36px] pointer-events-none select-none"
+        aria-hidden="true"
+      >
         <span
-          className="font-body font-extrabold text-primary-container uppercase tracking-widest"
-          style={{
-            writingMode: "vertical-rl",
-            textOrientation: "mixed",
-            fontSize: "10px",
-            letterSpacing: "0.2em",
-          }}
+          className="font-body font-extrabold text-[12px] leading-none text-primary-container"
+          style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
         >
           STYLE SYNC PASS
         </span>
       </div>
 
-      {/* ── 메인 콘텐츠 영역 ───────────────────────────────────────────── */}
-      <div className="flex flex-col w-[348px] h-full px-7 py-7 gap-5">
-        {/* 상단: STYLE IDENTITY 레이블 + 스타일 타이틀 */}
-        <div className="flex flex-col gap-2">
-          <span className="font-body font-semibold text-body-xs text-primary-container uppercase tracking-widest">
+      {/* ── 콘텐츠 레이어 ─────────────────────────────────────────────── */}
+      <div className="relative z-10 flex flex-col h-full p-10">
+        {/* ① 상단: STYLE IDENTITY 레이블 + 타이틀 (높이 ~115px) */}
+        <div className="pb-4">
+          {/* "STYLE IDENTITY": NotoSansKR Medium 14px, 30% opacity */}
+          <span className="block font-korean font-medium text-[14px] leading-[1.2] text-on-background/30">
             {styleLabel}
           </span>
+          {/* Headline: Epilogue Black 36px */}
           <h2
-            className={[
-              "font-headline font-black tracking-tighter keep-all",
-              "text-on-background",
-              "whitespace-pre-line",
-            ].join(" ")}
-            style={{ fontSize: "32px", lineHeight: 1.1 }}
+            className="font-headline font-black text-on-background whitespace-pre-line mt-2"
+            style={{ fontSize: "36px", lineHeight: "36.9px" }}
           >
             {styleTitle}
           </h2>
         </div>
 
-        {/* 마스코트 영역 */}
-        <MascotArea />
+        {/* ② 마스코트 영역 (flex-1 → ~351px) */}
+        <div className="flex-1 flex items-start">
+          {/* 라벤더 배경: 240×300 md, 200×250 sm, cornerRadius 48px */}
+          {/* overflow-visible: CURATED FEELS 배지가 우측으로 살짝 overflow */}
+          <div
+            className="relative shrink-0 overflow-visible bg-[#e6e6fa]"
+            style={{ width: "240px", height: "300px", borderRadius: "48px" }}
+          >
+            {/* 마스코트 원: 128×128, 중앙 배치 (Figma: x=56 y=86 within 240×300 → centered) */}
+            <div
+              className="absolute bg-white rounded-full overflow-hidden"
+              style={{ width: "128px", height: "128px", top: "86px", left: "56px" }}
+            >
+              <MascotFace />
+            </div>
 
-        {/* 도메인 추천 미리보기 */}
-        <div className="flex flex-col gap-2">
-          {/* 음악 */}
-          {music && (
-            <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-surface-container-low">
-              <div className="w-9 h-9 rounded-lg bg-on-background overflow-hidden flex-shrink-0">
-                {music.imageUrl ? (
-                  <Image
-                    src={music.imageUrl}
-                    alt={music.title}
-                    width={36}
-                    height={36}
-                    className="object-cover w-full h-full"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                      <path
-                        d="M4 12V5l9-2v7"
-                        stroke="white"
-                        strokeOpacity="0.5"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <circle
-                        cx="4"
-                        cy="12"
-                        r="1.5"
-                        stroke="white"
-                        strokeOpacity="0.5"
-                        strokeWidth="1.5"
-                      />
-                      <circle
-                        cx="13"
-                        cy="10"
-                        r="1.5"
-                        stroke="white"
-                        strokeOpacity="0.5"
-                        strokeWidth="1.5"
-                      />
-                    </svg>
-                  </div>
-                )}
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="font-body font-semibold text-body-sm text-on-background truncate">
-                  {music.title}
-                </span>
-                <span className="font-body text-body-xs text-on-surface-variant truncate">
-                  {music.artist}
-                </span>
-              </div>
-              <span className="ml-auto font-body font-semibold text-body-xs text-primary-container uppercase tracking-widest flex-shrink-0">
-                MUSIC
+            {/* CURATED FEELS 배지: Figma bottom-10(40px), left-[145px] — 우측 overflow 허용 */}
+            {/* Plus Jakarta Sans ExtraBold 10px */}
+            <div
+              className="absolute bg-primary-container rounded-full"
+              style={{ bottom: "40px", left: "145px", padding: "8px 20px" }}
+            >
+              <span
+                className="font-body font-extrabold text-white tracking-widest whitespace-nowrap"
+                style={{ fontSize: "10px", lineHeight: "12.6px" }}
+              >
+                CURATED FEELS
               </span>
             </div>
-          )}
-
-          {/* 영화 */}
-          {movie && (
-            <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-surface-container-low">
-              <div className="w-9 h-9 rounded-lg bg-on-background overflow-hidden flex-shrink-0">
-                {movie.imageUrl ? (
-                  <Image
-                    src={movie.imageUrl}
-                    alt={movie.title}
-                    width={36}
-                    height={36}
-                    className="object-cover w-full h-full"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                      <rect
-                        x="2"
-                        y="4"
-                        width="12"
-                        height="9"
-                        rx="1"
-                        stroke="white"
-                        strokeOpacity="0.5"
-                        strokeWidth="1.5"
-                      />
-                      <path
-                        d="M5 4V2M11 4V2"
-                        stroke="white"
-                        strokeOpacity="0.5"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                  </div>
-                )}
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="font-body font-semibold text-body-sm text-on-background truncate">
-                  {movie.title}
-                </span>
-              </div>
-              <span className="ml-auto font-body font-semibold text-body-xs text-primary-container uppercase tracking-widest flex-shrink-0">
-                MOVIE
-              </span>
-            </div>
-          )}
-
-          {/* 패션 */}
-          {fashion && (
-            <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-surface-container-low">
-              <div className="w-9 h-9 rounded-lg bg-on-background overflow-hidden flex-shrink-0">
-                {fashion.imageUrl ? (
-                  <Image
-                    src={fashion.imageUrl}
-                    alt={fashion.keyword ?? "fashion"}
-                    width={36}
-                    height={36}
-                    className="object-cover w-full h-full"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                      <path
-                        d="M5 2L3 6H6V14H10V6H13L11 2H5Z"
-                        stroke="white"
-                        strokeOpacity="0.5"
-                        strokeWidth="1.5"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                )}
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="font-body font-semibold text-body-sm text-on-background truncate">
-                  {fashion.keyword ?? "Fashion Look"}
-                </span>
-              </div>
-              <span className="ml-auto font-body font-semibold text-body-xs text-primary-container uppercase tracking-widest flex-shrink-0">
-                FASHION
-              </span>
-            </div>
-          )}
+          </div>
         </div>
 
-        {/* 하단 도메인 태그 + 브랜딩 */}
-        <div className="mt-auto flex flex-col gap-3">
-          {/* 도메인 태그 3개 */}
-          <div className="flex gap-2 flex-wrap">
-            {domains.map((domain) => (
-              <DomainTag key={domain} domain={domain} isInput={domain === inputDomain} />
-            ))}
+        {/* ③ 하단: 도메인 태그 + StyleSync 브랜딩 (~125px) */}
+        <div className="pt-4 border-t border-on-background/5 flex items-end justify-between gap-4">
+          {/* 도메인 태그 3개 (수직 스택) */}
+          <div className="flex flex-col gap-[7px]">
+            {(["music", "movie", "fashion"] as const).map((d) => {
+              const { icon } = domainTagVariants[d];
+              const text = tagText[d];
+              const img = tagImage[d];
+
+              return (
+                <div
+                  key={d}
+                  className="flex items-center gap-[6px] rounded-full self-start"
+                  style={{
+                    background: "rgba(26,28,26,0.03)",
+                    padding: "4px 10px",
+                  }}
+                >
+                  {/* 아이콘 or 썸네일 */}
+                  {img ? (
+                    <Image
+                      src={img}
+                      alt={text}
+                      width={8}
+                      height={8}
+                      className="rounded-full object-cover shrink-0"
+                    />
+                  ) : (
+                    <span className="text-on-background/30 shrink-0" style={{ fontSize: "8px" }}>
+                      {icon}
+                    </span>
+                  )}
+                  {/* 텍스트: Plus Jakarta Sans ExtraBold 10px (music/fashion), Noto Sans Regular 10px (movie) */}
+                  <span
+                    className={[
+                      "text-on-background/70 leading-none",
+                      d === "movie" ? "font-korean font-normal" : "font-body font-extrabold",
+                    ].join(" ")}
+                    style={{ fontSize: "10px" }}
+                  >
+                    {text}
+                  </span>
+                </div>
+              );
+            })}
           </div>
 
-          {/* StyleSync 브랜딩 바 */}
-          <div className="flex items-center justify-between pt-3 border-t border-outline-variant">
-            {/* 유저 정보 */}
-            <div className="flex items-center gap-2">
-              {avatarUrl ? (
-                <Image
-                  src={avatarUrl}
-                  alt={username ?? "user"}
-                  width={32}
-                  height={32}
-                  className="w-8 h-8 rounded-full object-cover"
-                />
-              ) : (
-                <AvatarFallback username={username} />
-              )}
-              {username && (
-                <span className="font-body font-medium text-body-xs text-on-surface-variant">
-                  @{username}
-                </span>
-              )}
-            </div>
-
-            {/* 브랜드 */}
-            <div className="flex flex-col items-end gap-0.5">
-              <span className="font-headline font-black text-body-sm text-on-background tracking-tighter uppercase">
-                STYLE SYNC
+          {/* StyleSync 로고 + DIGITAL LOOKBOOK V2.0 */}
+          {/* Figma: "Style"(Epilogue Black 24px, dark) + "Sync"(Epilogue Black 24px, orange) */}
+          <div className="flex flex-col items-end gap-1 shrink-0">
+            <div className="flex items-baseline leading-none">
+              <span
+                className="font-headline font-black text-on-background"
+                style={{ fontSize: "24px" }}
+              >
+                Style
               </span>
-              <span className="font-body text-body-xs text-on-surface-variant uppercase tracking-widest">
-                DIGITAL LOOKBOOK V2.0
+              <span
+                className="font-headline font-black text-primary-container"
+                style={{ fontSize: "24px" }}
+              >
+                Sync
               </span>
             </div>
+            {/* Noto Sans KR Medium 14px, 40% opacity */}
+            <span
+              className="font-korean font-medium text-on-background/40 whitespace-nowrap"
+              style={{ fontSize: "14px", lineHeight: "16.8px" }}
+            >
+              DIGITAL LOOKBOOK V2.0
+            </span>
           </div>
         </div>
       </div>

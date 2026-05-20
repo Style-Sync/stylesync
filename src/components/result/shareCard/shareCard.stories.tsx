@@ -7,7 +7,8 @@ const meta: Meta<typeof ShareCard> = {
   component: ShareCard,
   tags: ["autodocs"],
   parameters: {
-    backgrounds: { default: "stylesync" },
+    // Figma 기준: ShareCard는 dark(#1A1C1A) 배경 위에 표시
+    backgrounds: { default: "dark" },
   },
   argTypes: {
     inputDomain: {

@@ -38,4 +38,10 @@ export interface IShareCardProps {
   username?: string;
   /** 유저 아바타 URL */
   avatarUrl?: string;
+  /** 저장 버튼 핸들러 */
+  onSave?: () => void;
+  /** 공유 버튼 핸들러 */
+  onShare?: () => void;
+  /** 링크 복사 버튼 핸들러 */
+  onCopy?: () => void;
 }
