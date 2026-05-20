@@ -86,6 +86,15 @@ const config: Config = {
       letterSpacing: {
         kerning: "-0.04em",
       },
+      keyframes: {
+        wink: {
+          "0%, 100%": { transform: "scaleY(1)" },
+          "45%, 55%": { transform: "scaleY(0.05)" },
+        },
+      },
+      animation: {
+        wink: "wink 0.5s ease-in-out",
+      },
     },
   },
   plugins: [require("@tailwindcss/container-queries")],
