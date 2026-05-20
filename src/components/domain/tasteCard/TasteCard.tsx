@@ -97,12 +97,12 @@ export const TasteCard = ({
       className={[
         // Layout
         "relative overflow-hidden text-left",
-        // Size
-        "w-full h-[453px]",
+        // Size — sm:348px / md:390px / lg:453px
+        "w-full h-[348px] md:h-[390px] lg:h-[453px]",
         // Shape — rounded-xl = 3rem(48px)에 가장 가깝지만 Figma는 40px
         "rounded-[2.5rem]",
         // Border — selected 시 primary-container stroke
-        "ring-inset transition-all duration-300",
+        "transition-all duration-300",
         selected ? "ring-2 ring-primary-container" : "ring-0",
         // Hover
         "hover:scale-[1.02]",
@@ -132,7 +132,7 @@ export const TasteCard = ({
       {/* ── 선택 체크 서클 (우상단) ────────────────────────────────────── */}
       <div
         className={[
-          "absolute top-4 right-4 w-10 h-10 rounded-full",
+          "absolute top-8 right-7 w-10 h-10 rounded-full",
           "flex items-center justify-center",
           "transition-all duration-200",
           selected
@@ -145,9 +145,9 @@ export const TasteCard = ({
       </div>
 
       {/* ── 하단 텍스트 오버레이 ───────────────────────────────────────── */}
-      <div className="absolute bottom-0 left-0 right-0 px-8 pb-8 flex flex-col gap-2">
+      <div className="absolute bottom-0 left-0 right-0 px-10 pb-10 flex flex-col gap-3">
         {/* 제목 */}
-        <h3 className="font-headline font-black text-headline-md text-white keep-all leading-tight uppercase">
+        <h3 className="font-headline font-black text-headline-sm md:text-headline-md text-white keep-all leading-tight uppercase">
           {title}
         </h3>
 
@@ -156,7 +156,7 @@ export const TasteCard = ({
           <span
             className={[
               "self-start px-3 py-1 rounded-full",
-              "font-body font-medium text-body-sm text-white",
+              "font-korean font-medium text-body-sm text-white",
               "transition-colors duration-200",
               selected ? "bg-primary-container" : "bg-white/10",
             ].join(" ")}

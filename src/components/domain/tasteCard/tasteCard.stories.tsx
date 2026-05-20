@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { TasteCard } from "./TasteCard";
 
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
@@ -81,4 +83,31 @@ export const AllSelected: Story = {
       <TasteCard domain="movie" title="Parasite" genre="Thriller" selected />
     </div>
   ),
+};
+
+// ── 클릭 인터랙션 (클릭 시 selected 토글) ─────────────────────────────────────
+
+export const Interactive: Story = {
+  render: () => {
+    const [selected, setSelected] = useState<string | null>(null);
+    const cards = [
+      { id: "weeknd", title: "The Weeknd", genre: "R&B / POP" },
+      { id: "daftpunk", title: "Daft Punk", genre: "Electronic" },
+      { id: "lana", title: "Lana Del Rey", genre: "Dream Pop" },
+    ];
+    return (
+      <div className="flex flex-wrap gap-6 p-8 bg-background">
+        {cards.map((card) => (
+          <TasteCard
+            key={card.id}
+            domain="music"
+            title={card.title}
+            genre={card.genre}
+            selected={selected === card.id}
+            onClick={() => setSelected(selected === card.id ? null : card.id)}
+          />
+        ))}
+      </div>
+    );
+  },
 };
