@@ -198,9 +198,11 @@ export const DomainSelectCard = ({ domain, onClick }: IDomainSelectCardProps) =>
         // Layout
         "flex flex-col text-left overflow-hidden",
         // Size — mobile: full-width / tablet: 224px / desktop: 384px
-        "w-full h-[430px]",
-        "md:w-[224px] md:h-[320px]",
-        "lg:w-[384px] lg:h-[512px]",
+        // Width: 부모 그리드 셀을 채움 (고정 너비 없음)
+        // Height: sm 435px / md 320px / lg 512px
+        "w-full h-[435px]",
+        "md:h-[320px]",
+        "lg:h-[512px]",
         // Shape — rounded-lg = 2rem = 32px
         "rounded-lg",
         // Background

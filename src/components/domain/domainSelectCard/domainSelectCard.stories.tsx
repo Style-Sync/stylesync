@@ -38,9 +38,10 @@ export const Fashion: Story = {
   },
 };
 
+// Figma 기준: 3열 그리드 gap-8 (32px)
 export const AllDomains: Story = {
   render: () => (
-    <div className="flex flex-wrap gap-6 p-8 bg-background">
+    <div className="grid grid-cols-3 gap-8 p-8 bg-background">
       <DomainSelectCard domain="music" />
       <DomainSelectCard domain="movie" />
       <DomainSelectCard domain="fashion" />
