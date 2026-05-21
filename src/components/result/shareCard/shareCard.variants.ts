@@ -1,5 +1,5 @@
 export const domainTagVariants = {
-  music: { label: "MUSIC", icon: "♪" },
-  movie: { label: "MOVIE", icon: "▶" },
-  fashion: { label: "FASHION", icon: "✦" },
+  music: { label: "MUSIC" },
+  movie: { label: "MOVIE" },
+  fashion: { label: "FASHION" },
 } as const;

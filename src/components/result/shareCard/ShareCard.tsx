@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 
+import { Icon } from "@/components/ui/Icon";
+
 import { domainTagVariants } from "./shareCard.variants";
 
 import type { IShareCardProps } from "./shareCard.types";
@@ -142,7 +144,7 @@ export const ShareCard = ({
           {/* 도메인 태그 3개 (수직 스택) */}
           <div className="flex flex-col gap-[7px]">
             {(["music", "movie", "fashion"] as const).map((d) => {
-              const { icon } = domainTagVariants[d];
+              const domainIconMap = { music: "music", movie: "movie", fashion: "hanger" } as const;
               const text = tagText[d];
               const img = tagImage[d];
 
@@ -165,9 +167,11 @@ export const ShareCard = ({
                       className="rounded-full object-cover shrink-0"
                     />
                   ) : (
-                    <span className="text-on-background/30 shrink-0" style={{ fontSize: "8px" }}>
-                      {icon}
-                    </span>
+                    <Icon
+                      name={domainIconMap[d]}
+                      className="text-on-background/30 shrink-0"
+                      size={10}
+                    />
                   )}
                   {/* 텍스트: Plus Jakarta Sans ExtraBold 10px (music/fashion), Noto Sans Regular 10px (movie) */}
                   <span
