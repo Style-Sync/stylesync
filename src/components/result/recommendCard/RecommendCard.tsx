@@ -2,24 +2,11 @@
 
 import Image from "next/image";
 
+import { Icon } from "@/components/ui/Icon";
+
 import { recommendCardVariants } from "./recommendCard.variants";
 
 import type { IRecommendCardProps } from "./recommendCard.types";
-
-// ── Play Icon ─────────────────────────────────────────────────────────────────
-
-const PlayIcon = () => (
-  <svg
-    width="10"
-    height="12"
-    viewBox="0 0 10 12"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-  >
-    <path d="M0 0L10 6L0 12V0Z" fill="currentColor" />
-  </svg>
-);
 
 // ── Music Card ────────────────────────────────────────────────────────────────
 
@@ -46,17 +33,7 @@ const MusicCardContent = ({
             <Image src={imageUrl} alt={title} fill sizes="160px" className="object-cover" />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-                <circle cx="16" cy="36" r="6" stroke="white" strokeWidth="3" />
-                <circle cx="36" cy="30" r="6" stroke="white" strokeWidth="3" />
-                <path
-                  d="M22 36V12L42 6V30"
-                  stroke="white"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <Icon name="music" className="text-white/50" size={48} />
             </div>
           )}
         </div>
@@ -92,8 +69,7 @@ const MusicCardContent = ({
               : "bg-surface/40 cursor-not-allowed opacity-50",
           ].join(" ")}
         >
-          {/* PlayIcon fill="currentColor" → 부모 text-on-background 색상 상속 */}
-          <PlayIcon />
+          <Icon name="play" size={12} />
           <span className="tracking-widest uppercase">30S PREVIEW</span>
         </button>
       </div>
@@ -117,73 +93,11 @@ const DarkCardContent = ({
         <Image src={imageUrl} alt={title} fill sizes="315px" className="object-cover" />
       ) : (
         <div className="w-full h-full flex items-center justify-center bg-on-background">
-          {domain === "movie" ? (
-            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-              <rect
-                x="6"
-                y="16"
-                width="52"
-                height="36"
-                rx="3"
-                stroke="white"
-                strokeOpacity="0.4"
-                strokeWidth="3"
-              />
-              <path
-                d="M6 26H58"
-                stroke="white"
-                strokeOpacity="0.4"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M6 42H58"
-                stroke="white"
-                strokeOpacity="0.4"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M19 16L13 8"
-                stroke="white"
-                strokeOpacity="0.4"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M32 16L26 8"
-                stroke="white"
-                strokeOpacity="0.4"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M45 16L39 8"
-                stroke="white"
-                strokeOpacity="0.4"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M6 8H58"
-                stroke="white"
-                strokeOpacity="0.4"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-            </svg>
-          ) : (
-            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-              <path
-                d="M32 8C32 8 22 14 11 17L17 27L21 24V54H43V24L47 27L53 17C42 14 32 8 32 8Z"
-                stroke="white"
-                strokeOpacity="0.4"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          )}
+          <Icon
+            name={domain === "movie" ? "movie" : "hanger"}
+            className="text-white/40"
+            size={64}
+          />
         </div>
       )}
     </div>
