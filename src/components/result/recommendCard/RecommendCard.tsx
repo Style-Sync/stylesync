@@ -83,9 +83,8 @@ const DarkCardContent = ({
   title,
   subtitle,
   imageUrl,
-  label,
   domain,
-}: Pick<IRecommendCardProps, "title" | "subtitle" | "imageUrl" | "label" | "domain">) => (
+}: Pick<IRecommendCardProps, "title" | "subtitle" | "imageUrl" | "domain">) => (
   <>
     {/* ── Full-bleed 이미지 ────────────────────────────────────────────── */}
     <div className="absolute inset-0">
@@ -107,11 +106,6 @@ const DarkCardContent = ({
 
     {/* ── 하단 텍스트 오버레이 ─────────────────────────────────────────── */}
     <div className="absolute bottom-0 left-0 right-0 px-10 pb-10 flex flex-col gap-2">
-      {label && (
-        <span className="font-body font-medium text-body-sm text-white/80 tracking-wide">
-          {label}
-        </span>
-      )}
       <h3 className="font-headline font-black text-[24px] lg:text-[30px] text-white keep-all leading-tight">
         {title}
       </h3>
@@ -131,7 +125,6 @@ export const RecommendCard = ({
   title,
   subtitle,
   imageUrl,
-  label,
   previewUrl,
   onPreviewClick,
 }: IRecommendCardProps) => {
@@ -151,13 +144,7 @@ export const RecommendCard = ({
       ].join(" ")}
     >
       {isDark ? (
-        <DarkCardContent
-          domain={domain}
-          title={title}
-          subtitle={subtitle}
-          imageUrl={imageUrl}
-          label={label}
-        />
+        <DarkCardContent domain={domain} title={title} subtitle={subtitle} imageUrl={imageUrl} />
       ) : (
         <MusicCardContent
           title={title}
