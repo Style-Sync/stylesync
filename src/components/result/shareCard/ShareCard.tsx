@@ -107,27 +107,34 @@ export const ShareCard = ({
           </h2>
         </div>
 
-        {/* ② 마스코트 영역 (flex-1 → ~351px) */}
+        {/* ② 마스코트 영역 (flex-1) */}
         <div className="flex-1 flex items-start">
-          {/* 라벤더 배경: 240×300 md, 200×250 sm, cornerRadius 48px */}
-          {/* overflow-visible: CURATED FEELS 배지가 우측으로 살짝 overflow */}
+          {/* 라벤더 배경
+              Figma 390px: 184.5×230 / Figma 768px+: 240×300
+              overflow-visible: CURATED FEELS 배지 우측 overflow 허용 */}
           <div
-            className="relative shrink-0 overflow-visible bg-[#e6e6fa]"
-            style={{ width: "240px", height: "300px", borderRadius: "48px" }}
+            className="relative shrink-0 overflow-visible bg-[#e6e6fa]
+                       w-[185px] h-[230px] md:w-[240px] md:h-[300px]"
+            style={{ borderRadius: "48px" }}
           >
-            {/* 마스코트 원: 128×128, 중앙 배치 (Figma: x=56 y=86 within 240×300 → centered) */}
+            {/* 마스코트 원 128×128
+                Figma 390px: top 51px left 28px / Figma 768px+: top 86px left 56px */}
             <div
-              className="absolute bg-white rounded-full overflow-hidden"
-              style={{ width: "128px", height: "128px", top: "86px", left: "56px" }}
+              className="absolute bg-white rounded-full overflow-hidden
+                         top-[51px] left-[28px]
+                         md:top-[86px] md:left-[56px]"
+              style={{ width: "128px", height: "128px" }}
             >
               <MascotFace />
             </div>
 
-            {/* CURATED FEELS 배지: Figma bottom-10(40px), left-[145px] — 우측 overflow 허용 */}
-            {/* Plus Jakarta Sans ExtraBold 10px */}
+            {/* CURATED FEELS 배지
+                Figma 390px: bottom 40px left 90px / Figma 768px+: bottom 40px left 145px */}
             <div
-              className="absolute bg-primary-container rounded-full"
-              style={{ bottom: "40px", left: "145px", padding: "8px 20px" }}
+              className="absolute bg-primary-container rounded-full
+                         bottom-[40px] left-[90px]
+                         md:bottom-[40px] md:left-[145px]"
+              style={{ padding: "8px 20px" }}
             >
               <span
                 className="font-body font-extrabold text-white tracking-widest whitespace-nowrap"
