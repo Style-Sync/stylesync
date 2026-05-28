@@ -8,20 +8,20 @@ export const recommendCardVariants = {
     titleColor: "text-on-background",
     subtitleColor: "text-on-surface-variant",
     /** 카드 높이 */
-    height: "h-[439px]",
+    height: "h-[330px] lg:h-[439px]",
   },
   movie: {
     cardBg: "bg-on-background",
     imageFallbackBg: "bg-[#111]",
     titleColor: "text-white",
     subtitleColor: "text-white/80",
-    height: "h-[453px]",
+    height: "h-[330px] lg:h-[453px]",
   },
   fashion: {
     cardBg: "bg-on-background",
     imageFallbackBg: "bg-[#111]",
     titleColor: "text-white",
     subtitleColor: "text-white/80",
-    height: "h-[453px]",
+    height: "h-[330px] lg:h-[453px]",
   },
 } as const;

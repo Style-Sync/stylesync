@@ -60,7 +60,7 @@ const MusicCardContent = ({
           aria-label={hasPreview ? `${title} 30초 미리듣기` : "미리듣기를 사용할 수 없습니다"}
           className={[
             // rounded = DEFAULT = 1rem = 16px (design system token)
-            "w-full h-[57px] rounded",
+            "w-full h-[36px] lg:h-[57px] rounded",
             "flex items-center justify-center gap-3",
             "font-body font-medium text-body-sm text-on-background",
             "transition-all duration-200",
@@ -112,7 +112,7 @@ const DarkCardContent = ({
           {label}
         </span>
       )}
-      <h3 className="font-headline font-black text-headline-md text-white keep-all leading-tight">
+      <h3 className="font-headline font-black text-[24px] lg:text-[30px] text-white keep-all leading-tight">
         {title}
       </h3>
       {subtitle && (
