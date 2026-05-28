@@ -1,29 +1,10 @@
 "use client";
 
+import { Icon } from "@/components/ui/Icon";
+
 import { domainSelectCardVariants } from "./domainSelectCard.variants";
 
 import type { IDomainSelectCardProps } from "./domainSelectCard.types";
-
-// ── Arrow Icon ─────────────────────────────────────────────────────────────────
-
-const ArrowIcon = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-  >
-    <path
-      d="M4 10H16M16 10L11 5M16 10L11 15"
-      stroke="white"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 
 // ── Mascot Icons ───────────────────────────────────────────────────────────────
 
@@ -250,7 +231,7 @@ export const DomainSelectCard = ({ domain, onClick }: IDomainSelectCardProps) =>
           className="shrink-0 flex items-center justify-center rounded-full bg-primary-container w-14 h-14 md:w-9 md:h-9 lg:w-14 lg:h-14"
           aria-hidden="true"
         >
-          <ArrowIcon />
+          <Icon name="arrowRight" className="text-white" size={20} />
         </div>
       </div>
     </button>
