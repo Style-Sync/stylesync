@@ -21,3 +21,4 @@ export { default as Check } from "./Check";
 export { default as Close } from "./Close";
 export { default as Hanger } from "./Hanger";
 export { default as Movie } from "./Movie";
+export { default as Settings } from "./Settings";
