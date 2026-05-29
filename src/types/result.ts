@@ -68,13 +68,15 @@ export type StyleResult = {
       genres: string[];
     }[];
     fashion: {
+      /** Unsplash photo ID */
       id: string;
-      name: string;
-      /** 네이버 쇼핑 상품 이미지 URL */
+      /** AI가 생성한 패션 키워드 (카드 title로 사용) — 예: "Oversized Earth Tone Coat" */
+      keyword: string;
+      /** Unsplash 이미지 URL */
       image: string;
-      price: number;
-      /** 네이버 쇼핑 상품 페이지 링크 */
-      link: string;
+      /** Unsplash 저작권 표기 필수 */
+      photographerName: string;
+      photographerUrl: string;
     }[];
   };
 
