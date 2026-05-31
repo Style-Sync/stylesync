@@ -19,9 +19,9 @@ export const buttonVariants = cva(
         ghost: "text-on-surface-variant hover:text-on-background",
       },
       size: {
-        sm: "h-12 px-8 gap-2 font-medium",
-        md: "py-5 px-10 gap-3 font-normal",
-        lg: "py-10 px-32 gap-4 font-bold",
+        sm: "h-12 px-8 gap-2 font-medium text-label-lg",
+        md: "py-5 px-10 gap-3 font-normal text-body-md md:text-body-lg",
+        lg: "py-5 px-10 gap-3 font-normal text-body-md md:py-10 md:px-32 md:gap-4 md:font-bold md:text-title-lg",
       },
       fullWidth: {
         true: "w-full",
