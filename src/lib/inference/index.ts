@@ -1,12 +1,8 @@
-export {
-  DomainSchema,
-  MoodSchema,
-  MusicSelectionSchema,
-  MovieSelectionSchema,
-  FashionSelectionSchema,
-  InferenceRequestSchema,
-  MusicRecommendationSchema,
-  MovieRecommendationSchema,
-  FashionRecommendationSchema,
-  InferenceResponseSchema,
-} from "./inference.schema";
+export type {
+  InferenceRequest,
+  InferenceResponse,
+  MusicRecommendation,
+  MovieRecommendation,
+  FashionRecommendation,
+  Domain,
+} from "./inference.types";
