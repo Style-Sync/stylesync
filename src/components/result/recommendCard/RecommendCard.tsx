@@ -25,7 +25,7 @@ const MusicCardContent = ({
   return (
     <>
       {/* ── 이미지 영역 ───────────────────────────────────────────────────── */}
-      <div className="flex flex-1 min-h-0 flex-col items-center justify-center gap-4 px-10 pt-10 pb-4">
+      <div className="flex flex-1 min-h-0 flex-col items-center justify-center gap-4 px-5 pt-5 pb-2 lg:px-10 lg:pt-10 lg:pb-4">
         {/* 앨범아트 */}
         {/* rounded = DEFAULT = 1rem = 16px (design system token) */}
         <div className="relative w-40 h-40 rounded overflow-hidden bg-on-background shrink-0">
@@ -40,11 +40,11 @@ const MusicCardContent = ({
 
         {/* 곡명 */}
         <div className="text-center px-2">
-          <p className="font-body font-bold text-title-lg text-on-background keep-all leading-tight">
+          <p className="font-korean font-bold text-title-lg text-on-background keep-all leading-tight">
             {title}
           </p>
           {subtitle && (
-            <p className="mt-1 font-body text-body-sm text-on-surface-variant keep-all">
+            <p className="mt-1 font-korean text-body-sm text-on-surface-variant keep-all">
               {subtitle}
             </p>
           )}
@@ -52,7 +52,7 @@ const MusicCardContent = ({
       </div>
 
       {/* ── 30S PREVIEW 버튼 ─────────────────────────────────────────────── */}
-      <div className="px-10 pb-10">
+      <div className="px-5 pb-5 lg:px-10 lg:pb-10">
         <button
           type="button"
           onClick={hasPreview ? onPreviewClick : undefined}
@@ -60,9 +60,9 @@ const MusicCardContent = ({
           aria-label={hasPreview ? `${title} 30초 미리듣기` : "미리듣기를 사용할 수 없습니다"}
           className={[
             // rounded = DEFAULT = 1rem = 16px (design system token)
-            "w-full h-[36px] lg:h-[57px] rounded",
+            "w-full h-[33px] lg:h-[57px] rounded",
             "flex items-center justify-center gap-3",
-            "font-body font-medium text-body-sm text-on-background",
+            "font-korean font-medium text-body-sm text-on-background",
             "transition-all duration-200",
             hasPreview
               ? "bg-surface hover:bg-surface/80 active:scale-[0.98]"
@@ -110,7 +110,7 @@ const DarkCardContent = ({
         {title}
       </h3>
       {subtitle && (
-        <p className="font-body font-medium text-body-sm text-white/80 keep-all line-clamp-2">
+        <p className="font-korean font-medium text-body-sm text-white/80 keep-all line-clamp-2">
           {subtitle}
         </p>
       )}
