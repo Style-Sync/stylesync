@@ -1,7 +1,15 @@
 import { RecommendCard } from "@/components/result/recommendCard";
 import { ShareCard } from "@/components/result/shareCard";
 import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/Icon";
 import type { StyleResult } from "@/types/result";
+
+// X(Twitter) 아이콘 — Icon 레지스트리에 없어서 인라인 처리
+const XIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <path d="M15.18 2h2.6l-5.68 6.49L18.8 18h-5.23l-4.1-5.37L4.6 18H2l6.08-6.95L1.4 2h5.36l3.71 4.86L15.18 2Zm-.91 14.4h1.44L5.78 3.48H4.24l10.03 12.92Z" />
+  </svg>
+);
 
 // ── Mock data (shell 단계 — 실제 API 연동 시 제거) ───────────────────────────
 const MOCK_RESULT: StyleResult = {
@@ -158,10 +166,10 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
         </div>
 
         {/* ── Export Identity Section ───────────────────────────────────────── */}
-        <section className="relative overflow-hidden bg-on-background rounded-xl px-10 py-14 lg:px-16 lg:py-20">
-          {/* 배경 장식 텍스트 */}
+        <section className="relative overflow-hidden bg-on-background rounded-xl p-10 lg:p-24 mb-4 lg:mb-6">
+          {/* ④ 배경 장식 텍스트 — 섹션 상단 156px 지점 */}
           <div
-            className="absolute bottom-8 left-10 pointer-events-none select-none whitespace-nowrap"
+            className="absolute top-[156px] left-0 pointer-events-none select-none whitespace-nowrap"
             aria-hidden="true"
           >
             <span className="font-headline font-black text-[72px] leading-none text-white/[0.03]">
@@ -169,30 +177,36 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
             </span>
           </div>
 
-          <div className="relative flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
-            {/* 텍스트 + 버튼 */}
-            <div className="flex flex-col gap-6 flex-1">
-              <h2 className="font-headline font-black text-white text-headline-lg lg:text-[36px] leading-tight uppercase">
+          <div className="relative flex flex-col lg:flex-row lg:gap-24 lg:items-center">
+            {/* 텍스트 + 버튼 — 피그마 기준 376px 고정, ShareCard 높이 기준 세로 중앙 */}
+            <div className="flex flex-col gap-6 lg:w-[376px] flex-shrink-0 mb-10 lg:mb-0">
+              <h2 className="font-headline font-black text-white text-display-sm lg:text-display-lg leading-none uppercase">
                 EXPORT
                 <br />
                 IDENTITY
               </h2>
-              <p className="font-korean text-white/60 text-body-sm keep-all max-w-[360px]">
+              <p className="font-korean font-normal text-white/60 text-body-lg keep-all">
                 당신의 디지털 페르소나를 세상에 보여주세요. 이 특별한 결과물을 공유하고 당신과 같은
                 스타일 클러스터에 속한 영혼들을 찾아보세요.
               </p>
+              {/* ③ 소셜 공유 버튼 */}
               <div className="flex flex-wrap gap-3">
-                <Button variant="primary" size="sm">
-                  공유 카드 만들기
+                <Button
+                  variant="light"
+                  size="sm"
+                  icon={<Icon name="instagram" size={20} />}
+                  iconPosition="left"
+                >
+                  Instagram 공유
                 </Button>
-                <Button variant="stroke" size="sm">
-                  다시 분석하기
+                <Button variant="dark" size="sm" icon={<XIcon />} iconPosition="left">
+                  Twitter 공유
                 </Button>
               </div>
             </div>
 
-            {/* ShareCard 프리뷰 */}
-            <div className="w-full lg:w-auto flex justify-center lg:justify-end">
+            {/* ShareCard 프리뷰 — 피그마 기준 376px 고정 */}
+            <div className="lg:w-[376px] flex-shrink-0 flex justify-center lg:justify-start">
               <ShareCard
                 styleTitle={"Melancholic\nSoftboy"}
                 inputDomain="music"
@@ -201,6 +215,26 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
                 fashion={{ keyword: "Oversized Earth Tone Coat" }}
               />
             </div>
+          </div>
+        </section>
+
+        {/* ⑤ Guest Save Banner — 비로그인 유저 대상 */}
+        <section className="flex items-center justify-between gap-4 bg-surface-variant rounded-[24px] px-8 py-0 h-[116px]">
+          <div className="flex items-center gap-3">
+            <span className="text-[24px]" aria-hidden="true">
+              ✨
+            </span>
+            <p className="font-korean font-normal text-body-lg text-on-background keep-all">
+              결과를 저장하고 싶다면? 로그인하면 나만의 스타일 히스토리를 쌓을 수 있어요.
+            </p>
+          </div>
+          <div className="flex items-center gap-4 flex-shrink-0">
+            <Button variant="dark" size="sm">
+              Google로 시작하기
+            </Button>
+            <Button variant="ghost" size="sm">
+              나중에 할게요 →
+            </Button>
           </div>
         </section>
       </div>
