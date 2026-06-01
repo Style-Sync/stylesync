@@ -40,6 +40,25 @@ GitHub Projects 이슈 번호를 기준으로 브랜치를 관리합니다.
 
 ---
 
+## 작업 흐름
+
+```
+main
+ └── dev (기본 개발 브랜치)
+      ├── SS-12-DomainSelectCard   (기능 개발)
+      ├── ISSUE-5-FixTailwindClasses  (버그 수정)
+      └── ...
+
+hotfix → main (긴급 수정)
+```
+
+1. `dev` 브랜치에서 작업 브랜치 생성
+2. 작업 완료 후 `dev`로 PR 생성
+3. 팀원 최소 1명 Approve 후 병합
+4. 배포 시 `dev` → `main` PR
+
+---
+
 ## 커밋 메시지 규칙
 
 ```
@@ -78,6 +97,10 @@ feat: 도메인 선택 카드 컴포넌트 구현
 - DomainSelectCard UI 구현
 - hover 인터랙션 추가
 - Zustand 도메인 선택 상태 연결
+```
+
+```bash
+fix: Spotify preview_url null 케이스 fallback 처리
 ```
 
 ```bash
@@ -136,7 +159,7 @@ SS-12-DomainSelectCard → dev
 | 대상 | 규칙 | 예시 |
 |------|------|------|
 | 컴포넌트, 클래스, 타입 | PascalCase | `DomainSelectCard`, `StyleResult` |
-| 인터페이스 | `I` 접두사 + PascalCase | `IFormRepository`, `IStyleResult` |
+| 인터페이스 | `I` 접두사 + PascalCase | `IButtonProps`, `IStyleResult` |
 | 훅 함수 | `use` 접두사 + camelCase | `useSpotify`, `useTMDB` |
 | 그 외 변수/함수 | camelCase | `selectedDomain`, `fetchArtist` |
 
@@ -145,8 +168,8 @@ SS-12-DomainSelectCard → dev
 | 대상 | 규칙 | 예시 |
 |------|------|------|
 | 컴포넌트 | PascalCase | `DomainSelectCard.tsx` |
-| 컴포넌트 타입/인터페이스 | `{컴포넌트명}.types.ts` | `Button.types.ts` |
-| 컴포넌트 스타일 variants | `{컴포넌트명}.variants.ts` | `Button.variants.ts` |
+| 컴포넌트 타입/인터페이스 | `{컴포넌트명}.types.ts` | `button.types.ts` |
+| 컴포넌트 스타일 variants | `{컴포넌트명}.variants.ts` | `button.variants.ts` |
 | 훅 | camelCase (`use` 접두사) | `useSpotify.ts` |
 | 라우팅 폴더, 정적 파일 | kebab-case | `loading-result/`, `og-image.png` |
 | 동적 라우팅 폴더 | camelCase | `[domain]/`, `[username]/` |
@@ -158,23 +181,23 @@ SS-12-DomainSelectCard → dev
 컴포넌트 폴더는 아래 구조를 기준으로 작성합니다.
 
 ```
-src/components/ui/Button/
+src/components/ui/button/
 ├── Button.tsx           ← 컴포넌트 본체
-├── Button.types.ts      ← interface (I 접두사) 정의
-├── Button.variants.ts   ← 스타일 variants 객체
-├── Button.stories.tsx   ← Storybook
+├── button.types.ts      ← interface (I 접두사) 정의
+├── button.variants.ts   ← 스타일 variants 객체
+├── button.stories.tsx   ← Storybook
 └── index.ts             ← 전체 re-export
 ```
 
 ```typescript
-// Button.types.ts — interface는 반드시 I 접두사
+// button.types.ts — interface는 반드시 I 접두사
 export interface IButtonProps {
   variant?: "primary" | "dark" | "light";
   children: React.ReactNode;
   disabled?: boolean;
 }
 
-// Button.variants.ts — Tailwind 클래스 변형 모음
+// button.variants.ts — Tailwind 클래스 변형 모음
 export const buttonVariants: Record<"primary" | "dark" | "light", string> = {
   primary: "bg-primary-container text-white cta-glow",
   dark: "bg-on-background text-white",
@@ -183,8 +206,8 @@ export const buttonVariants: Record<"primary" | "dark" | "light", string> = {
 
 // index.ts — 컴포넌트, 타입, variants 모두 re-export
 export { Button } from "./Button";
-export type { IButtonProps } from "./Button.types";
-export { buttonVariants } from "./Button.variants";
+export type { IButtonProps } from "./button.types";
+export { buttonVariants } from "./button.variants";
 ```
 
 > `interface` → 반드시 `I` 접두사. `type` 별칭(union, primitive 등)은 접두사 없이 PascalCase 유지.

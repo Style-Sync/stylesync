@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { SettingsIcon, UserIcon } from "@/components/ui/icons";
+import { Icon } from "@/components/ui/Icon";
 
 import type { IHeaderProps } from "./header.types";
 
@@ -53,7 +53,7 @@ export const Header = ({ isLoggedIn = false }: IHeaderProps) => {
                 className="flex items-center justify-center w-6 h-6 @md:hidden text-on-background hover:opacity-70 transition-opacity"
                 aria-label="로그인"
               >
-                <UserIcon />
+                <Icon name="user" size={24} />
               </Link>
 
               {/* Tablet / PC: 로그인 링크 + 시작하기 버튼 */}
@@ -85,7 +85,7 @@ export const Header = ({ isLoggedIn = false }: IHeaderProps) => {
                 className="flex items-center justify-center text-on-background hover:opacity-70 transition-opacity"
                 aria-label="내 프로필"
               >
-                <UserIcon />
+                <Icon name="user" size={24} />
               </Link>
               {/* 설정 아이콘 */}
               <Link
@@ -93,7 +93,7 @@ export const Header = ({ isLoggedIn = false }: IHeaderProps) => {
                 className="flex items-center justify-center text-on-background hover:opacity-70 transition-opacity"
                 aria-label="설정"
               >
-                <SettingsIcon />
+                <Icon name="settings" size={24} />
               </Link>
             </div>
           )}
