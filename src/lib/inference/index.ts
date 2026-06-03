@@ -17,3 +17,10 @@ export {
   safeParseRequest,
   safeParseResponse,
 } from "./inference.schema";
+
+export {
+  mockMusicInferenceResponse,
+  mockMovieInferenceResponse,
+  mockFashionInferenceResponse,
+  getMockByDomain,
+} from "./inference.mocks";
