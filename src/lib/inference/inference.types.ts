@@ -38,3 +38,12 @@ export type InferenceResponse = {
 };
 
 export type { Domain };
+
+// ─── Utility types ────────────────────────────────────────────────────────────
+
+export type StyleLabel = InferenceResponse["styleLabel"];
+
+export type InferenceResult = InferenceResponse & {
+  id: string;
+  createdAt: string;
+};
