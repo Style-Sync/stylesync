@@ -44,3 +44,47 @@ export const InferenceRequestSchema = z.discriminatedUnion("domain", [
     moods: MoodsSchema,
   }),
 ]);
+
+// ─── Recommendations ──────────────────────────────────────────────────────────
+
+const MusicRecommendationSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  artist: z.string(),
+  image: z.string(),
+  previewUrl: z.string().nullable(),
+});
+
+const MovieRecommendationSchema = z.object({
+  id: z.number().int(),
+  title: z.string(),
+  posterPath: z.string(),
+  genres: z.array(z.string()),
+});
+
+const FashionRecommendationSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  image: z.string(),
+  price: z.number().nonnegative({ message: "가격은 0 이상이어야 합니다" }),
+  link: z.string().url({ message: "유효한 URL 형식이어야 합니다" }),
+});
+
+// ─── Response ─────────────────────────────────────────────────────────────────
+
+export const InferenceResponseSchema = z.object({
+  styleLabel: z
+    .string()
+    .min(1, { message: "스타일 레이블은 비어있을 수 없습니다" })
+    .max(40, { message: "스타일 레이블은 최대 40자까지 입력 가능합니다" }),
+  description: z.string().min(1, { message: "설명은 비어있을 수 없습니다" }),
+  music: z
+    .array(MusicRecommendationSchema)
+    .max(10, { message: "음악 추천은 최대 10개까지 가능합니다" }),
+  movie: z
+    .array(MovieRecommendationSchema)
+    .max(10, { message: "영화 추천은 최대 10개까지 가능합니다" }),
+  fashion: z
+    .array(FashionRecommendationSchema)
+    .max(10, { message: "패션 추천은 최대 10개까지 가능합니다" }),
+});
