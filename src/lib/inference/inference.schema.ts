@@ -97,3 +97,7 @@ export const InferenceResponseSchema = z.object({
 export function safeParseRequest(input: unknown) {
   return InferenceRequestSchema.safeParse(input);
 }
+
+export function safeParseResponse(input: unknown) {
+  return InferenceResponseSchema.safeParse(input);
+}

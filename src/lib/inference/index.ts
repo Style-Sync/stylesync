@@ -14,4 +14,5 @@ export {
   InferenceRequestSchema,
   InferenceResponseSchema,
   safeParseRequest,
+  safeParseResponse,
 } from "./inference.schema";
