@@ -9,3 +9,9 @@ export type {
   Domain,
   IInferenceService,
 } from "./inference.types";
+
+export {
+  InferenceRequestSchema,
+  InferenceResponseSchema,
+  safeParseRequest,
+} from "./inference.schema";
