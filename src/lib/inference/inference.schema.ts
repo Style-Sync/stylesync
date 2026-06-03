@@ -67,7 +67,7 @@ const FashionRecommendationSchema = z.object({
   name: z.string(),
   image: z.string(),
   price: z.number().nonnegative({ message: "가격은 0 이상이어야 합니다" }),
-  link: z.string().url({ message: "유효한 URL 형식이어야 합니다" }),
+  link: z.string().url(),
 });
 
 // ─── Response ─────────────────────────────────────────────────────────────────
