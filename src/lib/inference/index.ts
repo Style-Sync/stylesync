@@ -24,3 +24,5 @@ export {
   mockFashionInferenceResponse,
   getMockByDomain,
 } from "./inference.mocks";
+
+export { SYSTEM_PROMPT, buildUserPrompt } from "./inference.prompts";
