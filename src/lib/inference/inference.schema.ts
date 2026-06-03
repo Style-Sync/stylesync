@@ -88,3 +88,9 @@ export const InferenceResponseSchema = z.object({
     .array(FashionRecommendationSchema)
     .max(10, { message: "패션 추천은 최대 10개까지 가능합니다" }),
 });
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+export function safeParseRequest(input: unknown) {
+  return InferenceRequestSchema.safeParse(input);
+}
