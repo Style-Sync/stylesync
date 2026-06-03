@@ -1,4 +1,4 @@
-import type { InferenceResponse } from "./inference.types";
+import type { Domain, InferenceResponse } from "./inference.types";
 
 // ─── Music ────────────────────────────────────────────────────────────────────
 
@@ -181,3 +181,15 @@ export const mockFashionInferenceResponse: InferenceResponse = {
     },
   ],
 };
+
+// ─── Helper ───────────────────────────────────────────────────────────────────
+
+const mockByDomain: Record<Domain, InferenceResponse> = {
+  music: mockMusicInferenceResponse,
+  movie: mockMovieInferenceResponse,
+  fashion: mockFashionInferenceResponse,
+};
+
+export function getMockByDomain(domain: Domain): InferenceResponse {
+  return mockByDomain[domain];
+}
