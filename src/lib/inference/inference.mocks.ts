@@ -60,3 +60,124 @@ export const mockMusicInferenceResponse: InferenceResponse = {
     },
   ],
 };
+
+// ─── Movie ────────────────────────────────────────────────────────────────────
+
+export const mockMovieInferenceResponse: InferenceResponse = {
+  styleLabel: "시네마틱 미니멀",
+  description:
+    "미장센을 사랑하는 취향. 과잉 없이 절제된 아름다움에서 감동을 찾으며, 여백과 침묵이 만들어내는 공간에서 스타일을 표현합니다.",
+  music: [
+    {
+      id: "spotify:track:mock011",
+      name: "Experience",
+      artist: "Ludovico Einaudi",
+      image: "https://placehold.co/300x300/2f312f/faf9f6",
+      previewUrl: "https://p.scdn.co/mp3-preview/mock011",
+    },
+    {
+      id: "spotify:track:mock012",
+      name: "Comptine d'un autre été",
+      artist: "Yann Tiersen",
+      image: "https://placehold.co/300x300/2f312f/faf9f6",
+      previewUrl: null,
+    },
+  ],
+  movie: [
+    {
+      id: 2001,
+      title: "그랜드 부다페스트 호텔",
+      posterPath: "/mock/grand-budapest.jpg",
+      genres: ["코미디", "드라마", "어드벤처"],
+    },
+    {
+      id: 2002,
+      title: "파과",
+      posterPath: "/mock/the-past.jpg",
+      genres: ["드라마"],
+    },
+    {
+      id: 2003,
+      title: "콜",
+      posterPath: "/mock/call.jpg",
+      genres: ["스릴러", "미스터리"],
+    },
+  ],
+  fashion: [
+    {
+      id: "fashion:mock011",
+      name: "테일러드 울 코트",
+      image: "https://placehold.co/400x500/2f312f/faf9f6",
+      price: 198000,
+      link: "https://stylesync.example.com/shop/mock011",
+    },
+    {
+      id: "fashion:mock012",
+      name: "하이넥 슬림 니트",
+      image: "https://placehold.co/400x500/2f312f/faf9f6",
+      price: 72000,
+      link: "https://stylesync.example.com/shop/mock012",
+    },
+  ],
+};
+
+// ─── Fashion ──────────────────────────────────────────────────────────────────
+
+export const mockFashionInferenceResponse: InferenceResponse = {
+  styleLabel: "스트리트 레이어드",
+  description:
+    "자유로운 레이어링과 오버핏의 조화. 거리에서 자연스럽게 완성되는 스타일로, 실용성과 개성이 균형을 이룹니다.",
+  music: [
+    {
+      id: "spotify:track:mock021",
+      name: "HUMBLE.",
+      artist: "Kendrick Lamar",
+      image: "https://placehold.co/300x300/ff5c00/ffffff",
+      previewUrl: "https://p.scdn.co/mp3-preview/mock021",
+    },
+    {
+      id: "spotify:track:mock022",
+      name: "Nights",
+      artist: "Frank Ocean",
+      image: "https://placehold.co/300x300/ff5c00/ffffff",
+      previewUrl: null,
+    },
+  ],
+  movie: [
+    {
+      id: 3001,
+      title: "스파이더맨: 뉴 유니버스",
+      posterPath: "/mock/into-the-spider-verse.jpg",
+      genres: ["애니메이션", "액션", "어드벤처"],
+    },
+    {
+      id: 3002,
+      title: "올드보이",
+      posterPath: "/mock/oldboy.jpg",
+      genres: ["스릴러", "미스터리", "드라마"],
+    },
+  ],
+  fashion: [
+    {
+      id: "fashion:mock021",
+      name: "그래픽 후드 스웨트셔츠",
+      image: "https://placehold.co/400x500/ff5c00/ffffff",
+      price: 95000,
+      link: "https://stylesync.example.com/shop/mock021",
+    },
+    {
+      id: "fashion:mock022",
+      name: "카고 와이드 팬츠",
+      image: "https://placehold.co/400x500/ff5c00/ffffff",
+      price: 82000,
+      link: "https://stylesync.example.com/shop/mock022",
+    },
+    {
+      id: "fashion:mock023",
+      name: "청키 스니커즈",
+      image: "https://placehold.co/400x500/ff5c00/ffffff",
+      price: 145000,
+      link: "https://stylesync.example.com/shop/mock023",
+    },
+  ],
+};
