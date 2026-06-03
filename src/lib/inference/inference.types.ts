@@ -47,3 +47,9 @@ export type InferenceResult = InferenceResponse & {
   id: string;
   createdAt: string;
 };
+
+// ─── Service interface ────────────────────────────────────────────────────────
+
+export interface IInferenceService {
+  call(request: InferenceRequest): Promise<InferenceResponse>;
+}
