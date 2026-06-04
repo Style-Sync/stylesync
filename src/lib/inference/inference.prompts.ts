@@ -55,7 +55,9 @@ export function buildUserPrompt(req: InferenceRequest): string {
 
   // domain === "fashion"
   const styles = Array.from(new Set(req.selections.flatMap((s) => s.styles))).join(", ");
-  const fashionMoods = Array.from(new Set(req.selections.flatMap((s) => s.moods))).join(", ");
+  const fashionMoods = Array.from(new Set(req.selections.flatMap((s) => s.fashionMoods))).join(
+    ", "
+  );
   return [`패션 취향 — 스타일: ${styles}`, `무드: ${fashionMoods}`, `감성 태그: ${moods}`].join(
     " / "
   );

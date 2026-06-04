@@ -30,7 +30,7 @@ const MovieSelectionSchema = z.object({
 
 const FashionSelectionSchema = z.object({
   styles: z.array(z.string()).min(1, { message: "스타일은 최소 1개 이상 선택해주세요" }),
-  moods: z.array(z.string()).min(1, { message: "패션 무드는 최소 1개 이상 선택해주세요" }),
+  fashionMoods: z.array(z.string()).min(1, { message: "패션 무드는 최소 1개 이상 선택해주세요" }),
 });
 
 // ─── Request ──────────────────────────────────────────────────────────────────
