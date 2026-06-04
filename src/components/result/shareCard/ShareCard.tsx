@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-
 import { Icon } from "@/components/ui/Icon";
 
 import { domainTagVariants } from "./shareCard.variants";
@@ -32,32 +30,17 @@ const MascotFace = () => (
 
 // ── ShareCard ──────────────────────────────────────────────────────────────────
 
-export const ShareCard = ({
-  styleLabel = "STYLE IDENTITY",
-  styleTitle,
-  inputDomain,
-  music,
-  movie,
-  fashion,
-}: IShareCardProps) => {
-  // 배경 수직 텍스트: styleTitle 두 번째 줄 uppercase
-  // Figma 예시: "Cyberpunk\nArchivist" → "ARCHIVIST"
-  const bgText = (styleTitle.split("\n")[1] ?? styleTitle).toUpperCase();
-
-  // inputDomain은 현재 카드 디자인에서는 시각적으로 사용 안 함 (페이지에서 사용)
-  void inputDomain;
+export const ShareCard = ({ styleLabel, themeColor, music, movie, fashion }: IShareCardProps) => {
+  // 배경 수직 텍스트: styleLabel.title 두 번째 단어 uppercase
+  // 예: "Cyberpunk Archivist" → "ARCHIVIST"
+  const titleWords = styleLabel.title.split(" ");
+  const bgText = (titleWords[1] ?? titleWords[0]).toUpperCase();
 
   // 도메인 태그 텍스트
   const tagText = {
     music: music?.artist ?? domainTagVariants.music.label,
     movie: movie?.title ?? domainTagVariants.movie.label,
     fashion: fashion?.keyword ?? domainTagVariants.fashion.label,
-  };
-
-  const tagImage = {
-    music: music?.imageUrl,
-    movie: movie?.imageUrl,
-    fashion: fashion?.imageUrl,
   };
 
   return (
@@ -96,14 +79,14 @@ export const ShareCard = ({
         <div className="pb-4">
           {/* "STYLE IDENTITY": NotoSansKR Medium 14px, 30% opacity */}
           <span className="block font-korean font-medium text-[14px] leading-[1.2] text-on-background/30">
-            {styleLabel}
+            STYLE IDENTITY
           </span>
           {/* Headline: Epilogue Black 36px */}
           <h2
             className="font-headline font-black text-on-background whitespace-pre-line mt-2"
             style={{ fontSize: "36px", lineHeight: "36.9px" }}
           >
-            {styleTitle}
+            {styleLabel.title}
           </h2>
         </div>
 
@@ -113,9 +96,8 @@ export const ShareCard = ({
               Figma 390px: 184.5×230 / Figma 768px+: 240×300
               overflow-visible: CURATED FEELS 배지 우측 overflow 허용 */}
           <div
-            className="relative shrink-0 overflow-visible bg-[#e6e6fa]
-                       w-[185px] h-[230px] md:w-[240px] md:h-[300px]"
-            style={{ borderRadius: "48px" }}
+            className="relative shrink-0 overflow-visible w-[185px] h-[230px] md:w-[240px] md:h-[300px]"
+            style={{ backgroundColor: themeColor, borderRadius: "48px" }}
           >
             {/* 마스코트 원 128×128
                 Figma 390px: top 51px left 28px / Figma 768px+: top 86px left 56px */}
@@ -153,7 +135,6 @@ export const ShareCard = ({
             {(["music", "movie", "fashion"] as const).map((d) => {
               const domainIconMap = { music: "music", movie: "movie", fashion: "hanger" } as const;
               const text = tagText[d];
-              const img = tagImage[d];
 
               return (
                 <div
@@ -164,22 +145,11 @@ export const ShareCard = ({
                     padding: "4px 10px",
                   }}
                 >
-                  {/* 아이콘 or 썸네일 */}
-                  {img ? (
-                    <Image
-                      src={img}
-                      alt={text}
-                      width={8}
-                      height={8}
-                      className="rounded-full object-cover shrink-0"
-                    />
-                  ) : (
-                    <Icon
-                      name={domainIconMap[d]}
-                      className="text-on-background/30 shrink-0"
-                      size={10}
-                    />
-                  )}
+                  <Icon
+                    name={domainIconMap[d]}
+                    className="text-on-background/30 shrink-0"
+                    size={10}
+                  />
                   {/* 텍스트: Plus Jakarta Sans ExtraBold 10px (music/fashion), Noto Sans Regular 10px (movie) */}
                   <span
                     className={[
