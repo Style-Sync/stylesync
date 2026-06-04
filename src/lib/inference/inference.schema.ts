@@ -22,8 +22,8 @@ const MusicSelectionSchema = z.object({
 const MovieSelectionSchema = z.object({
   id: z.number().int(),
   title: z.string(),
-  posterPath: z.string(),
-  backdropPath: z.string(),
+  posterPath: z.string().regex(/^\//, { message: "TMDB 경로는 /로 시작해야 합니다" }),
+  backdropPath: z.string().regex(/^\//, { message: "TMDB 경로는 /로 시작해야 합니다" }),
   genres: z.array(z.string()),
   releaseYear: z.number().int().min(1888, { message: "출시 연도가 유효하지 않습니다" }),
 });
