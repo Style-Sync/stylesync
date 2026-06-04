@@ -82,27 +82,29 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
         {/* ── Hero Section ──────────────────────────────────────────────────── */}
         <section className="flex flex-col lg:flex-row lg:items-center gap-10 mb-16 lg:mb-20">
           {/* 텍스트 영역 */}
-          <div className="flex flex-col gap-6 flex-1">
-            <div>
-              <span className="inline-block px-4 py-1 rounded-full bg-primary-container/10 font-korean font-medium text-body-sm text-primary-container">
-                • 에스테틱 큐레이션 완료
-              </span>
-            </div>
+          <div className="flex flex-col items-center lg:items-start gap-6 flex-1">
+            {/* 배지 */}
+            <span className="inline-block px-4 py-1 rounded-full bg-primary-container/10 font-korean font-medium text-body-sm text-primary-container">
+              • 에스테틱 큐레이션 완료
+            </span>
 
-            <h1 className="font-headline font-black text-display-sm md:text-display-md lg:text-display-lg text-on-background uppercase leading-none tracking-tighter whitespace-pre-line keep-all">
+            {/* H1 — 390px: 48px center / 768px+: 72px center / 1920px: 72px left */}
+            <h1 className="font-headline font-black text-display-sm md:text-display-lg text-on-background uppercase leading-none tracking-tighter whitespace-pre-line text-center lg:text-left">
               {titleFormatted}
             </h1>
 
-            <p className="font-korean font-bold text-body-lg lg:text-title-lg text-on-surface-variant keep-all max-w-[480px]">
+            {/* 설명 — 390px: Regular 16px center / 768px+: Bold 20px center / lg: Bold 20px left */}
+            <p className="font-korean font-normal text-body-md text-on-surface-variant keep-all text-center lg:text-left lg:font-bold lg:text-title-lg max-w-[480px] md:font-bold md:text-title-lg">
               {styleLabel.description}
             </p>
 
-            <div className="flex flex-wrap gap-3">
-              <Button variant="primary" size="sm">
-                공유 카드 만들기
-              </Button>
+            {/* 버튼 */}
+            <div className="flex flex-wrap justify-center lg:justify-start gap-3">
               <Button variant="stroke" size="sm">
                 다시 분석하기
+              </Button>
+              <Button variant="primary" size="sm">
+                공유 카드 만들기
               </Button>
             </div>
           </div>
@@ -110,8 +112,8 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
           {/* 캐릭터 플레이스홀더 — TODO: #88 캐릭터 컴포넌트 완성 후 교체 */}
           <div className="flex justify-center lg:justify-end flex-shrink-0">
             <div
-              className="w-[240px] h-[240px] md:w-[280px] md:h-[280px] lg:w-[320px] lg:h-[320px]"
-              style={{ background: "#ff8a65", borderRadius: "64px" }}
+              className="w-[336px] h-[336px] lg:w-[320px] lg:h-[320px]"
+              style={{ background: styleLabel.themeColor, borderRadius: "64px" }}
               aria-hidden="true"
             />
           </div>
@@ -121,53 +123,60 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
         <div className="flex flex-col gap-16 lg:gap-20 mb-16 lg:mb-20">
           {/* Music Mood */}
           <section>
-            <div className="flex items-end justify-between mb-6 lg:mb-8">
-              <h2 className="font-headline font-black text-headline-lg text-on-background">
+            <div className="flex items-center justify-between mb-6 lg:mb-8">
+              <h2 className="font-headline font-black text-headline-md lg:text-headline-lg text-on-background">
                 MUSIC MOOD
               </h2>
               <span className="font-korean font-medium text-body-sm text-on-surface-variant cursor-pointer hover:text-on-background transition-colors">
                 전체 플레이리스트
               </span>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {/* 390px: 가로 스크롤 / md+: 3열 그리드 */}
+            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
               {recommendations.music.map((track) => (
-                <RecommendCard key={track.id} />
+                <div key={track.id} className="min-w-[220px] flex-shrink-0 md:min-w-0">
+                  <RecommendCard />
+                </div>
               ))}
             </div>
           </section>
 
           {/* Cinematic Mood */}
           <section>
-            <div className="flex items-end justify-between mb-6 lg:mb-8">
-              <h2 className="font-headline font-black text-headline-lg text-on-background">
+            <div className="flex items-center justify-between mb-6 lg:mb-8">
+              <h2 className="font-headline font-black text-headline-md lg:text-headline-lg text-on-background">
                 CINEMATIC MOOD
               </h2>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
               {recommendations.movies.map((movie) => (
-                <RecommendCard key={movie.id} />
+                <div key={movie.id} className="min-w-[220px] flex-shrink-0 md:min-w-0">
+                  <RecommendCard />
+                </div>
               ))}
             </div>
           </section>
 
           {/* Fashion Mood */}
           <section>
-            <div className="flex items-end justify-between mb-6 lg:mb-8">
-              <h2 className="font-headline font-black text-headline-lg text-on-background">
+            <div className="flex items-center justify-between mb-6 lg:mb-8">
+              <h2 className="font-headline font-black text-headline-md lg:text-headline-lg text-on-background">
                 FASHION MOOD
               </h2>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
               {recommendations.fashion.map((item) => (
-                <RecommendCard key={item.id} />
+                <div key={item.id} className="min-w-[220px] flex-shrink-0 md:min-w-0">
+                  <RecommendCard />
+                </div>
               ))}
             </div>
           </section>
         </div>
 
         {/* ── Export Identity Section ───────────────────────────────────────── */}
-        <section className="relative overflow-hidden bg-on-background rounded-xl p-10 lg:p-24 mb-4 lg:mb-6">
-          {/* ④ 배경 장식 텍스트 — 섹션 상단 156px 지점 */}
+        <section className="relative overflow-hidden bg-on-background rounded-[48px] p-6 md:p-10 lg:p-24 mb-4 lg:mb-6">
+          {/* 배경 장식 텍스트 */}
           <div
             className="absolute top-[156px] left-0 pointer-events-none select-none whitespace-nowrap"
             aria-hidden="true"
@@ -178,7 +187,7 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
           </div>
 
           <div className="relative flex flex-col lg:flex-row lg:gap-24 lg:items-center">
-            {/* 텍스트 + 버튼 — 피그마 기준 376px 고정, ShareCard 높이 기준 세로 중앙 */}
+            {/* 텍스트 + 버튼 */}
             <div className="flex flex-col gap-6 lg:w-[376px] flex-shrink-0 mb-10 lg:mb-0">
               <h2 className="font-headline font-black text-white text-display-sm lg:text-display-lg leading-none uppercase">
                 EXPORT
@@ -189,7 +198,6 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
                 당신의 디지털 페르소나를 세상에 보여주세요. 이 특별한 결과물을 공유하고 당신과 같은
                 스타일 클러스터에 속한 영혼들을 찾아보세요.
               </p>
-              {/* ③ 소셜 공유 버튼 */}
               <div className="flex flex-wrap gap-3">
                 <Button
                   variant="light"
@@ -205,7 +213,7 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
               </div>
             </div>
 
-            {/* ShareCard 프리뷰 — 피그마 기준 376px 고정 */}
+            {/* ShareCard 프리뷰 — TODO: ISSUE-168-169 머지 후 새 props로 교체 */}
             <div className="lg:w-[376px] flex-shrink-0 flex justify-center lg:justify-start">
               <ShareCard
                 styleTitle={"Melancholic\nSoftboy"}
@@ -218,9 +226,10 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
           </div>
         </section>
 
-        {/* ⑤ Guest Save Banner — 비로그인 유저 대상 */}
-        <section className="flex items-center justify-between gap-4 bg-surface-variant rounded-[24px] px-8 py-0 h-[116px]">
-          <div className="flex items-center gap-3">
+        {/* ── Guest Save Banner ─────────────────────────────────────────────── */}
+        {/* 390px: flex-col center / md+: flex-row 116px */}
+        <section className="flex flex-col items-center gap-4 text-center bg-surface-variant rounded-[24px] px-8 py-8 md:flex-row md:items-center md:justify-between md:text-left md:py-0 md:h-[116px]">
+          <div className="flex flex-col items-center gap-2 md:flex-row md:gap-3">
             <span className="text-[24px]" aria-hidden="true">
               ✨
             </span>
@@ -228,7 +237,7 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
               결과를 저장하고 싶다면? 로그인하면 나만의 스타일 히스토리를 쌓을 수 있어요.
             </p>
           </div>
-          <div className="flex items-center gap-4 flex-shrink-0">
+          <div className="flex items-center gap-3 flex-shrink-0">
             <Button variant="dark" size="sm">
               Google로 시작하기
             </Button>
