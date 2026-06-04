@@ -15,7 +15,7 @@ const MusicSelectionSchema = z.object({
   id: z.string(),
   name: z.string(),
   image: z.string(),
-  genres: z.array(z.string().min(1)).min(1, { message: "장르는 최소 1개 이상 필요합니다" }),
+  genres: z.array(z.string().min(1)),
   previewUrl: z.string().nullable(),
 });
 
@@ -98,9 +98,9 @@ const StyleLabelSchema = z.object({
     .string()
     .min(1, { message: "설명은 비어있을 수 없습니다" })
     .max(80, { message: "설명은 최대 80자까지 입력 가능합니다" }),
-  themeColor: z
-    .string()
-    .regex(/^#[0-9a-fA-F]{6}$/, { message: "themeColor는 hex 색상 코드여야 합니다 (예: #e6e6fa)" }),
+  themeColor: z.string().regex(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/, {
+    message: "themeColor는 hex 색상 코드여야 합니다 (예: #e6e6fa, #fff)",
+  }),
   mood: StyleMoodSchema,
 });
 

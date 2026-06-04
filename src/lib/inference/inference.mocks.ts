@@ -8,7 +8,7 @@ export const mockMusicInferenceResponse: InferenceResponse = {
   styleLabel: {
     title: "Melancholic Indie",
     description:
-      "감성적인 기타 리프와 몽환적인 보컬이 교차하는 인디 팝의 서정성. 고요한 도시의 밤과 개인적인 감상이 어우러지는 공간에서 자신만의 미학을 완성합니다.",
+      "감성적인 기타 리프와 몽환적인 보컬이 교차하는 인디 팝의 서정성. 고요한 밤, 개인적인 감상이 어우러지는 공간에서 미학을 완성합니다.",
     themeColor: "#dce8f0",
     mood: { energy: "low", tone: "neutral", aesthetic: "indie" },
   },
