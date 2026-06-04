@@ -75,11 +75,8 @@ const MovieRecommendationSchema = z.object({
 });
 
 const FashionRecommendationSchema = z.object({
-  id: z.string(),
-  name: z.string(),
+  keyword: z.string().min(1, { message: "패션 키워드는 비어있을 수 없습니다" }),
   image: z.string(),
-  price: z.number().min(0, { message: "가격은 0 이상이어야 합니다" }),
-  link: z.string().url(),
 });
 
 // ─── Response ─────────────────────────────────────────────────────────────────
