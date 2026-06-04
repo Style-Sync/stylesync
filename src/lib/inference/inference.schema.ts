@@ -25,7 +25,7 @@ const MovieSelectionSchema = z.object({
   posterPath: z.string().regex(/^\//, { message: "TMDB 경로는 /로 시작해야 합니다" }),
   backdropPath: z.string().regex(/^\//, { message: "TMDB 경로는 /로 시작해야 합니다" }),
   genres: z.array(z.string()),
-  releaseYear: z.number().int().min(1888, { message: "출시 연도가 유효하지 않습니다" }),
+  releaseYear: z.number().min(1888, { message: "출시 연도가 유효하지 않습니다" }),
 });
 
 const FashionSelectionSchema = z.object({
@@ -70,7 +70,7 @@ const MusicRecommendationSchema = z.object({
 });
 
 const MovieRecommendationSchema = z.object({
-  id: z.number().int(),
+  id: z.number(),
   title: z.string(),
   posterPath: z.string(),
   genres: z.array(z.string()),
