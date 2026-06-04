@@ -42,26 +42,21 @@ export function buildUserPrompt(req: InferenceRequest): string {
   const moods = req.moods.join(", ");
 
   if (req.domain === "music") {
-    const { name, genre } = req.selections;
-    return [`음악 취향 — "${name}"`, `장르: ${genre.join(", ")}`, `감성 태그: ${moods}`].join(
-      " / "
-    );
+    const tracks = req.selections.map((s) => `"${s.name}"`).join(", ");
+    const genres = [...new Set(req.selections.flatMap((s) => s.genre))].join(", ");
+    return [`음악 취향 — ${tracks}`, `장르: ${genres}`, `감성 태그: ${moods}`].join(" / ");
   }
 
   if (req.domain === "movie") {
-    const { title, genres, releaseYear } = req.selections;
-    return [
-      `영화 취향 — "${title}" (${releaseYear})`,
-      `장르: ${genres.join(", ")}`,
-      `감성 태그: ${moods}`,
-    ].join(" / ");
+    const movies = req.selections.map((s) => `"${s.title}" (${s.releaseYear})`).join(", ");
+    const genres = [...new Set(req.selections.flatMap((s) => s.genres))].join(", ");
+    return [`영화 취향 — ${movies}`, `장르: ${genres}`, `감성 태그: ${moods}`].join(" / ");
   }
 
   // domain === "fashion"
-  const { styles, moods: fashionMoods } = req.selections;
-  return [
-    `패션 취향 — 스타일: ${styles.join(", ")}`,
-    `무드: ${fashionMoods.join(", ")}`,
-    `감성 태그: ${moods}`,
-  ].join(" / ");
+  const styles = [...new Set(req.selections.flatMap((s) => s.styles))].join(", ");
+  const fashionMoods = [...new Set(req.selections.flatMap((s) => s.moods))].join(", ");
+  return [`패션 취향 — 스타일: ${styles}`, `무드: ${fashionMoods}`, `감성 태그: ${moods}`].join(
+    " / "
+  );
 }
