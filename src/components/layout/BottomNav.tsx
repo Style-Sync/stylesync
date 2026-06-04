@@ -1,11 +1,16 @@
 "use client";
 
 /**
- * TODO: 디자인 시스템 Button 컴포넌트로 교체 필요
- * - 관련 이슈: #14
+ * TODO: 추후 다른 페이지에서도 재사용될 예정
+ * - 디자인 시스템 Button 컴포넌트(@/components/ui/button) 사용
+ * - 관련 이슈: #14 (단계별 이동 버튼)
  */
 
 import { useRouter } from "next/navigation";
+
+import { ArrowRight } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 
 type BottomNavProps = {
   prevPath?: string;
@@ -16,22 +21,6 @@ type BottomNavProps = {
   onNext?: () => void;
   isLastStep?: boolean;
 };
-
-const ArrowIcon = () => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M5 12h14" />
-    <path d="m12 5 7 7-7 7" />
-  </svg>
-);
 
 export const BottomNav = ({
   prevPath,
@@ -55,24 +44,21 @@ export const BottomNav = ({
   };
 
   return (
-    <div className="flex flex-col items-stretch justify-between gap-3 py-6 md:flex-row md:items-center">
-      <button
-        type="button"
-        onClick={handlePrev}
-        className="cta-width rounded-full border border-orange-500 px-5 py-2 text-sm text-orange-500 transition hover:bg-orange-50"
-      >
+    <div className="flex items-center justify-between gap-4 py-6">
+      <Button variant="stroke" size="sm" onClick={handlePrev}>
         {prevLabel}
-      </button>
+      </Button>
 
-      <button
-        type="button"
+      <Button
+        variant="primary"
+        size="sm"
         onClick={handleNext}
         disabled={isNextDisabled}
-        className="cta-width flex items-center justify-center gap-2 rounded-full bg-orange-500 px-5 py-2 text-sm font-semibold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-40"
+        icon={isLastStep ? <ArrowRight size={16} /> : undefined}
+        iconPosition="right"
       >
         {nextLabel}
-        {isLastStep && <ArrowIcon />}
-      </button>
+      </Button>
     </div>
   );
 };

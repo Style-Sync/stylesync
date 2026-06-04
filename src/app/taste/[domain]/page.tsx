@@ -3,7 +3,6 @@
 import { DomainGuard } from "@/components/domain/DomainGuard";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { ProgressBar } from "@/components/layout/ProgressBar";
-
 import type { Domain } from "@/types/taste";
 
 interface ITastePageProps {

@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 
 import { DomainSelectCard } from "@/components/domain/domainSelectCard";
 import { useTasteStore } from "@/store/tasteStore";
-
 import type { Domain } from "@/types/taste";
 
 const DOMAINS: Domain[] = ["music", "movie", "fashion"];
@@ -14,7 +13,7 @@ export default function SelectPage() {
   const setSelectedDomain = useTasteStore((s) => s.setSelectedDomain);
 
   const handleSelect = (domain: Domain) => {
-    setSelectedDomain(domain);   // #25: store에 저장
+    setSelectedDomain(domain); // #25: store에 저장
     router.push(`/taste/${domain}`);
   };
 
@@ -34,11 +33,7 @@ export default function SelectPage() {
         {/* 카드 섹션 - 가이드의 grid-cols-responsive (1→2→3열) 사용 */}
         <section className="grid-cols-responsive w-full">
           {DOMAINS.map((domain) => (
-            <DomainSelectCard
-              key={domain}
-              domain={domain}
-              onClick={() => handleSelect(domain)}
-            />
+            <DomainSelectCard key={domain} domain={domain} onClick={() => handleSelect(domain)} />
           ))}
         </section>
       </div>

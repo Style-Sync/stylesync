@@ -8,7 +8,6 @@ import { DomainGuard } from "@/components/domain/DomainGuard";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { ProgressBar } from "@/components/layout/ProgressBar";
 import { useTasteStore } from "@/store/tasteStore";
-
 import type { Domain } from "@/types/taste";
 
 interface ITasteDetailPageProps {

@@ -1,6 +1,9 @@
 import type React from "react";
 
-export interface IPageIndicatorProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface IPageIndicatorProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "onChange"
+> {
   /** 전체 페이지 수 */
   total: number;
   /** 현재 활성 페이지 (0부터 시작) */
