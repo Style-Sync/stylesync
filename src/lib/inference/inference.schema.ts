@@ -15,7 +15,7 @@ const MusicSelectionSchema = z.object({
   id: z.string(),
   name: z.string(),
   image: z.string(),
-  genres: z.array(z.string()),
+  genres: z.array(z.string().min(1)).min(1, { message: "장르는 최소 1개 이상 필요합니다" }),
   previewUrl: z.string().nullable(),
 });
 
@@ -29,8 +29,10 @@ const MovieSelectionSchema = z.object({
 });
 
 const FashionSelectionSchema = z.object({
-  styles: z.array(z.string()).min(1, { message: "스타일은 최소 1개 이상 선택해주세요" }),
-  fashionMoods: z.array(z.string()).min(1, { message: "패션 무드는 최소 1개 이상 선택해주세요" }),
+  styles: z
+    .array(z.string().min(1, { message: "스타일 항목은 비어있을 수 없습니다" }))
+    .min(1, { message: "스타일은 최소 1개 이상 선택해주세요" }),
+  fashionMoods: z.array(MoodSchema).min(1, { message: "패션 무드는 최소 1개 이상 선택해주세요" }),
 });
 
 // ─── Request ──────────────────────────────────────────────────────────────────
