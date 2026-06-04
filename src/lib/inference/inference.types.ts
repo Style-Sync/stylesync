@@ -25,11 +25,8 @@ export type MovieRecommendation = {
 };
 
 export type FashionRecommendation = {
-  id: string;
-  name: string;
+  keyword: string;
   image: string;
-  price: number;
-  link: string;
 };
 
 export type InferenceResponse = {
