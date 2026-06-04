@@ -52,9 +52,21 @@ erDiagram
         array   fashionMoods "string[]"
     }
 
+    StyleMood {
+        string  energy       "low | mid | high"
+        string  tone         "dark | neutral | bright"
+        string  aesthetic    "mainstream | indie | artistic | experimental"
+    }
+
+    StyleLabel {
+        string  title        "영문 스타일 이름 (max 30자)"
+        string  description  "한국어 감성 설명 (max 80자)"
+        string  themeColor   "파스텔 hex (#e6e6fa 등)"
+        object  mood         "StyleMood"
+    }
+
     InferenceResponse {
-        string  styleLabel
-        string  description
+        object  styleLabel   "StyleLabel"
         array   music        "MusicRecommendation[]"
         array   movie        "MovieRecommendation[]"
         array   fashion      "FashionRecommendation[]"
@@ -83,6 +95,8 @@ erDiagram
     InferenceRequest ||--|{ MusicSelection    : "domain=music (min 3)"
     InferenceRequest ||--|{ MovieSelection    : "domain=movie (min 3)"
     InferenceRequest ||--|{ FashionSelection  : "domain=fashion (min 1)"
+    StyleLabel ||--|| StyleMood             : "mood"
+    InferenceResponse ||--|| StyleLabel          : "styleLabel"
     InferenceResponse ||--|{ MusicRecommendation   : "music[]"
     InferenceResponse ||--|{ MovieRecommendation   : "movie[]"
     InferenceResponse ||--|{ FashionRecommendation : "fashion[]"
@@ -145,11 +159,29 @@ erDiagram
 
 | 필드명 | 타입 | 필수 | 설명 | 예시 |
 |---|---|:---:|---|---|
-| `styleLabel` | `string` | ✅ | AI가 도출한 크로스 도메인 스타일 레이블 | `"Cinematic Minimalist"` |
-| `description` | `string` | ✅ | 스타일 레이블에 대한 설명 문장 | `"조용하지만 강렬한 서사를 담은 ..."` |
+| `styleLabel` | `StyleLabel` | ✅ | AI가 도출한 크로스 도메인 스타일 레이블 객체 | 아래 참조 |
 | `music` | `MusicRecommendation[]` | ✅ | 음악 추천 카드 목록 | 아래 참조 |
 | `movie` | `MovieRecommendation[]` | ✅ | 영화 추천 카드 목록 | 아래 참조 |
 | `fashion` | `FashionRecommendation[]` | ✅ | 패션 추천 카드 목록 | 아래 참조 |
+
+---
+
+### StyleLabel
+
+| 필드명 | 타입 | 필수 | 설명 | 예시 |
+|---|---|:---:|---|---|
+| `title` | `string` | ✅ | 영문 스타일 정체성 이름 (Grok 생성) · 최대 30자, 단어 첫 글자 대문자 | `"Melancholic Softboy"` |
+| `description` | `string` | ✅ | 한국어 감성 설명 2-3문장 · 최대 80자 | `"감성적이고 내향적인 무드..."` |
+| `themeColor` | `string` | ✅ | 공유 카드 배경 파스텔 hex (Grok 지정) | `"#e6e6fa"` |
+| `mood` | `StyleMood` | ✅ | Grok 3축 감성 태그 | 아래 참조 |
+
+### StyleMood
+
+| 필드명 | 타입 | 필수 | 설명 |
+|---|---|:---:|---|
+| `energy` | `"low" \| "mid" \| "high"` | ✅ | 에너지 레벨 |
+| `tone` | `"dark" \| "neutral" \| "bright"` | ✅ | 전반적 톤 |
+| `aesthetic` | `"mainstream" \| "indie" \| "artistic" \| "experimental"` | ✅ | 감성 계열 |
 
 ---
 
@@ -200,5 +232,5 @@ POST /api/inference { domain, selections, moods }
     ↓
 Grok AI 추론
     ↓
-{ styleLabel, description, music[], movie[], fashion[] }
+{ styleLabel: { title, description, themeColor, mood }, music[], movie[], fashion[] }
 ```
