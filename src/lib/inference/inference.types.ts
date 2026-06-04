@@ -1,3 +1,4 @@
+import type { StyleLabel } from "@/types/result";
 import type { Domain, MusicSelection, MovieSelection, FashionSelection } from "@/types/taste";
 
 // ─── Request ──────────────────────────────────────────────────────────────────
@@ -30,8 +31,11 @@ export type FashionRecommendation = {
 };
 
 export type InferenceResponse = {
-  styleLabel: string;
-  description: string;
+  /**
+   * Grok이 생성한 스타일 레이블
+   * title, description, themeColor, mood 포함
+   */
+  styleLabel: StyleLabel;
   music: MusicRecommendation[];
   movie: MovieRecommendation[];
   fashion: FashionRecommendation[];
