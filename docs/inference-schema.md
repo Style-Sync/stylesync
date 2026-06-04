@@ -49,7 +49,7 @@ erDiagram
 
     FashionSelection {
         array   styles       "string[]"
-        array   moods        "string[]"
+        array   fashionMoods "string[]"
     }
 
     InferenceResponse {
@@ -98,9 +98,10 @@ erDiagram
 |---|---|:---:|---|---|
 | `domain` | `"music" \| "movie" \| "fashion"` | ✅ | 사용자가 선택한 추론 기준 도메인 | `"music"` |
 | `selections` | `MusicSelection \| MovieSelection \| FashionSelection` | ✅ | domain에 대응하는 취향 입력 객체 (discriminated union) | 아래 참조 |
-| `moods` | `string[]` | ✅ | 사용자가 선택한 감성 태그 목록 | `["몽환적", "차분한"]` |
+| `moods` | `string[]` | ✅ | 사용자가 선택한 감성 태그 목록 **최소 1개, 최대 5개** | `["몽환적", "차분한"]` |
 
 > `domain`과 `selections`의 타입은 반드시 일치해야 합니다. `domain: "music"`이면 `selections`는 `MusicSelection`이어야 합니다.
+> `moods` 배열이 비어 있거나 6개 이상이면 `safeParseRequest()`가 실패합니다.
 
 ---
 
@@ -133,8 +134,10 @@ erDiagram
 
 | 필드명 | 타입 | 필수 | 설명 | 예시 |
 |---|---|:---:|---|---|
-| `styles` | `string[]` | ✅ | 선택한 스타일 키워드 목록 | `["미니멀", "스트릿"]` |
-| `moods` | `string[]` | ✅ | 패션 도메인 전용 감성 태그 | `["시크한", "캐주얼한"]` |
+| `styles` | `string[]` | ✅ | 선택한 스타일 키워드 목록 (각 항목 1자 이상) | `["미니멀", "스트릿"]` |
+| `fashionMoods` | `string[]` | ✅ | 패션 도메인 전용 감성 태그 **최소 1개** (각 항목 1자 이상) | `["시크한", "캐주얼한"]` |
+
+> `fashionMoods`는 최상위 `InferenceRequest.moods`(크로스도메인 감성 태그)와 별개입니다. `fashionMoods`는 패션 아이템의 무드 설명, `moods`는 전체 스타일 정체성의 감성 태그입니다.
 
 ---
 
