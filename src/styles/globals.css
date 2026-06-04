@@ -297,7 +297,11 @@
 
   /* Editorial card shadow */
   .editorial-shadow {
-    box-shadow: 0 40px 80px rgba(26, 28, 26, 0.08);
+    --tw-shadow: 0 40px 80px rgba(26, 28, 26, 0.08);
+    --tw-shadow-colored: 0 40px 80px var(--tw-shadow-color);
+    box-shadow:
+      var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+      var(--tw-shadow, 0 0 #0000);
   }
 
   /* Auth card shadow */
