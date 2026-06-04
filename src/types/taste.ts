@@ -19,5 +19,5 @@ export type MovieSelection = {
 
 export type FashionSelection = {
   styles: string[];
-  moods: string[];
+  fashionMoods: string[];
 };
