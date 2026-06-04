@@ -115,3 +115,7 @@ export function safeParseRequest(input: unknown) {
 export function safeParseResponse(input: unknown) {
   return InferenceResponseSchema.safeParse(input);
 }
+
+export function safeParseResult(input: unknown) {
+  return InferenceResultSchema.safeParse(input);
+}
