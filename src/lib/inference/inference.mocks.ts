@@ -5,9 +5,13 @@ import type { Domain, InferenceResponse } from "./inference.types";
 // ─── Music ────────────────────────────────────────────────────────────────────
 
 export const mockMusicInferenceResponse: InferenceResponse = {
-  styleLabel: "인디 멜랑꼴리",
-  description:
-    "감성적인 기타 리프와 몽환적인 보컬이 교차하는 인디 팝의 서정성. 고요한 도시의 밤과 개인적인 감상이 어우러지는 공간에서 자신만의 미학을 완성합니다.",
+  styleLabel: {
+    title: "Melancholic Indie",
+    description:
+      "감성적인 기타 리프와 몽환적인 보컬이 교차하는 인디 팝의 서정성. 고요한 도시의 밤과 개인적인 감상이 어우러지는 공간에서 자신만의 미학을 완성합니다.",
+    themeColor: "#dce8f0",
+    mood: { energy: "low", tone: "neutral", aesthetic: "indie" },
+  },
   music: [
     {
       id: "spotify:track:mock001",
@@ -60,9 +64,13 @@ export const mockMusicInferenceResponse: InferenceResponse = {
 // ─── Movie ────────────────────────────────────────────────────────────────────
 
 export const mockMovieInferenceResponse: InferenceResponse = {
-  styleLabel: "시네마틱 미니멀",
-  description:
-    "미장센을 사랑하는 취향. 과잉 없이 절제된 아름다움에서 감동을 찾으며, 여백과 침묵이 만들어내는 공간에서 스타일을 표현합니다.",
+  styleLabel: {
+    title: "Cinematic Minimal",
+    description:
+      "미장센을 사랑하는 취향. 과잉 없이 절제된 아름다움에서 감동을 찾으며, 여백과 침묵이 만들어내는 공간에서 스타일을 표현합니다.",
+    themeColor: "#e8e4dc",
+    mood: { energy: "low", tone: "neutral", aesthetic: "artistic" },
+  },
   music: [
     {
       id: "spotify:track:mock011",
@@ -114,9 +122,13 @@ export const mockMovieInferenceResponse: InferenceResponse = {
 // ─── Fashion ──────────────────────────────────────────────────────────────────
 
 export const mockFashionInferenceResponse: InferenceResponse = {
-  styleLabel: "스트리트 레이어드",
-  description:
-    "자유로운 레이어링과 오버핏의 조화. 거리에서 자연스럽게 완성되는 스타일로, 실용성과 개성이 균형을 이룹니다.",
+  styleLabel: {
+    title: "Street Layered",
+    description:
+      "자유로운 레이어링과 오버핏의 조화. 거리에서 자연스럽게 완성되는 스타일로, 실용성과 개성이 균형을 이룹니다.",
+    themeColor: "#ffe5cc",
+    mood: { energy: "high", tone: "bright", aesthetic: "mainstream" },
+  },
   music: [
     {
       id: "spotify:track:mock021",

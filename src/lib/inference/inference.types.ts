@@ -1,3 +1,4 @@
+import type { StyleLabel } from "@/types/result";
 import type { Domain, MusicSelection, MovieSelection, FashionSelection } from "@/types/taste";
 
 // ─── Request ──────────────────────────────────────────────────────────────────
@@ -30,8 +31,7 @@ export type FashionRecommendation = {
 };
 
 export type InferenceResponse = {
-  styleLabel: string;
-  description: string;
+  styleLabel: StyleLabel;
   music: MusicRecommendation[];
   movie: MovieRecommendation[];
   fashion: FashionRecommendation[];
@@ -41,7 +41,7 @@ export type { Domain };
 
 // ─── Utility types ────────────────────────────────────────────────────────────
 
-export type StyleLabel = InferenceResponse["styleLabel"];
+export type { StyleLabel };
 
 export type InferenceResult = InferenceResponse & {
   id: string;

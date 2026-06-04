@@ -81,14 +81,33 @@ const FashionRecommendationSchema = z.object({
   image: z.string(),
 });
 
+// ─── StyleLabel ───────────────────────────────────────────────────────────────
+
+const StyleMoodSchema = z.object({
+  energy: z.enum(["low", "mid", "high"]),
+  tone: z.enum(["dark", "neutral", "bright"]),
+  aesthetic: z.enum(["mainstream", "indie", "artistic", "experimental"]),
+});
+
+const StyleLabelSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: "스타일 제목은 비어있을 수 없습니다" })
+    .max(30, { message: "스타일 제목은 최대 30자까지 입력 가능합니다" }),
+  description: z
+    .string()
+    .min(1, { message: "설명은 비어있을 수 없습니다" })
+    .max(80, { message: "설명은 최대 80자까지 입력 가능합니다" }),
+  themeColor: z
+    .string()
+    .regex(/^#[0-9a-fA-F]{6}$/, { message: "themeColor는 hex 색상 코드여야 합니다 (예: #e6e6fa)" }),
+  mood: StyleMoodSchema,
+});
+
 // ─── Response ─────────────────────────────────────────────────────────────────
 
 export const InferenceResponseSchema = z.object({
-  styleLabel: z
-    .string()
-    .min(1, { message: "스타일 레이블은 비어있을 수 없습니다" })
-    .max(40, { message: "스타일 레이블은 최대 40자까지 입력 가능합니다" }),
-  description: z.string().min(1, { message: "설명은 비어있을 수 없습니다" }),
+  styleLabel: StyleLabelSchema,
   music: z
     .array(MusicRecommendationSchema)
     .min(1, { message: "음악 추천은 최소 1개 이상이어야 합니다" })
