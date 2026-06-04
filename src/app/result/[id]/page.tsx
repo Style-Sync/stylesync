@@ -135,7 +135,13 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
             <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
               {recommendations.music.map((track) => (
                 <div key={track.id} className="min-w-[220px] flex-shrink-0 md:min-w-0">
-                  <RecommendCard />
+                  <RecommendCard
+                    domain="music"
+                    title={track.name}
+                    subtitle={track.artist}
+                    imageUrl={track.image || undefined}
+                    previewUrl={track.previewUrl}
+                  />
                 </div>
               ))}
             </div>
@@ -151,7 +157,12 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
             <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
               {recommendations.movies.map((movie) => (
                 <div key={movie.id} className="min-w-[220px] flex-shrink-0 md:min-w-0">
-                  <RecommendCard />
+                  <RecommendCard
+                    domain="movie"
+                    title={movie.title}
+                    subtitle={movie.genres.join(" · ")}
+                    imageUrl={movie.posterPath || undefined}
+                  />
                 </div>
               ))}
             </div>
@@ -167,7 +178,11 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
             <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
               {recommendations.fashion.map((item) => (
                 <div key={item.id} className="min-w-[220px] flex-shrink-0 md:min-w-0">
-                  <RecommendCard />
+                  <RecommendCard
+                    domain="fashion"
+                    title={item.keyword}
+                    imageUrl={item.image || undefined}
+                  />
                 </div>
               ))}
             </div>
@@ -216,11 +231,18 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
             {/* ShareCard 프리뷰 — TODO: ISSUE-168-169 머지 후 새 props로 교체 */}
             <div className="lg:w-[376px] flex-shrink-0 flex justify-center lg:justify-start">
               <ShareCard
-                styleTitle={"Melancholic\nSoftboy"}
-                inputDomain="music"
-                music={{ title: "Blonde", artist: "Frank Ocean" }}
-                movie={{ title: "Call Me By Your Name" }}
-                fashion={{ keyword: "Oversized Earth Tone Coat" }}
+                styleLabel={{
+                  title: styleLabel.title,
+                  description: styleLabel.description,
+                }}
+                themeColor={styleLabel.themeColor}
+                mood={styleLabel.mood}
+                music={{
+                  title: recommendations.music[0]?.name ?? "",
+                  artist: recommendations.music[0]?.artist ?? "",
+                }}
+                movie={{ title: recommendations.movies[0]?.title ?? "" }}
+                fashion={{ keyword: recommendations.fashion[0]?.keyword ?? "" }}
               />
             </div>
           </div>
