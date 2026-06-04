@@ -19,13 +19,13 @@ export default function SelectPage() {
 
   return (
     <main className="page-container section-wrapper">
-      <div className="flex flex-col items-center gap-12">
+      <div className="flex flex-col items-center gap-16">
         {/* 텍스트 섹션 */}
-        <section className="flex flex-col items-center gap-4 text-center">
-          <h1 className="heading-display">
+        <section className="flex flex-col items-center gap-6 text-center">
+          <h1 className="type-headline-lg">
             어느 분야부터 <span className="text-orange-500">분석</span>해볼까요?
           </h1>
-          <p className="text-stone-600">
+          <p className="type-title-lg text-[var(--on-surface-variant)]">
             분석하고 싶은 도메인을 선택하면 AI가 당신의 스타일을 매칭해드립니다.
           </p>
         </section>

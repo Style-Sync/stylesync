@@ -202,7 +202,7 @@ export const DomainSelectCard = ({ domain, onClick }: IDomainSelectCardProps) =>
         <span className="block font-body font-medium text-body-sm text-primary-container">
           {variant.label}
         </span>
-        <h3 className="font-headline font-black text-headline-md text-on-background leading-tight">
+        <h3 className="mt-2 font-headline font-black text-headline-md text-on-background leading-tight">
           {variant.title}
         </h3>
       </div>
