@@ -13,6 +13,7 @@ export type {
 export {
   InferenceRequestSchema,
   InferenceResponseSchema,
+  InferenceResultSchema,
   safeParseRequest,
   safeParseResponse,
 } from "./inference.schema";
