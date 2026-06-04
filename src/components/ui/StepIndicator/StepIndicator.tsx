@@ -2,14 +2,22 @@
 
 import { stepIndicatorTrack, stepIndicatorVariants } from "./StepIndicator.variants";
 
-import type { IStepIndicatorProps } from "./StepIndicator.types";
+import type { IStepIndicatorProps, StepIndicatorWidth } from "./StepIndicator.types";
+
+// width 값과 Tailwind 클래스 매핑 (정적으로 작성해야 JIT가 인식)
+const WIDTH_CLASS_MAP: Record<StepIndicatorWidth, string> = {
+  "160": "w-[160px]",
+  "220": "w-[220px]",
+  "358": "w-[358px]",
+  full: "w-full",
+};
 
 export const StepIndicator = ({
   current,
   total,
   variant = "active",
   label = "STEP",
-  fullWidth = false,
+  width,
   className,
   ...props
 }: IStepIndicatorProps) => {
@@ -21,12 +29,13 @@ export const StepIndicator = ({
 
   const { fill, text } = stepIndicatorVariants[variant];
 
-  return (
-    <div className={`${fullWidth ? "w-full" : ""} ${className ?? ""}`} {...props}>
-      <div className="mb-2 flex items-center justify-between">
-        <span className={`text-sm font-semibold tracking-wide ${text}`}>{label}</span>
+  const widthClass = width !== undefined ? WIDTH_CLASS_MAP[width] : "w-fit min-w-[160px]";
 
-        <span className={`text-sm ${text}`}>
+  return (
+    <div className={`${widthClass} ${className ?? ""}`} {...props}>
+      <div className="mb-2 flex items-center justify-between gap-5">
+        <span className={`font-label font-extrabold ${text}`}>{label}</span>
+        <span className={`font-label font-extrabold ${text}`}>
           {safeCurrent}/{safeTotal}
         </span>
       </div>

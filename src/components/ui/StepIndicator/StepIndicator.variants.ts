@@ -10,7 +10,7 @@ interface IVariantStyle {
 export const stepIndicatorVariants: Record<StepIndicatorVariant, IVariantStyle> = {
   active: {
     fill: "bg-primary-container",
-    text: "text-on-background",
+    text: "text-on-surface-variant",
   },
   inactive: {
     fill: "bg-neutral-300",
@@ -18,7 +18,7 @@ export const stepIndicatorVariants: Record<StepIndicatorVariant, IVariantStyle> 
   },
   completed: {
     fill: "bg-primary-container",
-    text: "text-on-background",
+    text: "text-on-surface-variant",
   },
 };
 

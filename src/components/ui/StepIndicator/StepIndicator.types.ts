@@ -2,6 +2,9 @@ import type React from "react";
 
 export type StepIndicatorVariant = "active" | "inactive" | "completed";
 
+/** StepIndicator의 너비 옵션 (디자인 시스템 정의) */
+export type StepIndicatorWidth = "160" | "220" | "358" | "full";
+
 export interface IStepIndicatorProps extends Omit<
   React.HTMLAttributes<HTMLDivElement>,
   "children"
@@ -14,6 +17,11 @@ export interface IStepIndicatorProps extends Omit<
   variant?: StepIndicatorVariant;
   /** 좌측 라벨 텍스트 (기본값: "STEP") */
   label?: string;
-  /** 가로 폭 100% 사용 여부 */
-  fullWidth?: boolean;
+  /**
+   * 너비 옵션
+   * - `"160"` | `"220"` | `"358"`: 고정 너비(px)
+   * - `"full"`: 부모 너비 100%
+   * - 미지정: 콘텐츠 크기에 맞춤(최소 160px 보장)
+   */
+  width?: StepIndicatorWidth;
 }
