@@ -17,7 +17,7 @@ export const PageIndicator = ({
     <div
       role="group"
       aria-label={`페이지 ${safeCurrent + 1} / ${safeTotal}`}
-      className={`flex items-center gap-2 ${className ?? ""}`}
+      className={`flex items-center gap-4 ${className ?? ""}`}
       {...props}
     >
       {Array.from({ length: safeTotal }).map((_, idx) => {
