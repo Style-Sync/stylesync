@@ -1,5 +1,4 @@
-import type { StyleLabel } from "@/types/result";
-import type { Domain } from "@/types/taste";
+import type { StyleLabel, StyleMood } from "@/types/result";
 
 // ── IShareCardProps ───────────────────────────────────────────────────────────
 // FT-005 공유 카드 스펙 기준 (설계 문서 10. 공유 카드 설계 참고)
@@ -14,28 +13,45 @@ import type { Domain } from "@/types/taste";
 //   styleLabel.title       ← Grok 응답 StyleLabel.title
 //   styleLabel.description ← Grok 응답 StyleLabel.description
 //   themeColor             ← Grok 응답 StyleLabel.themeColor
-//   domains                ← 사용자가 선택한 도메인 + AI 추론 결과 도메인
+//   mood                   ← Grok 응답 StyleLabel.mood (캐릭터 매핑용, #88)
 //   username               ← Supabase Auth 유저 이름 (비회원 undefined)
 
 export interface IShareCardProps {
-  /** 스타일 레이블 (title + description만 사용) */
+  /**
+   * 스타일 레이블 (Grok 생성)
+   * title: "Cyberpunk Archivist" — 카드 타이틀로 표시
+   * description: 2줄 감성 설명
+   */
   styleLabel: Pick<StyleLabel, "title" | "description">;
 
   /**
-   * 카드 배경 파스텔 단색 hex
-   * StyleLabel.themeColor 값을 그대로 전달
+   * 카드 마스코트 영역 배경 파스텔 단색 hex (Grok 생성)
+   * 예: "#e6e6fa" (라벤더), "#ccf2e4" (민트)
    */
   themeColor: string;
 
   /**
-   * 분석에 사용된 도메인 목록 (카드 하단 도메인 태그 표시용)
-   * 예: ["music", "movie", "fashion"]
+   * Grok 3축 감성 태그 — 캐릭터 매핑용 (#88)
+   * energy × tone × aesthetic 조합으로 캐릭터 결정
    */
-  domains: Domain[];
+  mood: StyleMood;
 
-  /**
-   * 회원 닉네임 — 카드 하단 소유자 표시
-   * 비회원은 undefined (표시 생략)
-   */
+  /** 음악 추천 — 카드 하단 태그 표시용 */
+  music?: {
+    title: string;
+    artist: string;
+  };
+
+  /** 영화 추천 — 카드 하단 태그 표시용 */
+  movie?: {
+    title: string;
+  };
+
+  /** 패션 추천 — 카드 하단 태그 표시용 */
+  fashion?: {
+    keyword: string;
+  };
+
+  /** 회원 닉네임 — 비회원은 undefined */
   username?: string;
 }

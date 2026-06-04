@@ -26,6 +26,7 @@ export const iconRegistry = {
   close: Icons.Close,
   hanger: Icons.Hanger,
   movie: Icons.Movie,
+  settings: Icons.Settings,
 } as const;
 
 export type IconName = keyof typeof iconRegistry;
