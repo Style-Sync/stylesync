@@ -23,7 +23,6 @@ export type StyleLabel = {
    * 한국어 2~3줄 감성 설명 (Grok 생성)
    * - 최대 80자
    * - 결과 페이지 히어로에 전체 표시 / 공유 카드에서는 2줄로 clamp
-   * - 예: "감성적이고 내향적인 무드. R&B와 아트하우스 영화, 오버사이즈 어스톤 패션이 어울림"
    */
   description: string;
 
@@ -39,46 +38,28 @@ export type StyleLabel = {
 };
 
 // ── StyleResult ───────────────────────────────────────────────────────────────
-// /api/inference 응답 전체 구조
+// /api/inference 저장 결과 구조 — InferenceResponse 평탄 구조 + id/createdAt
+// (순환 import 방지를 위해 InferenceResponse를 직접 import하지 않고 필드를 명시)
 
 export type StyleResult = {
   id: string;
-
-  /** 스타일 정체성 레이블 (Grok 생성) */
   styleLabel: StyleLabel;
-
-  recommendations: {
-    music: {
-      id: string;
-      /** 트랙명 */
-      name: string;
-      /** 아티스트명 */
-      artist: string;
-      /** Spotify 앨범아트 URL */
-      image: string;
-      /** 30초 미리듣기 URL — null이면 Spotify 앱 연결 버튼으로 대체 */
-      previewUrl: string | null;
-    }[];
-    movies: {
-      /** TMDB movie id */
-      id: number;
-      title: string;
-      /** TMDB 포스터 경로 (/path.jpg 형식, 전체 URL은 클라이언트에서 조합) */
-      posterPath: string;
-      genres: string[];
-    }[];
-    fashion: {
-      /** Unsplash photo ID */
-      id: string;
-      /** AI가 생성한 패션 키워드 (카드 title로 사용) — 예: "Oversized Earth Tone Coat" */
-      keyword: string;
-      /** Unsplash 이미지 URL */
-      image: string;
-      /** Unsplash 저작권 표기 필수 */
-      photographerName: string;
-      photographerUrl: string;
-    }[];
-  };
-
+  music: {
+    id: string;
+    name: string;
+    artist: string;
+    image: string;
+    previewUrl: string | null;
+  }[];
+  movie: {
+    id: number;
+    title: string;
+    posterPath: string;
+    genres: string[];
+  }[];
+  fashion: {
+    keyword: string;
+    image: string;
+  }[];
   createdAt: string;
 };
