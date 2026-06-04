@@ -4,7 +4,7 @@ export type MusicSelection = {
   id: string;
   name: string;
   image: string;
-  genre: string[];
+  genres: string[];
   previewUrl: string | null;
 };
 

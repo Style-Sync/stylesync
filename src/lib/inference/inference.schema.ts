@@ -15,7 +15,7 @@ const MusicSelectionSchema = z.object({
   id: z.string(),
   name: z.string(),
   image: z.string(),
-  genre: z.array(z.string()),
+  genres: z.array(z.string()),
   previewUrl: z.string().nullable(),
 });
 

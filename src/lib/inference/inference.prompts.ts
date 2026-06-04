@@ -43,7 +43,7 @@ export function buildUserPrompt(req: InferenceRequest): string {
 
   if (req.domain === "music") {
     const tracks = req.selections.map((s) => `"${s.name}"`).join(", ");
-    const genres = Array.from(new Set(req.selections.flatMap((s) => s.genre))).join(", ");
+    const genres = Array.from(new Set(req.selections.flatMap((s) => s.genres))).join(", ");
     return [`음악 취향 — ${tracks}`, `장르: ${genres}`, `감성 태그: ${moods}`].join(" / ");
   }
 
