@@ -34,7 +34,7 @@ erDiagram
         string  id
         string  name
         string  image
-        array   genre        "string[]"
+        array   genres       "string[]"
         string  previewUrl   "nullable"
     }
 
@@ -112,7 +112,7 @@ erDiagram
 | `id` | `string` | ✅ | Spotify 아티스트/트랙 ID | `"4Z8W4fKeB5YxbusRsdQVPb"` |
 | `name` | `string` | ✅ | 아티스트 또는 트랙명 | `"Radiohead"` |
 | `image` | `string` | ✅ | 커버 이미지 URL | `"https://i.scdn.co/..."` |
-| `genre` | `string[]` | ✅ | 장르 목록 | `["alternative rock", "art rock"]` |
+| `genres` | `string[]` | ✅ | 장르 목록 | `["alternative rock", "art rock"]` |
 | `previewUrl` | `string \| null` | ✅ | 30초 미리 듣기 URL (없으면 null) | `"https://p.scdn.co/..."` |
 
 ---
