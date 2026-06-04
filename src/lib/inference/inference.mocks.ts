@@ -45,18 +45,12 @@ export const mockMusicInferenceResponse: InferenceResponse = {
   ],
   fashion: [
     {
-      id: "fashion:mock001",
-      name: "오버사이즈 데님 재킷",
+      keyword: "oversized denim jacket",
       image: "https://placehold.co/400x500/f4f3f1/1a1c1a",
-      price: 89000,
-      link: "https://stylesync.example.com/shop/mock001",
     },
     {
-      id: "fashion:mock002",
-      name: "스트라이프 니트 스웨터",
+      keyword: "striped knit sweater",
       image: "https://placehold.co/400x500/f4f3f1/1a1c1a",
-      price: 65000,
-      link: "https://stylesync.example.com/shop/mock002",
     },
   ],
 };
@@ -105,18 +99,12 @@ export const mockMovieInferenceResponse: InferenceResponse = {
   ],
   fashion: [
     {
-      id: "fashion:mock011",
-      name: "테일러드 울 코트",
+      keyword: "tailored wool coat",
       image: "https://placehold.co/400x500/2f312f/faf9f6",
-      price: 198000,
-      link: "https://stylesync.example.com/shop/mock011",
     },
     {
-      id: "fashion:mock012",
-      name: "하이넥 슬림 니트",
+      keyword: "turtleneck slim knit",
       image: "https://placehold.co/400x500/2f312f/faf9f6",
-      price: 72000,
-      link: "https://stylesync.example.com/shop/mock012",
     },
   ],
 };
@@ -159,25 +147,16 @@ export const mockFashionInferenceResponse: InferenceResponse = {
   ],
   fashion: [
     {
-      id: "fashion:mock021",
-      name: "그래픽 후드 스웨트셔츠",
+      keyword: "graphic hoodie sweatshirt",
       image: "https://placehold.co/400x500/ff5c00/ffffff",
-      price: 95000,
-      link: "https://stylesync.example.com/shop/mock021",
     },
     {
-      id: "fashion:mock022",
-      name: "카고 와이드 팬츠",
+      keyword: "cargo wide pants",
       image: "https://placehold.co/400x500/ff5c00/ffffff",
-      price: 82000,
-      link: "https://stylesync.example.com/shop/mock022",
     },
     {
-      id: "fashion:mock023",
-      name: "청키 스니커즈",
+      keyword: "chunky sneakers",
       image: "https://placehold.co/400x500/ff5c00/ffffff",
-      price: 145000,
-      link: "https://stylesync.example.com/shop/mock023",
     },
   ],
 };
