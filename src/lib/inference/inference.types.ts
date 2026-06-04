@@ -3,9 +3,9 @@ import type { Domain, MusicSelection, MovieSelection, FashionSelection } from "@
 // ─── Request ──────────────────────────────────────────────────────────────────
 
 export type InferenceRequest =
-  | { domain: "music"; selections: MusicSelection; moods: string[] }
-  | { domain: "movie"; selections: MovieSelection; moods: string[] }
-  | { domain: "fashion"; selections: FashionSelection; moods: string[] };
+  | { domain: "music"; selections: MusicSelection[]; moods: string[] }
+  | { domain: "movie"; selections: MovieSelection[]; moods: string[] }
+  | { domain: "fashion"; selections: FashionSelection[]; moods: string[] };
 
 // ─── Response ─────────────────────────────────────────────────────────────────
 
