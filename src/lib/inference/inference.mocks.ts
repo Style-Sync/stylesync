@@ -1,3 +1,5 @@
+import { InferenceResponseSchema } from "./inference.schema";
+
 import type { Domain, InferenceResponse } from "./inference.types";
 
 // ─── Music ────────────────────────────────────────────────────────────────────
@@ -161,6 +163,12 @@ export const mockFashionInferenceResponse: InferenceResponse = {
   ],
 };
 
+// ─── Schema self-validation ───────────────────────────────────────────────────
+
+InferenceResponseSchema.parse(mockMusicInferenceResponse);
+InferenceResponseSchema.parse(mockMovieInferenceResponse);
+InferenceResponseSchema.parse(mockFashionInferenceResponse);
+
 // ─── Helper ───────────────────────────────────────────────────────────────────
 
 const mockByDomain: Record<Domain, InferenceResponse> = {
@@ -170,5 +178,5 @@ const mockByDomain: Record<Domain, InferenceResponse> = {
 };
 
 export function getMockByDomain(domain: Domain): InferenceResponse {
-  return mockByDomain[domain];
+  return structuredClone(mockByDomain[domain]);
 }
