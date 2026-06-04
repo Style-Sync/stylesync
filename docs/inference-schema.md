@@ -80,9 +80,9 @@ erDiagram
         string  image
     }
 
-    InferenceRequest ||--o| MusicSelection    : "domain=music"
-    InferenceRequest ||--o| MovieSelection    : "domain=movie"
-    InferenceRequest ||--o| FashionSelection  : "domain=fashion"
+    InferenceRequest ||--|{ MusicSelection    : "domain=music (min 3)"
+    InferenceRequest ||--|{ MovieSelection    : "domain=movie (min 3)"
+    InferenceRequest ||--|{ FashionSelection  : "domain=fashion (min 1)"
     InferenceResponse ||--|{ MusicRecommendation   : "music[]"
     InferenceResponse ||--|{ MovieRecommendation   : "movie[]"
     InferenceResponse ||--|{ FashionRecommendation : "fashion[]"
@@ -97,10 +97,10 @@ erDiagram
 | 필드명 | 타입 | 필수 | 설명 | 예시 |
 |---|---|:---:|---|---|
 | `domain` | `"music" \| "movie" \| "fashion"` | ✅ | 사용자가 선택한 추론 기준 도메인 | `"music"` |
-| `selections` | `MusicSelection \| MovieSelection \| FashionSelection` | ✅ | domain에 대응하는 취향 입력 객체 (discriminated union) | 아래 참조 |
+| `selections` | `MusicSelection[] \| MovieSelection[] \| FashionSelection[]` | ✅ | domain에 대응하는 취향 입력 배열 (discriminated union) · music/movie 최소 3개, fashion 최소 1개 | 아래 참조 |
 | `moods` | `string[]` | ✅ | 사용자가 선택한 감성 태그 목록 **최소 1개, 최대 5개** | `["몽환적", "차분한"]` |
 
-> `domain`과 `selections`의 타입은 반드시 일치해야 합니다. `domain: "music"`이면 `selections`는 `MusicSelection`이어야 합니다.
+> `domain`과 `selections`의 타입은 반드시 일치해야 합니다. `domain: "music"`이면 `selections`는 `MusicSelection[]`이어야 합니다.
 > `moods` 배열이 비어 있거나 6개 이상이면 `safeParseRequest()`가 실패합니다.
 
 ---
