@@ -7,37 +7,29 @@ const meta: Meta<typeof ShareCard> = {
   component: ShareCard,
   tags: ["autodocs"],
   parameters: {
-    // Figma 기준: ShareCard는 dark(#1A1C1A) 배경 위에 표시
     backgrounds: { default: "dark" },
-  },
-  argTypes: {
-    inputDomain: {
-      control: "select",
-      options: ["music", "movie", "fashion"],
-    },
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof ShareCard>;
 
+const defaultMood = {
+  energy: "low" as const,
+  tone: "dark" as const,
+  aesthetic: "indie" as const,
+};
+
 // ── Music Input ────────────────────────────────────────────────────────────────
 
 export const MusicInput: Story = {
   args: {
-    styleLabel: "STYLE IDENTITY",
-    styleTitle: "Cyberpunk\nArchivist",
-    inputDomain: "music",
-    music: {
-      title: "Starboy",
-      artist: "The Weeknd",
-    },
-    movie: {
-      title: "Blade Runner 2049",
-    },
-    fashion: {
-      keyword: "Techwear",
-    },
+    styleLabel: { title: "Cyberpunk Archivist", description: "디지털과 아날로그가 교차하는 감성." },
+    themeColor: "#e6e6fa",
+    mood: { energy: "high", tone: "dark", aesthetic: "experimental" },
+    music: { title: "Starboy", artist: "The Weeknd" },
+    movie: { title: "Blade Runner 2049" },
+    fashion: { keyword: "Techwear" },
     username: "hoon730",
   },
 };
@@ -46,19 +38,12 @@ export const MusicInput: Story = {
 
 export const MovieInput: Story = {
   args: {
-    styleLabel: "STYLE IDENTITY",
-    styleTitle: "Neon\nNomad",
-    inputDomain: "movie",
-    music: {
-      title: "Get Lucky",
-      artist: "Daft Punk",
-    },
-    movie: {
-      title: "Interstellar",
-    },
-    fashion: {
-      keyword: "Minimal Futurism",
-    },
+    styleLabel: { title: "Neon Nomad", description: "경계 없이 떠도는 감성의 여행자." },
+    themeColor: "#ffd6e0",
+    mood: { energy: "mid", tone: "bright", aesthetic: "artistic" },
+    music: { title: "Get Lucky", artist: "Daft Punk" },
+    movie: { title: "Interstellar" },
+    fashion: { keyword: "Minimal Futurism" },
     username: "stylesync",
   },
 };
@@ -67,44 +52,13 @@ export const MovieInput: Story = {
 
 export const FashionInput: Story = {
   args: {
-    styleLabel: "STYLE IDENTITY",
-    styleTitle: "Romantic\nSurrealist",
-    inputDomain: "fashion",
-    music: {
-      title: "Pink + White",
-      artist: "Frank Ocean",
-    },
-    movie: {
-      title: "Amélie",
-    },
-    fashion: {
-      keyword: "Avant-garde",
-    },
+    styleLabel: { title: "Romantic Surrealist", description: "꿈과 현실 사이의 아름다운 모순." },
+    themeColor: "#ccf2e4",
+    mood: defaultMood,
+    music: { title: "Pink + White", artist: "Frank Ocean" },
+    movie: { title: "Amélie" },
+    fashion: { keyword: "Avant-garde" },
     username: "stylesync",
-  },
-};
-
-// ── With Images ────────────────────────────────────────────────────────────────
-
-export const WithImages: Story = {
-  args: {
-    styleLabel: "STYLE IDENTITY",
-    styleTitle: "Cyberpunk\nArchivist",
-    inputDomain: "music",
-    music: {
-      title: "Starboy",
-      artist: "The Weeknd",
-      imageUrl: "https://i.scdn.co/image/ab67616d0000b273a048415db06a5b6fa7ec4e1a",
-    },
-    movie: {
-      title: "Blade Runner 2049",
-      imageUrl: "https://image.tmdb.org/t/p/w92/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
-    },
-    fashion: {
-      keyword: "Techwear",
-      imageUrl: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=100&q=80",
-    },
-    username: "hoon730",
   },
 };
 
@@ -112,29 +66,22 @@ export const WithImages: Story = {
 
 export const NoUserInfo: Story = {
   args: {
-    styleLabel: "STYLE IDENTITY",
-    styleTitle: "Street\nPhilosopher",
-    inputDomain: "fashion",
-    music: {
-      title: "SICKO MODE",
-      artist: "Travis Scott",
-    },
-    movie: {
-      title: "Parasite",
-    },
-    fashion: {
-      keyword: "Street",
-    },
+    styleLabel: { title: "Street Philosopher", description: "거리에서 철학을 찾는 사람." },
+    themeColor: "#ffe4b5",
+    mood: { energy: "high", tone: "neutral", aesthetic: "mainstream" },
+    music: { title: "SICKO MODE", artist: "Travis Scott" },
+    movie: { title: "Parasite" },
+    fashion: { keyword: "Street" },
   },
 };
 
-// ── Minimal (no recommendations) ──────────────────────────────────────────────
+// ── Minimal ────────────────────────────────────────────────────────────────────
 
 export const Minimal: Story = {
   args: {
-    styleTitle: "Chill\nExplorer",
-    inputDomain: "music",
-    username: "guest",
+    styleLabel: { title: "Chill Explorer", description: "여유롭게 탐험하는 감성." },
+    themeColor: "#d4edda",
+    mood: { energy: "low", tone: "bright", aesthetic: "indie" },
   },
 };
 
@@ -144,27 +91,33 @@ export const AllDomains: Story = {
   render: () => (
     <div className="flex flex-wrap gap-8 p-8 bg-background">
       <ShareCard
-        styleLabel="STYLE IDENTITY"
-        styleTitle={"Cyberpunk\nArchivist"}
-        inputDomain="music"
+        styleLabel={{
+          title: "Cyberpunk Archivist",
+          description: "디지털과 아날로그가 교차하는 감성.",
+        }}
+        themeColor="#e6e6fa"
+        mood={{ energy: "high", tone: "dark", aesthetic: "experimental" }}
         music={{ title: "Starboy", artist: "The Weeknd" }}
         movie={{ title: "Blade Runner 2049" }}
         fashion={{ keyword: "Techwear" }}
         username="hoon730"
       />
       <ShareCard
-        styleLabel="STYLE IDENTITY"
-        styleTitle={"Neon\nNomad"}
-        inputDomain="movie"
+        styleLabel={{ title: "Neon Nomad", description: "경계 없이 떠도는 감성의 여행자." }}
+        themeColor="#ffd6e0"
+        mood={{ energy: "mid", tone: "bright", aesthetic: "artistic" }}
         music={{ title: "Get Lucky", artist: "Daft Punk" }}
         movie={{ title: "Interstellar" }}
         fashion={{ keyword: "Minimal Futurism" }}
         username="stylesync"
       />
       <ShareCard
-        styleLabel="STYLE IDENTITY"
-        styleTitle={"Romantic\nSurrealist"}
-        inputDomain="fashion"
+        styleLabel={{
+          title: "Romantic Surrealist",
+          description: "꿈과 현실 사이의 아름다운 모순.",
+        }}
+        themeColor="#ccf2e4"
+        mood={{ energy: "low", tone: "dark", aesthetic: "indie" }}
         music={{ title: "Pink + White", artist: "Frank Ocean" }}
         movie={{ title: "Amélie" }}
         fashion={{ keyword: "Avant-garde" }}
