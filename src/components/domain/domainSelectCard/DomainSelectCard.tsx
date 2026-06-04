@@ -178,13 +178,11 @@ export const DomainSelectCard = ({ domain, onClick }: IDomainSelectCardProps) =>
       className={[
         // Layout
         "flex flex-col text-left overflow-hidden",
-        // Size — mobile: full-width / tablet: 224px / desktop: 384px
-        // Width: 부모 그리드 셀을 채움 (고정 너비 없음)
-        // Height: sm 435px / md 320px / lg 512px
+        // Size
         "w-full h-[435px]",
         "md:h-[320px]",
         "lg:h-[512px]",
-        // Shape — rounded-lg = 2rem = 32px
+        // Shape
         "rounded-lg",
         // Background
         "bg-surface-variant",
@@ -216,7 +214,6 @@ export const DomainSelectCard = ({ domain, onClick }: IDomainSelectCardProps) =>
             "w-[200px] h-[200px]",
             "md:w-[100px] md:h-[100px]",
             "lg:w-[180px] lg:h-[180px]",
-            // hover: 살짝 위로 떠오름
             "transition-transform duration-300 ease-out group-hover:-translate-y-2",
           ].join(" ")}
         />

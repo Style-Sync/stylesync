@@ -1,38 +1,62 @@
-import Link from "next/link";
+"use client";
+
+import { DomainGuard } from "@/components/domain/DomainGuard";
+import { BottomNav } from "@/components/layout/BottomNav";
+import { ProgressBar } from "@/components/layout/ProgressBar";
+
+import type { Domain } from "@/types/taste";
 
 interface ITastePageProps {
   params: { domain: string };
 }
 
+// 도메인별 콘텐츠 매핑
+const DOMAIN_CONTENT: Record<Domain, { titleMain: string; description: string }> = {
+  music: {
+    titleMain: "뮤직 스타일",
+    description: "당신의 청각적 취향을 대변하는 뮤직 마스코트를 선택하세요.",
+  },
+  movie: {
+    titleMain: "영화 취향",
+    description: "당신의 시네마틱 감성을 대변하는 영화 마스코트를 선택하세요.",
+  },
+  fashion: {
+    titleMain: "패션 스타일",
+    description: "당신의 고유한 감각을 대변하는 스타일 마스코트를 선택하세요.",
+  },
+};
+
 export default function TasteStep1Page({ params }: ITastePageProps) {
-  const { domain } = params;
+  // TODO: 실제 선택값으로 교체
+  const isStyleSelected = true;
+
+  // DomainGuard가 유효성 검증하므로 안전하게 캐스팅
+  const content = DOMAIN_CONTENT[params.domain as Domain];
 
   return (
-    <main className="flex flex-col gap-8 p-6">
-      <header>
-        <h2 className="text-2xl font-bold">{domain} 스타일 셀렉션</h2>
-        <p className="text-sm text-neutral-500">당신의 취향에 맞는 스타일을 선택해주세요.</p>
-      </header>
+    <DomainGuard domain={params.domain}>
+      <div className="page-container section-wrapper">
+        <header className="mb-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <div>
+            <h1 className="heading-section">
+              {content?.titleMain} <span className="text-orange-500">셀렉션</span>
+            </h1>
+            <p className="text-sm text-stone-600">{content?.description}</p>
+          </div>
+          <ProgressBar currentStep={1} totalSteps={2} />
+        </header>
 
-      <section>
-        {/* TODO: 도메인별 1차 카테고리 리스트 */}
-        {/* domain === 'music' → Contemporary Jazz, Pop Iconic, ... */}
-        {/* domain === 'movie' → Action, Drama, ... */}
-        {/* domain === 'fashion' → Casual, Formal, ... */}
-      </section>
+        <section className="min-h-[60vh]">
+          {/* 선택 UI - 다음 이슈에서 */}
+          <p className="text-stone-400">선택 UI 영역</p>
+        </section>
 
-      <footer className="flex justify-between">
-        <Link href="/select" className="text-sm">
-          이전으로
-        </Link>
-
-        <Link
-          href={`/taste/${domain}/detail`}
-          className="rounded-full bg-primary-container px-6 py-3 text-white"
-        >
-          다음으로
-        </Link>
-      </footer>
-    </main>
+        <BottomNav
+          prevPath="/select"
+          nextPath={`/taste/${params.domain}/detail`}
+          isNextDisabled={!isStyleSelected}
+        />
+      </div>
+    </DomainGuard>
   );
 }
