@@ -76,11 +76,8 @@ erDiagram
     }
 
     FashionRecommendation {
-        string  id
-        string  name
+        string  keyword
         string  image
-        number  price
-        string  link
     }
 
     InferenceRequest ||--o| MusicSelection    : "domain=music"
@@ -178,13 +175,12 @@ erDiagram
 
 ### FashionRecommendation
 
+> Unsplash API 연동 구조: `keyword`로 Unsplash 검색 → `image` URL 수신. `photographerName`/`photographerUrl`은 Unsplash wrapper에서 결과 페이지 렌더링 시 추가.
+
 | 필드명 | 타입 | 필수 | 설명 | 예시 |
 |---|---|:---:|---|---|
-| `id` | `string` | ✅ | 상품 고유 ID | `"item_001"` |
-| `name` | `string` | ✅ | 상품명 | `"오버핏 블랙 코트"` |
-| `image` | `string` | ✅ | 상품 이미지 URL | `"https://unsplash.com/..."` |
-| `price` | `number` | ✅ | 가격 (원 단위) | `89000` |
-| `link` | `string` | ✅ | 상품 상세 페이지 URL | `"https://..."` |
+| `keyword` | `string` | ✅ | Unsplash 검색 키워드 (Grok이 반환) | `"oversized denim jacket"` |
+| `image` | `string` | ✅ | Unsplash 이미지 URL (placeholder → 실제 연동 시 대체) | `"https://placehold.co/400x500"` |
 
 ---
 
