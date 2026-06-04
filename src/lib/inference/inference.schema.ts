@@ -110,15 +110,12 @@ export const InferenceResponseSchema = z.object({
   styleLabel: StyleLabelSchema,
   music: z
     .array(MusicRecommendationSchema)
-    .min(1, { message: "음악 추천은 최소 1개 이상이어야 합니다" })
     .max(10, { message: "음악 추천은 최대 10개까지 가능합니다" }),
   movie: z
     .array(MovieRecommendationSchema)
-    .min(1, { message: "영화 추천은 최소 1개 이상이어야 합니다" })
     .max(10, { message: "영화 추천은 최대 10개까지 가능합니다" }),
   fashion: z
     .array(FashionRecommendationSchema)
-    .min(1, { message: "패션 추천은 최소 1개 이상이어야 합니다" })
     .max(10, { message: "패션 추천은 최대 10개까지 가능합니다" }),
 });
 

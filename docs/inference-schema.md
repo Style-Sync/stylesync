@@ -160,9 +160,9 @@ erDiagram
 | 필드명 | 타입 | 필수 | 설명 | 예시 |
 |---|---|:---:|---|---|
 | `styleLabel` | `StyleLabel` | ✅ | AI가 도출한 크로스 도메인 스타일 레이블 객체 | 아래 참조 |
-| `music` | `MusicRecommendation[]` | ✅ | 음악 추천 카드 목록 | 아래 참조 |
-| `movie` | `MovieRecommendation[]` | ✅ | 영화 추천 카드 목록 | 아래 참조 |
-| `fashion` | `FashionRecommendation[]` | ✅ | 패션 추천 카드 목록 | 아래 참조 |
+| `music` | `MusicRecommendation[]` | ✅ | 음악 추천 카드 목록 · 최대 10개, 빈 배열 허용 | 아래 참조 |
+| `movie` | `MovieRecommendation[]` | ✅ | 영화 추천 카드 목록 · 최대 10개, 빈 배열 허용 | 아래 참조 |
+| `fashion` | `FashionRecommendation[]` | ✅ | 패션 추천 카드 목록 · 최대 10개, 빈 배열 허용 | 아래 참조 |
 
 ---
 
