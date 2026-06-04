@@ -26,7 +26,11 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
           이전으로
         </Link>
 
-        <Link href="/result" className="rounded-full bg-primary-container px-6 py-3 text-white">
+        {/* TODO: 분석 API 응답으로 받은 실제 resultId 로 교체 */}
+        <Link
+          href="/result/preview"
+          className="rounded-full bg-primary-container px-6 py-3 text-white"
+        >
           스타일 분석 시작하기
         </Link>
       </footer>
