@@ -51,5 +51,5 @@ export type InferenceResult = InferenceResponse & {
 // ─── Service interface ────────────────────────────────────────────────────────
 
 export interface IInferenceService {
-  call(request: InferenceRequest): Promise<InferenceResponse>;
+  call(request: InferenceRequest): Promise<InferenceResult>;
 }
