@@ -6,7 +6,7 @@ type TasteStore = {
   selectedDomain: Domain | null;
   musicSelections: MusicSelection[];
   movieSelections: MovieSelection[];
-  fashionSelection: FashionSelection;
+  fashionSelections: FashionSelection[];
 
   setSelectedDomain: (domain: Domain) => void;
   addMusicSelection: (item: MusicSelection) => void;
@@ -22,7 +22,7 @@ const initialState = {
   selectedDomain: null,
   musicSelections: [],
   movieSelections: [],
-  fashionSelection: { styles: [], moods: [] },
+  fashionSelections: [{ styles: [], moods: [] }] as FashionSelection[],
 };
 
 export const useTasteStore = create<TasteStore>((set) => ({
@@ -55,10 +55,14 @@ export const useTasteStore = create<TasteStore>((set) => ({
     })),
 
   setFashionStyles: (styles) =>
-    set((state) => ({ fashionSelection: { ...state.fashionSelection, styles } })),
+    set((state) => ({
+      fashionSelections: [{ ...state.fashionSelections[0], styles }],
+    })),
 
   setFashionMoods: (moods) =>
-    set((state) => ({ fashionSelection: { ...state.fashionSelection, moods } })),
+    set((state) => ({
+      fashionSelections: [{ ...state.fashionSelections[0], moods }],
+    })),
 
   reset: () => set(initialState),
 }));
