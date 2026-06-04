@@ -35,12 +35,24 @@ const FashionSelectionSchema = z.object({
 
 // ─── Request ──────────────────────────────────────────────────────────────────
 
+const SelectionsSchema = {
+  music: z
+    .array(MusicSelectionSchema)
+    .min(3, { message: "취향 카드는 최소 3개 이상 선택해주세요" }),
+  movie: z
+    .array(MovieSelectionSchema)
+    .min(3, { message: "취향 카드는 최소 3개 이상 선택해주세요" }),
+  fashion: z
+    .array(FashionSelectionSchema)
+    .min(1, { message: "취향 카드는 최소 1개 이상 선택해주세요" }),
+};
+
 export const InferenceRequestSchema = z.discriminatedUnion("domain", [
-  z.object({ domain: z.literal("music"), selections: MusicSelectionSchema, moods: MoodsSchema }),
-  z.object({ domain: z.literal("movie"), selections: MovieSelectionSchema, moods: MoodsSchema }),
+  z.object({ domain: z.literal("music"), selections: SelectionsSchema.music, moods: MoodsSchema }),
+  z.object({ domain: z.literal("movie"), selections: SelectionsSchema.movie, moods: MoodsSchema }),
   z.object({
     domain: z.literal("fashion"),
-    selections: FashionSelectionSchema,
+    selections: SelectionsSchema.fashion,
     moods: MoodsSchema,
   }),
 ]);
