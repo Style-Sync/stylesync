@@ -16,9 +16,10 @@ const MusicCardContent = ({
   imageUrl,
   previewUrl,
   onPreviewClick,
+  isPlaying,
 }: Pick<
   IRecommendCardProps,
-  "title" | "subtitle" | "imageUrl" | "previewUrl" | "onPreviewClick"
+  "title" | "subtitle" | "imageUrl" | "previewUrl" | "onPreviewClick" | "isPlaying"
 >) => {
   const hasPreview = Boolean(previewUrl);
 
@@ -69,8 +70,15 @@ const MusicCardContent = ({
               : "bg-surface/40 cursor-not-allowed opacity-50",
           ].join(" ")}
         >
-          <Icon name="play" size={12} />
-          <span className="tracking-widest uppercase">30S PREVIEW</span>
+          {isPlaying ? (
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+              <rect x="2" y="1.5" width="3" height="9" rx="0.75" />
+              <rect x="7" y="1.5" width="3" height="9" rx="0.75" />
+            </svg>
+          ) : (
+            <Icon name="play" size={12} />
+          )}
+          <span className="tracking-widest uppercase">{isPlaying ? "PAUSE" : "30S PREVIEW"}</span>
         </button>
       </div>
     </>
@@ -127,6 +135,7 @@ export const RecommendCard = ({
   imageUrl,
   previewUrl,
   onPreviewClick,
+  isPlaying,
 }: IRecommendCardProps) => {
   const variant = recommendCardVariants[domain];
   const isDark = domain === "movie" || domain === "fashion";
@@ -152,6 +161,7 @@ export const RecommendCard = ({
           imageUrl={imageUrl}
           previewUrl={previewUrl}
           onPreviewClick={onPreviewClick}
+          isPlaying={isPlaying}
         />
       )}
     </article>
