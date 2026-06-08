@@ -96,7 +96,7 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
                 전체 플레이리스트
               </span>
             </div>
-            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
+            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible xl:gap-6">
               {music.map((track) => (
                 <div key={track.id} className="min-w-[220px] flex-shrink-0 md:min-w-0">
                   <RecommendCard
@@ -122,7 +122,7 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
                 CINEMATIC MOOD
               </h2>
             </div>
-            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
+            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible xl:gap-6">
               {movie.map((m) => (
                 <div key={m.id} className="min-w-[220px] flex-shrink-0 md:min-w-0">
                   <RecommendCard
@@ -143,7 +143,7 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
                 FASHION MOOD
               </h2>
             </div>
-            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
+            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible xl:gap-6">
               {fashion.map((item, i) => (
                 <div key={i} className="min-w-[220px] flex-shrink-0 md:min-w-0">
                   <RecommendCard

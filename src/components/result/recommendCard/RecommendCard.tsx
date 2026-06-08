@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import { Icon } from "@/components/ui/Icon";
 
+import { EqualizerBars } from "./EqualizerBars";
 import { recommendCardVariants } from "./recommendCard.variants";
 
 import type { IRecommendCardProps } from "./recommendCard.types";
@@ -35,6 +36,16 @@ const MusicCardContent = ({
           ) : (
             <div className="w-full h-full flex items-center justify-center">
               <Icon name="music" className="text-white/50" size={48} />
+            </div>
+          )}
+
+          {/* 재생 중 overlay + equalizer */}
+          {isPlaying && (
+            <div
+              className="absolute inset-0 flex items-center justify-center bg-black/55 backdrop-blur-[2px] text-white"
+              aria-hidden="true"
+            >
+              <EqualizerBars size="lg" />
             </div>
           )}
         </div>
@@ -71,14 +82,11 @@ const MusicCardContent = ({
           ].join(" ")}
         >
           {isPlaying ? (
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
-              <rect x="2" y="1.5" width="3" height="9" rx="0.75" />
-              <rect x="7" y="1.5" width="3" height="9" rx="0.75" />
-            </svg>
+            <EqualizerBars size="sm" className="text-on-background" />
           ) : (
             <Icon name="play" size={12} />
           )}
-          <span className="tracking-widest uppercase">{isPlaying ? "PAUSE" : "30S PREVIEW"}</span>
+          <span className="tracking-widest uppercase">{isPlaying ? "PLAYING" : "30S PREVIEW"}</span>
         </button>
       </div>
     </>
