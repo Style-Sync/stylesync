@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { Icon } from "@/components/ui/Icon";
+import { useAuthSessionStore } from "@/store/authSessionStore";
 
 import type { IHeaderProps } from "./header.types";
 
@@ -17,13 +18,15 @@ import type { IHeaderProps } from "./header.types";
  * ├─────────────────────────────────────────────────────────────┤
  * │  로그인 후                                                   │
  * │  전 브레이크포인트: 로고 + 유저 아이콘 + 설정 아이콘          │
- * │  TODO: #100 auth session store 연결 후 isLoggedIn 제거       │
  * └─────────────────────────────────────────────────────────────┘
  *
  * @container 기반 반응형: md(768px), lg(1280px)
  * 배경: rgba(250,249,246,0.8) + blur(24px) / 높이: 80px (전 구간 동일)
  */
-export const Header = ({ isLoggedIn = false }: IHeaderProps) => {
+export const Header = ({ isLoggedIn: isLoggedInProp }: IHeaderProps) => {
+  const isAuthenticated = useAuthSessionStore((state) => state.isAuthenticated);
+  const isLoggedIn = isLoggedInProp ?? isAuthenticated;
+
   return (
     <header className="sticky top-0 z-50 w-full @container">
       <div
