@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 import { AuthSplitLayout } from "@/components/auth/authSplitLayout";
+import { useAuthSessionStore } from "@/store/authSessionStore";
 
 import { LoginLandingContent } from "./LoginLandingContent";
 
@@ -26,7 +29,29 @@ const loginFields = [
 ];
 
 export const AuthLanding = () => {
+  const router = useRouter();
   const [isEmailFormOpen, setIsEmailFormOpen] = useState(false);
+  const signInWithGoogle = useAuthSessionStore((state) => state.signInWithGoogle);
+  const signInWithPassword = useAuthSessionStore((state) => state.signInWithPassword);
+  const isSubmitting = useAuthSessionStore((state) => state.isLoading);
+  const errorMessage = useAuthSessionStore((state) => state.errorMessage);
+  const errorField = useAuthSessionStore((state) => state.errorField);
+
+  const handleGoogleLogin = async () => {
+    await signInWithGoogle();
+  };
+
+  const handleEmailLogin = async (formData: FormData) => {
+    const email = String(formData.get("email") ?? "").trim();
+    const password = String(formData.get("password") ?? "");
+
+    const isSuccess = await signInWithPassword(email, password);
+
+    if (isSuccess) {
+      router.replace("/");
+      router.refresh();
+    }
+  };
 
   return (
     <section className="page-container section-wrapper">
@@ -39,6 +64,10 @@ export const AuthLanding = () => {
           footerHref="/signup"
           footerLinkText="회원가입"
           fields={loginFields}
+          onSubmit={handleEmailLogin}
+          isSubmitting={isSubmitting}
+          errorMessage={errorMessage}
+          fieldErrors={errorField && errorMessage ? { [errorField]: errorMessage } : undefined}
           leadEyebrow="STYLESYNC"
           leadTitle={
             <>
@@ -75,7 +104,12 @@ export const AuthLanding = () => {
           }
         />
       ) : (
-        <LoginLandingContent onOpenEmail={() => setIsEmailFormOpen(true)} />
+        <LoginLandingContent
+          onOpenEmail={() => setIsEmailFormOpen(true)}
+          onSignInWithGoogle={handleGoogleLogin}
+          isSubmitting={isSubmitting}
+          errorMessage={errorMessage}
+        />
       )}
     </section>
   );

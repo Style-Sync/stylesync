@@ -1,5 +1,6 @@
 import { Epilogue, Plus_Jakarta_Sans, Noto_Sans_KR, JetBrains_Mono } from "next/font/google";
 
+import { AuthSessionSync } from "@/components/auth/AuthSessionSync";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import "@/styles/globals.css";
@@ -55,6 +56,7 @@ export default function RootLayout({
       className={`${epilogue.variable} ${plusJakartaSans.variable} ${notoSansKR.variable} ${jetbrainsMono.variable}`}
     >
       <body className="antialiased flex min-h-screen flex-col">
+        <AuthSessionSync />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
