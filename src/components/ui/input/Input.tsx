@@ -29,7 +29,10 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
     return (
       <div className={cn("flex w-full flex-col gap-2", className)}>
         {label ? (
-          <label htmlFor={id} className="type-label-xs md:type-label-md text-on-surface-variant">
+          <label
+            htmlFor={id}
+            className="w-full text-start type-label-xs md:type-label-md text-on-surface-variant"
+          >
             {label}
           </label>
         ) : null}
