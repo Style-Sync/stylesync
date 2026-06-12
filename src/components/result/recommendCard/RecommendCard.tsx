@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import Image from "next/image";
 
 import { Icon } from "@/components/ui/Icon";
@@ -100,39 +102,53 @@ const DarkCardContent = ({
   subtitle,
   imageUrl,
   domain,
-}: Pick<IRecommendCardProps, "title" | "subtitle" | "imageUrl" | "domain">) => (
-  <>
-    {/* ── Full-bleed 이미지 ────────────────────────────────────────────── */}
-    <div className="absolute inset-0">
-      {imageUrl ? (
-        <Image src={imageUrl} alt={title} fill sizes="315px" className="object-cover" />
-      ) : (
-        <div className="w-full h-full flex items-center justify-center bg-on-background">
-          <Icon
-            name={domain === "movie" ? "movie" : "hanger"}
-            className="text-white/40"
-            size={64}
+}: Pick<IRecommendCardProps, "title" | "subtitle" | "imageUrl" | "domain">) => {
+  // #82 — imageUrl이 falsy거나 로딩 실패 시 fallback Icon 표시
+  const [hasError, setHasError] = useState(false);
+  const showImage = Boolean(imageUrl) && !hasError;
+
+  return (
+    <>
+      {/* ── Full-bleed 이미지 ────────────────────────────────────────────── */}
+      <div className="absolute inset-0 overflow-hidden">
+        {showImage ? (
+          <Image
+            src={imageUrl as string}
+            alt={title}
+            fill
+            sizes="315px"
+            // #79 — hover 시 이미지 강조 (scale-up). article의 group hover 사용.
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+            onError={() => setHasError(true)}
           />
-        </div>
-      )}
-    </div>
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-on-background">
+            <Icon
+              name={domain === "movie" ? "movie" : "hanger"}
+              className="text-white/40"
+              size={64}
+            />
+          </div>
+        )}
+      </div>
 
-    {/* ── Scrim 그라디언트 ─────────────────────────────────────────────── */}
-    <div className="absolute inset-0 scrim-gradient" aria-hidden="true" />
+      {/* ── Scrim 그라디언트 ─────────────────────────────────────────────── */}
+      <div className="absolute inset-0 scrim-gradient" aria-hidden="true" />
 
-    {/* ── 하단 텍스트 오버레이 ─────────────────────────────────────────── */}
-    <div className="absolute bottom-0 left-0 right-0 px-10 pb-10 flex flex-col gap-2">
-      <h3 className="font-headline font-black text-[24px] lg:text-[30px] text-white keep-all leading-tight">
-        {title}
-      </h3>
-      {subtitle && (
-        <p className="font-korean font-medium text-body-sm text-white/80 keep-all line-clamp-2">
-          {subtitle}
-        </p>
-      )}
-    </div>
-  </>
-);
+      {/* ── 하단 텍스트 오버레이 ─────────────────────────────────────────── */}
+      <div className="absolute bottom-0 left-0 right-0 px-10 pb-10 flex flex-col gap-2">
+        <h3 className="font-headline font-black text-[24px] lg:text-[30px] text-white keep-all leading-tight">
+          {title}
+        </h3>
+        {subtitle && (
+          <p className="font-korean font-medium text-body-sm text-white/80 keep-all line-clamp-2">
+            {subtitle}
+          </p>
+        )}
+      </div>
+    </>
+  );
+};
 
 // ── RecommendCard ─────────────────────────────────────────────────────────────
 
@@ -151,7 +167,8 @@ export const RecommendCard = ({
   return (
     <article
       className={[
-        "relative flex flex-col overflow-hidden",
+        // group — DarkCardContent 내부 이미지의 hover scale에 사용 (#79)
+        "group relative flex flex-col overflow-hidden",
         "w-full",
         variant.height,
         "rounded-[2.5rem]",
