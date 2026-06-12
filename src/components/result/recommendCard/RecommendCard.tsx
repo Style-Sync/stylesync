@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import { Icon } from "@/components/ui/Icon";
 
+import { EqualizerBars } from "./EqualizerBars";
 import { recommendCardVariants } from "./recommendCard.variants";
 
 import type { IRecommendCardProps } from "./recommendCard.types";
@@ -16,9 +17,10 @@ const MusicCardContent = ({
   imageUrl,
   previewUrl,
   onPreviewClick,
+  isPlaying,
 }: Pick<
   IRecommendCardProps,
-  "title" | "subtitle" | "imageUrl" | "previewUrl" | "onPreviewClick"
+  "title" | "subtitle" | "imageUrl" | "previewUrl" | "onPreviewClick" | "isPlaying"
 >) => {
   const hasPreview = Boolean(previewUrl);
 
@@ -34,6 +36,16 @@ const MusicCardContent = ({
           ) : (
             <div className="w-full h-full flex items-center justify-center">
               <Icon name="music" className="text-white/50" size={48} />
+            </div>
+          )}
+
+          {/* 재생 중 overlay + equalizer */}
+          {isPlaying && (
+            <div
+              className="absolute inset-0 flex items-center justify-center bg-black/55 backdrop-blur-[2px] text-white"
+              aria-hidden="true"
+            >
+              <EqualizerBars size="lg" />
             </div>
           )}
         </div>
@@ -69,8 +81,12 @@ const MusicCardContent = ({
               : "bg-surface/40 cursor-not-allowed opacity-50",
           ].join(" ")}
         >
-          <Icon name="play" size={12} />
-          <span className="tracking-widest uppercase">30S PREVIEW</span>
+          {isPlaying ? (
+            <EqualizerBars size="sm" className="text-on-background" />
+          ) : (
+            <Icon name="play" size={12} />
+          )}
+          <span className="tracking-widest uppercase">{isPlaying ? "PLAYING" : "30S PREVIEW"}</span>
         </button>
       </div>
     </>
@@ -127,6 +143,7 @@ export const RecommendCard = ({
   imageUrl,
   previewUrl,
   onPreviewClick,
+  isPlaying,
 }: IRecommendCardProps) => {
   const variant = recommendCardVariants[domain];
   const isDark = domain === "movie" || domain === "fashion";
@@ -152,6 +169,7 @@ export const RecommendCard = ({
           imageUrl={imageUrl}
           previewUrl={previewUrl}
           onPreviewClick={onPreviewClick}
+          isPlaying={isPlaying}
         />
       )}
     </article>

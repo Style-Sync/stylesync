@@ -1,7 +1,15 @@
+"use client";
+
+import { useCallback, useState } from "react";
+
 import { RecommendCard } from "@/components/result/recommendCard";
+import { ResultPageError } from "@/components/result/ResultPageError";
+import { ResultPageSkeleton } from "@/components/result/ResultPageSkeleton";
 import { ShareCard } from "@/components/result/shareCard";
+import { StyleLabelHero } from "@/components/result/styleLabel";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/Icon";
+import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import type { StyleResult } from "@/types/result";
 
 // X(Twitter) 아이콘 — Icon 레지스트리에 없어서 인라인 처리
@@ -21,41 +29,21 @@ const MOCK_RESULT: StyleResult = {
     themeColor: "#e6e6fa",
     mood: { energy: "low", tone: "dark", aesthetic: "indie" },
   },
-  recommendations: {
-    music: [
-      { id: "1", name: "Blonde", artist: "Frank Ocean", image: "", previewUrl: null },
-      { id: "2", name: "Ivy", artist: "Frank Ocean", image: "", previewUrl: null },
-      { id: "3", name: "Nights", artist: "Frank Ocean", image: "", previewUrl: null },
-    ],
-    movies: [
-      { id: 1, title: "Call Me By Your Name", posterPath: "", genres: ["Drama", "Romance"] },
-      { id: 2, title: "Moonlight", posterPath: "", genres: ["Drama"] },
-      { id: 3, title: "Lost in Translation", posterPath: "", genres: ["Drama"] },
-    ],
-    fashion: [
-      {
-        id: "1",
-        keyword: "Oversized Earth Tone Coat",
-        image: "",
-        photographerName: "John Doe",
-        photographerUrl: "",
-      },
-      {
-        id: "2",
-        keyword: "Minimal Monochrome Set",
-        image: "",
-        photographerName: "Jane Doe",
-        photographerUrl: "",
-      },
-      {
-        id: "3",
-        keyword: "Soft Denim Layer",
-        image: "",
-        photographerName: "Alex Kim",
-        photographerUrl: "",
-      },
-    ],
-  },
+  music: [
+    { id: "1", name: "Blonde", artist: "Frank Ocean", image: "", previewUrl: null },
+    { id: "2", name: "Ivy", artist: "Frank Ocean", image: "", previewUrl: null },
+    { id: "3", name: "Nights", artist: "Frank Ocean", image: "", previewUrl: null },
+  ],
+  movie: [
+    { id: 1, title: "Call Me By Your Name", posterPath: "", genres: ["Drama", "Romance"] },
+    { id: 2, title: "Moonlight", posterPath: "", genres: ["Drama"] },
+    { id: 3, title: "Lost in Translation", posterPath: "", genres: ["Drama"] },
+  ],
+  fashion: [
+    { keyword: "Oversized Earth Tone Coat", image: "" },
+    { keyword: "Minimal Monochrome Set", image: "" },
+    { keyword: "Soft Denim Layer", image: "" },
+  ],
   createdAt: new Date().toISOString(),
 };
 
@@ -67,57 +55,34 @@ interface IResultPageProps {
 
 export default function ResultPage({ params: _params }: IResultPageProps) {
   // TODO: _params.id로 API에서 실제 데이터 fetch
-  const { styleLabel, recommendations } = MOCK_RESULT;
+  const [isLoading] = useState(false);
+  const [error] = useState<string | null>(null);
 
-  // "Melancholic Softboy" → "MELANCHOLIC\nSOFTBOY"
-  const words = styleLabel.title.toUpperCase().split(" ");
-  const mid = Math.ceil(words.length / 2);
-  const titleFormatted = [words.slice(0, mid).join(" "), words.slice(mid).join(" ")]
-    .filter(Boolean)
-    .join("\n");
+  const { styleLabel, music, movie, fashion } = MOCK_RESULT;
+  const { playingUrl, isPlaying: isAudioPlaying, toggle } = useAudioPlayer();
+
+  const handleReanalyze = useCallback(() => {
+    // TODO: 재분석 플로우 연결
+  }, []);
+
+  const handleShareCard = useCallback(() => {
+    // TODO: 공유 카드 모달 연결
+  }, []);
+
+  if (isLoading) return <ResultPageSkeleton />;
+  if (error) return <ResultPageError message={error} />;
 
   return (
     <div className="bg-background">
       <div className="mx-auto px-4 md:px-9 lg:px-[120px] max-w-[1280px] py-12 lg:py-20">
-        {/* ── Hero Section ──────────────────────────────────────────────────── */}
-        <section className="flex flex-col lg:flex-row lg:items-center gap-10 mb-16 lg:mb-20">
-          {/* 텍스트 영역 */}
-          <div className="flex flex-col items-center lg:items-start gap-6 flex-1">
-            {/* 배지 */}
-            <span className="inline-block px-4 py-1 rounded-full bg-primary-container/10 font-korean font-medium text-body-sm text-primary-container">
-              • 에스테틱 큐레이션 완료
-            </span>
-
-            {/* H1 — 390px: 48px center / 768px+: 72px center / 1920px: 72px left */}
-            <h1 className="font-headline font-black text-display-sm md:text-display-lg text-on-background uppercase leading-none tracking-tighter whitespace-pre-line text-center lg:text-left">
-              {titleFormatted}
-            </h1>
-
-            {/* 설명 — 390px: Regular 16px center / 768px+: Bold 20px center / lg: Bold 20px left */}
-            <p className="font-korean font-normal text-body-md text-on-surface-variant keep-all text-center lg:text-left lg:font-bold lg:text-title-lg max-w-[480px] md:font-bold md:text-title-lg">
-              {styleLabel.description}
-            </p>
-
-            {/* 버튼 */}
-            <div className="flex flex-wrap justify-center lg:justify-start gap-3">
-              <Button variant="stroke" size="sm">
-                다시 분석하기
-              </Button>
-              <Button variant="primary" size="sm">
-                공유 카드 만들기
-              </Button>
-            </div>
-          </div>
-
-          {/* 캐릭터 플레이스홀더 — TODO: #88 캐릭터 컴포넌트 완성 후 교체 */}
-          <div className="flex justify-center lg:justify-end flex-shrink-0">
-            <div
-              className="w-[336px] h-[336px] lg:w-[320px] lg:h-[320px]"
-              style={{ background: styleLabel.themeColor, borderRadius: "64px" }}
-              aria-hidden="true"
-            />
-          </div>
-        </section>
+        {/* ── Hero Section (#72) ────────────────────────────────────────────── */}
+        <StyleLabelHero
+          title={styleLabel.title}
+          description={styleLabel.description}
+          themeColor={styleLabel.themeColor}
+          onReanalyze={handleReanalyze}
+          onShareCard={handleShareCard}
+        />
 
         {/* ── Domain Sections ───────────────────────────────────────────────── */}
         <div className="flex flex-col gap-16 lg:gap-20 mb-16 lg:mb-20">
@@ -131,9 +96,8 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
                 전체 플레이리스트
               </span>
             </div>
-            {/* 390px: 가로 스크롤 / md+: 3열 그리드 */}
-            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
-              {recommendations.music.map((track) => (
+            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible xl:gap-6">
+              {music.map((track) => (
                 <div key={track.id} className="min-w-[220px] flex-shrink-0 md:min-w-0">
                   <RecommendCard
                     domain="music"
@@ -141,6 +105,10 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
                     subtitle={track.artist}
                     imageUrl={track.image || undefined}
                     previewUrl={track.previewUrl}
+                    isPlaying={
+                      isAudioPlaying && playingUrl === track.previewUrl && track.previewUrl !== null
+                    }
+                    onPreviewClick={track.previewUrl ? () => toggle(track.previewUrl!) : undefined}
                   />
                 </div>
               ))}
@@ -154,14 +122,14 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
                 CINEMATIC MOOD
               </h2>
             </div>
-            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
-              {recommendations.movies.map((movie) => (
-                <div key={movie.id} className="min-w-[220px] flex-shrink-0 md:min-w-0">
+            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible xl:gap-6">
+              {movie.map((m) => (
+                <div key={m.id} className="min-w-[220px] flex-shrink-0 md:min-w-0">
                   <RecommendCard
                     domain="movie"
-                    title={movie.title}
-                    subtitle={movie.genres.join(" · ")}
-                    imageUrl={movie.posterPath || undefined}
+                    title={m.title}
+                    subtitle={m.genres.join(" · ")}
+                    imageUrl={m.posterPath || undefined}
                   />
                 </div>
               ))}
@@ -175,9 +143,9 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
                 FASHION MOOD
               </h2>
             </div>
-            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
-              {recommendations.fashion.map((item) => (
-                <div key={item.id} className="min-w-[220px] flex-shrink-0 md:min-w-0">
+            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible xl:gap-6">
+              {fashion.map((item, i) => (
+                <div key={i} className="min-w-[220px] flex-shrink-0 md:min-w-0">
                   <RecommendCard
                     domain="fashion"
                     title={item.keyword}
@@ -191,7 +159,6 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
 
         {/* ── Export Identity Section ───────────────────────────────────────── */}
         <section className="relative overflow-hidden bg-on-background rounded-[48px] p-6 md:p-10 lg:p-24 mb-4 lg:mb-6">
-          {/* 배경 장식 텍스트 */}
           <div
             className="absolute top-[156px] left-0 pointer-events-none select-none whitespace-nowrap"
             aria-hidden="true"
@@ -202,7 +169,6 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
           </div>
 
           <div className="relative flex flex-col lg:flex-row lg:gap-24 lg:items-center">
-            {/* 텍스트 + 버튼 */}
             <div className="flex flex-col gap-6 lg:w-[376px] flex-shrink-0 mb-10 lg:mb-0">
               <h2 className="font-headline font-black text-white text-display-sm lg:text-display-lg leading-none uppercase">
                 EXPORT
@@ -238,18 +204,17 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
                 themeColor={styleLabel.themeColor}
                 mood={styleLabel.mood}
                 music={{
-                  title: recommendations.music[0]?.name ?? "",
-                  artist: recommendations.music[0]?.artist ?? "",
+                  title: music[0]?.name ?? "",
+                  artist: music[0]?.artist ?? "",
                 }}
-                movie={{ title: recommendations.movies[0]?.title ?? "" }}
-                fashion={{ keyword: recommendations.fashion[0]?.keyword ?? "" }}
+                movie={{ title: movie[0]?.title ?? "" }}
+                fashion={{ keyword: fashion[0]?.keyword ?? "" }}
               />
             </div>
           </div>
         </section>
 
         {/* ── Guest Save Banner ─────────────────────────────────────────────── */}
-        {/* 390px: flex-col center / md+: flex-row 116px */}
         <section className="flex flex-col items-center gap-4 text-center bg-surface-variant rounded-[24px] px-8 py-8 md:flex-row md:items-center md:justify-between md:text-left md:py-0 md:h-[116px]">
           <div className="flex flex-col items-center gap-2 md:flex-row md:gap-3">
             <span className="text-[24px]" aria-hidden="true">

@@ -12,4 +12,6 @@ export interface IRecommendCardProps {
   previewUrl?: string | null;
   /** 미리듣기 버튼 클릭 핸들러 — music 전용 */
   onPreviewClick?: () => void;
+  /** 현재 이 카드가 재생 중 여부 — music 전용 */
+  isPlaying?: boolean;
 }
