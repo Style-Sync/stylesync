@@ -36,11 +36,12 @@ export default function TasteStep1Page({ params }: ITastePageProps) {
     <DomainGuard domain={params.domain}>
       <div className="page-container section-wrapper">
         <header className="mb-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <div>
-            <h1 className="heading-section">
+          <div className="flex flex-col gap-4">
+            <h1 className="type-headline-lg">
               {content?.titleMain} <span className="text-orange-500">셀렉션</span>
             </h1>
-            <p className="text-sm text-stone-600">{content?.description}</p>
+
+            <p className="type-body-lg text-stone-600">{content?.description}</p>
           </div>
           <ProgressBar currentStep={1} totalSteps={2} />
         </header>

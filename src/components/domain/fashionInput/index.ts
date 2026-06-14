@@ -1,0 +1,1 @@
+export { FashionInput } from "./FashionInput";
