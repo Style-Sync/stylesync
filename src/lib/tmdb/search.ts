@@ -3,8 +3,10 @@ import "server-only";
 import type { MovieSelection } from "@/types/taste";
 
 import { tmdbFetch } from "./client";
+import { getBackdropUrl, getPosterUrl } from "./image";
 
 import type { TmdbGenreListResponse, TmdbSearchResponse } from "./types";
+
 
 // 장르 id→이름 맵 (모듈 캐시 — 매 검색마다 다시 안 부름)
 let genreMapCache: Map<number, string> | null = null;
@@ -30,8 +32,8 @@ export const searchMovies = async (query: string, limit = 12): Promise<MovieSele
   return data.results.slice(0, limit).map((movie) => ({
     id: movie.id,
     title: movie.title,
-    posterPath: movie.poster_path ?? "", // 경로만 — 전체 이미지 URL 변환은 #46
-    backdropPath: movie.backdrop_path ?? "",
+    posterPath: getPosterUrl(movie.poster_path),
+    backdropPath: getBackdropUrl(movie.backdrop_path),
     genres: movie.genre_ids
       .map((id) => genreMap.get(id))
       .filter((name): name is string => Boolean(name)),
