@@ -1,77 +1,17 @@
 "use client";
 
-import { MovieTasteCard } from "@/components/domain/movieTasteCard";
-import { useTasteStore } from "@/store/tasteStore";
+import { StyleSelectList } from "@/components/domain/styleSelectList";
+import type { IStyleOption } from "@/components/domain/styleSelectList";
 
-const MOCK_MOVIES = [
-  {
-    id: 1,
-    title: "Interstellar",
-    genre: "Sci-Fi",
-    imageUrl: "",
-  },
-  {
-    id: 2,
-    title: "La La Land",
-    genre: "Romance",
-    imageUrl: "",
-  },
-  {
-    id: 3,
-    title: "Parasite",
-    genre: "Thriller",
-    imageUrl: "",
-  },
-  {
-    id: 4,
-    title: "Parasite",
-    genre: "Thriller",
-    imageUrl: "",
-  },
+// 1뎁스 영화 스타일 옵션 (TODO: 실제 피그마 데이터로 교체)
+const MOVIE_STYLES: IStyleOption[] = [
+  { id: "neo-noir", title: "Neo Noir" },
+  { id: "coming-of-age", title: "Coming Of Age" },
+  { id: "sci-fi-epic", title: "Sci-Fi Epic" },
+  { id: "slow-burn", title: "Slow Burn" },
+  { id: "feel-good", title: "Feel Good" },
 ];
 
-export function MovieInput() {
-  const movieSelections = useTasteStore((s) => s.movieSelections);
-
-  const addMovieSelection = useTasteStore((s) => s.addMovieSelection);
-
-  const removeMovieSelection = useTasteStore((s) => s.removeMovieSelection);
-
-  const handleSelect = (movie: (typeof MOCK_MOVIES)[number]) => {
-    const isSelected = movieSelections.some((item) => item.id === movie.id);
-
-    if (isSelected) {
-      removeMovieSelection(movie.id);
-      return;
-    }
-
-    addMovieSelection({
-      id: movie.id,
-      title: movie.title,
-      posterPath: movie.imageUrl,
-      backdropPath: "",
-      genres: [movie.genre],
-      releaseYear: 2024,
-    });
-  };
-
-  return (
-    <div className="grid-cols-responsive">
-      {MOCK_MOVIES.map((movie) => {
-        const isSelected = movieSelections.some((item) => item.id === movie.id);
-
-        return (
-          <MovieTasteCard
-            key={movie.id}
-            domain="movie"
-            title={movie.title}
-            genre={movie.genre}
-            imageUrl={movie.imageUrl}
-            selected={isSelected}
-            onClick={() => handleSelect(movie)}
-          />
-        );
-      })}
-    </div>
-  );
-}
+export const MovieInput = () => {
+  return <StyleSelectList domain="movie" options={MOVIE_STYLES} />;
+};

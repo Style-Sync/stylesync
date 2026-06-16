@@ -1,58 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { StyleSelectList } from "@/components/domain/styleSelectList";
+import type { IStyleOption } from "@/components/domain/styleSelectList";
 
-import { FashionTasteCard } from "@/components/domain/fashionTasteCard";
-
-const STYLE_OPTIONS = [
-  {
-    id: "minimal",
-    title: "Minimal",
-    genre: "Clean",
-    imageUrl: "",
-  },
-  {
-    id: "street",
-    title: "Street",
-    genre: "Urban",
-    imageUrl: "",
-  },
-  {
-    id: "vintage",
-    title: "Vintage",
-    genre: "Classic",
-    imageUrl: "",
-  },
-  {
-    id: "sporty",
-    title: "Sporty",
-    genre: "Casual",
-    imageUrl: "",
-  },
+// 1뎁스 패션 스타일 옵션 (TODO: 실제 피그마 데이터로 교체)
+const FASHION_STYLES: IStyleOption[] = [
+  { id: "minimal", title: "Minimal" },
+  { id: "street", title: "Street" },
+  { id: "vintage", title: "Vintage" },
+  { id: "sporty", title: "Sporty" },
+  { id: "romantic", title: "Romantic" },
 ];
 
-export function FashionInput() {
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
-
-  const handleSelect = (styleId: string) => {
-    setSelectedIds((prev) =>
-      prev.includes(styleId) ? prev.filter((id) => id !== styleId) : [...prev, styleId]
-    );
-  };
-
-  return (
-    <div className="grid-cols-responsive">
-      {STYLE_OPTIONS.map((item) => (
-        <FashionTasteCard
-          key={item.id}
-          domain="fashion"
-          title={item.title}
-          genre={item.genre}
-          imageUrl={item.imageUrl}
-          selected={selectedIds.includes(item.id)}
-          onClick={() => handleSelect(item.id)}
-        />
-      ))}
-    </div>
-  );
-}
+export const FashionInput = () => {
+  return <StyleSelectList domain="fashion" options={FASHION_STYLES} />;
+};

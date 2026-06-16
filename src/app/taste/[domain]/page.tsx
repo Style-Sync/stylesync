@@ -1,15 +1,18 @@
 "use client";
 
 import { DomainGuard } from "@/components/domain/DomainGuard";
+import { FashionInput } from "@/components/domain/fashionInput";
+import { MovieInput } from "@/components/domain/movieInput";
+import { MusicInput } from "@/components/domain/musicInput";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { ProgressBar } from "@/components/layout/ProgressBar";
+import { useTasteStore } from "@/store/tasteStore";
 import type { Domain } from "@/types/taste";
 
 interface ITastePageProps {
   params: { domain: string };
 }
 
-// 도메인별 콘텐츠 매핑
 const DOMAIN_CONTENT: Record<Domain, { titleMain: string; description: string }> = {
   music: {
     titleMain: "뮤직 스타일",
@@ -25,37 +28,42 @@ const DOMAIN_CONTENT: Record<Domain, { titleMain: string; description: string }>
   },
 };
 
-export default function TasteStep1Page({ params }: ITastePageProps) {
-  // TODO: 실제 선택값으로 교체
-  const isStyleSelected = true;
+// TODO: 실제 분석 resultId로 교체 (현재 mock 매칭용)
+const RESULT_PATH = "/result/mock-1";
 
-  // DomainGuard가 유효성 검증하므로 안전하게 캐스팅
-  const content = DOMAIN_CONTENT[params.domain as Domain];
+export default function TasteStep1Page({ params }: ITastePageProps) {
+  const domain = params.domain as Domain;
+  const content = DOMAIN_CONTENT[domain];
+
+  // 1뎁스 스타일 선택 여부로 다음 버튼 활성화
+  const selectedStyles = useTasteStore((s) => s.selectedStyles);
+  const isStyleSelected = Boolean(selectedStyles[domain]);
+
+  // fashion은 detail(2뎁스) 없이 결과로 직행
+  const isFashion = domain === "fashion";
+  const nextPath = isFashion ? RESULT_PATH : `/taste/${domain}/detail`;
+  const totalSteps = isFashion ? 1 : 2;
 
   return (
     <DomainGuard domain={params.domain}>
       <div className="page-container section-wrapper">
         <header className="mb-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div className="flex flex-col gap-4">
-            <h1 className="type-headline-lg">
-              {content?.titleMain} <span className="text-orange-500">셀렉션</span>
+            <h1 className="type-headline-lg keep-all">
+              {content?.titleMain} <span className="text-primary-container">셀렉션</span>
             </h1>
-
-            <p className="type-body-lg text-stone-600">{content?.description}</p>
+            <p className="type-body-lg keep-all text-on-surface-variant">{content?.description}</p>
           </div>
-          <ProgressBar currentStep={1} totalSteps={2} />
+          <ProgressBar currentStep={1} totalSteps={totalSteps} />
         </header>
 
         <section className="min-h-[60vh]">
-          {/* 선택 UI - 다음 이슈에서 */}
-          <p className="text-stone-400">선택 UI 영역</p>
+          {domain === "music" && <MusicInput />}
+          {domain === "movie" && <MovieInput />}
+          {domain === "fashion" && <FashionInput />}
         </section>
 
-        <BottomNav
-          prevPath="/select"
-          nextPath={`/taste/${params.domain}/detail`}
-          isNextDisabled={!isStyleSelected}
-        />
+        <BottomNav prevPath="/select" nextPath={nextPath} isNextDisabled={!isStyleSelected} />
       </div>
     </DomainGuard>
   );
