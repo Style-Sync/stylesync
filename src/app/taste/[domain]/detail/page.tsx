@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
 import { DomainGuard } from "@/components/domain/DomainGuard";
-import { BottomNav } from "@/components/layout/BottomNav";
-import { ProgressBar } from "@/components/layout/ProgressBar";
+import { MovieTasteCard } from "@/components/domain/movieTasteCard";
+import { MusicTasteCard } from "@/components/domain/musicTasteCard";
+import { TasteInputForm } from "@/components/domain/tasteInputForm";
 import { useTasteStore } from "@/store/tasteStore";
 import type { Domain } from "@/types/taste";
 
@@ -30,98 +31,127 @@ const DETAIL_CONTENT: Record<
       "가장 선호하는 스타일의 영화를 선택해 주세요. 선택한 영화들이 당신의 스타일 프로필을 구성합니다.",
     searchPlaceholder: "영화 검색",
   },
-  fashion: {
-    titleMain: "패션 취향",
-    description:
-      "가장 선호하는 스타일의 룩을 선택해 주세요. 선택한 룩들이 당신의 패션 취향 프로필을 구성합니다.",
-    searchPlaceholder: "스타일 검색",
-  },
+  // fashion은 detail(2뎁스) 미사용 — 타입 충족용
+  fashion: { titleMain: "", description: "", searchPlaceholder: "" },
 };
 
-// TODO: 디자인 시스템 Icon 세트로 교체 필요 (lucide-react 등 공용 라이브러리 사용 가능)
-const SearchIcon = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <circle cx="11" cy="11" r="8" />
-    <path d="m21 21-4.3-4.3" />
-  </svg>
-);
+// 2뎁스 mock 카드 데이터 (TODO: #41 Spotify 검색 / #44 TMDB 연동으로 교체)
+const MOCK_ARTISTS = [
+  { id: "1", title: "NewJeans", genre: "Y2K Pop", imageUrl: "" },
+  { id: "2", title: "Keshi", genre: "Lo-fi", imageUrl: "" },
+  { id: "3", title: "IU", genre: "Ballad", imageUrl: "" },
+];
+
+const MOCK_MOVIES = [
+  { id: 1, title: "Interstellar", genre: "Sci-Fi", imageUrl: "" },
+  { id: 2, title: "La La Land", genre: "Romance", imageUrl: "" },
+  { id: 3, title: "Parasite", genre: "Thriller", imageUrl: "" },
+];
 
 export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
   const router = useRouter();
+  const domain = params.domain as Domain;
+
   const musicSelections = useTasteStore((s) => s.musicSelections);
+  const movieSelections = useTasteStore((s) => s.movieSelections);
+  const addMusicSelection = useTasteStore((s) => s.addMusicSelection);
+  const removeMusicSelection = useTasteStore((s) => s.removeMusicSelection);
+  const addMovieSelection = useTasteStore((s) => s.addMovieSelection);
+  const removeMovieSelection = useTasteStore((s) => s.removeMovieSelection);
 
-  // TODO: 도메인별 selection 체크 로직 분기 필요
-  const isReady = musicSelections.length > 0;
+  // fashion은 2뎁스 미사용 → 1뎁스로 되돌림 (렌더 중 호출 X, useEffect)
+  useEffect(() => {
+    if (domain === "fashion") router.replace("/taste/fashion");
+  }, [domain, router]);
 
-  // TODO: 실제 검색 로직 (필터링은 다음 이슈에서)
+  // 도메인별 선택 상태로 분기 (music/movie 영향 분리)
+  const isReady =
+    domain === "music"
+      ? musicSelections.length > 0
+      : domain === "movie"
+        ? movieSelections.length > 0
+        : false;
+
   const [searchQuery, setSearchQuery] = useState("");
-
-  const content = DETAIL_CONTENT[params.domain as Domain];
+  const content = DETAIL_CONTENT[domain];
 
   const handleAnalyze = () => {
-    // TODO: 실제 분석 API 응답으로 받은 resultId 사용
-    // 현재는 /result/[id] 페이지의 mock 데이터(mock-1) 매칭용
-    const tempResultId = "mock-1";
-    router.push(`/result/${tempResultId}`);
+    // TODO: 실제 분석 API 응답의 resultId 사용
+    router.push("/result/mock-1");
   };
+
+  const handleSelectArtist = (artist: (typeof MOCK_ARTISTS)[number]) => {
+    if (musicSelections.some((item) => item.id === artist.id)) {
+      removeMusicSelection(artist.id);
+      return;
+    }
+    addMusicSelection({
+      id: artist.id,
+      name: artist.title,
+      image: artist.imageUrl,
+      genres: [artist.genre],
+      previewUrl: "",
+    });
+  };
+
+  const handleSelectMovie = (movie: (typeof MOCK_MOVIES)[number]) => {
+    if (movieSelections.some((item) => item.id === movie.id)) {
+      removeMovieSelection(movie.id);
+      return;
+    }
+    addMovieSelection({
+      id: movie.id,
+      title: movie.title,
+      posterPath: movie.imageUrl,
+      backdropPath: "",
+      genres: [movie.genre],
+      releaseYear: 2024,
+    });
+  };
+
+  if (domain === "fashion") return null;
 
   return (
     <DomainGuard domain={params.domain}>
-      <div className="page-container section-wrapper">
-        <header className="mb-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <div>
-            <h1 className="heading-section">
-              {content?.titleMain} <span className="text-orange-500">선택</span>
-            </h1>
-            <p className="text-sm text-stone-600">{content?.description}</p>
-          </div>
-          <ProgressBar currentStep={2} totalSteps={2} />
-        </header>
+      <TasteInputForm
+        domain={domain}
+        title={content.titleMain}
+        description={content.description}
+        searchPlaceholder={content.searchPlaceholder}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        isNextDisabled={!isReady}
+        onNext={handleAnalyze}
+      >
+        {/* 2뎁스: TasteCard 그리드 */}
+        <div className="grid-cols-responsive">
+          {domain === "music" &&
+            MOCK_ARTISTS.map((artist) => (
+              <MusicTasteCard
+                key={artist.id}
+                domain="music"
+                title={artist.title}
+                genre={artist.genre}
+                imageUrl={artist.imageUrl}
+                selected={musicSelections.some((item) => item.id === artist.id)}
+                onClick={() => handleSelectArtist(artist)}
+              />
+            ))}
 
-        {/* 
-          TODO: 디자인 시스템 SearchInput 컴포넌트로 교체 필요
-          - 현재 임시로 인라인 input + SVG 아이콘으로 구현
-          - 별도 브랜치에서 작업 중인 공통 SearchInput / TextField가 머지되면
-            <SearchInput value={searchQuery} onChange={...} placeholder={...} /> 형태로 교체
-          - 실제 검색 필터링 로직도 후속 이슈에서 추가 예정
-        */}
-        {/* 검색바 */}
-        <div className="relative mb-8 w-full">
-          <div className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-stone-400">
-            <SearchIcon />
-          </div>
-          <input
-            type="search"
-            value={searchQuery}
-            onChange={(event) => setSearchQuery(event.target.value)}
-            placeholder={content?.searchPlaceholder}
-            className="w-full rounded-full bg-white py-3 pl-12 pr-5 text-sm shadow-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30"
-          />
+          {domain === "movie" &&
+            MOCK_MOVIES.map((movie) => (
+              <MovieTasteCard
+                key={movie.id}
+                domain="movie"
+                title={movie.title}
+                genre={movie.genre}
+                imageUrl={movie.imageUrl}
+                selected={movieSelections.some((item) => item.id === movie.id)}
+                onClick={() => handleSelectMovie(movie)}
+              />
+            ))}
         </div>
-
-        <section className="min-h-[60vh]">
-          {/* 카드 그리드 - 다음 이슈에서 */}
-          <p className="text-stone-400">선택 UI 영역</p>
-        </section>
-
-        <BottomNav
-          prevPath={`/taste/${params.domain}`}
-          prevLabel="이전으로"
-          nextLabel="스타일 분석 시작하기"
-          isNextDisabled={!isReady}
-          onNext={handleAnalyze}
-          isLastStep
-        />
-      </div>
+      </TasteInputForm>
     </DomainGuard>
   );
 }

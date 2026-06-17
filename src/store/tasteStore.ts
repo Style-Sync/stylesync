@@ -5,11 +5,14 @@ import type { Domain, MusicSelection, MovieSelection, FashionSelection } from "@
 
 type TasteStore = {
   selectedDomain: Domain | null;
+  // 1뎁스에서 고른 스타일/무드 (도메인별 — 도메인 간 영향 분리)
+  selectedStyles: Partial<Record<Domain, string>>;
   musicSelections: MusicSelection[];
   movieSelections: MovieSelection[];
   fashionSelections: FashionSelection[];
 
   setSelectedDomain: (domain: Domain) => void;
+  setSelectedStyle: (domain: Domain, styleId: string) => void;
   addMusicSelection: (item: MusicSelection) => void;
   removeMusicSelection: (id: string) => void;
   addMovieSelection: (item: MovieSelection) => void;
@@ -21,6 +24,7 @@ type TasteStore = {
 
 const initialState = {
   selectedDomain: null,
+  selectedStyles: {} as Partial<Record<Domain, string>>,
   musicSelections: [],
   movieSelections: [],
   fashionSelections: [{ styles: [], fashionMoods: [] }] as FashionSelection[],
@@ -32,6 +36,11 @@ export const useTasteStore = create<TasteStore>()(
       ...initialState,
 
       setSelectedDomain: (domain) => set({ selectedDomain: domain }),
+
+      setSelectedStyle: (domain, styleId) =>
+        set((state) => ({
+          selectedStyles: { ...state.selectedStyles, [domain]: styleId },
+        })),
 
       addMusicSelection: (item) =>
         set((state) => {
@@ -72,6 +81,6 @@ export const useTasteStore = create<TasteStore>()(
     {
       name: "taste-store",
       storage: createJSONStorage(() => sessionStorage),
-    },
-  ),
+    }
+  )
 );
