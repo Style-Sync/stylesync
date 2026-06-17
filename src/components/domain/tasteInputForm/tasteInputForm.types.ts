@@ -15,4 +15,6 @@ export interface ITasteInputFormProps {
 
   isNextDisabled?: boolean;
   onNext?: () => void;
+
+  guideMessage?: string;
 }

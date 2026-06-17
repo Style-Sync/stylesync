@@ -8,6 +8,7 @@ import { DomainGuard } from "@/components/domain/DomainGuard";
 import { MovieTasteCard } from "@/components/domain/movieTasteCard";
 import { MusicTasteCard } from "@/components/domain/musicTasteCard";
 import { TasteInputForm } from "@/components/domain/tasteInputForm";
+import { getSelectionGuide } from "@/lib/taste/selectionGuide";
 import { useTasteStore } from "@/store/tasteStore";
 import type { Domain } from "@/types/taste";
 
@@ -64,13 +65,11 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
     if (domain === "fashion") router.replace("/taste/fashion");
   }, [domain, router]);
 
-  // 도메인별 선택 상태로 분기 (music/movie 영향 분리)
-  const isReady =
-    domain === "music"
-      ? musicSelections.length > 0
-      : domain === "movie"
-        ? movieSelections.length > 0
-        : false;
+  // 도메인별 선택 개수 (music/movie 영향 분리)
+  const selectionCount =
+    domain === "music" ? musicSelections.length : domain === "movie" ? movieSelections.length : 0;
+
+  const { isComplete, message } = getSelectionGuide(selectionCount);
 
   const [searchQuery, setSearchQuery] = useState("");
   const content = DETAIL_CONTENT[domain];
@@ -120,8 +119,9 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
         searchPlaceholder={content.searchPlaceholder}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        isNextDisabled={!isReady}
+        isNextDisabled={!isComplete}
         onNext={handleAnalyze}
+        guideMessage={message}
       >
         {/* 2뎁스: TasteCard 그리드 */}
         <div className="grid-cols-responsive">
