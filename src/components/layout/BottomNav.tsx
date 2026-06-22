@@ -8,7 +8,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -20,6 +20,10 @@ type BottomNavProps = {
   isNextDisabled?: boolean;
   onNext?: () => void;
   isLastStep?: boolean;
+  /** 다음 액션 진행 중 여부 — 버튼 비활성 + 스피너 + 중복 클릭 방지 (#34) */
+  isLoading?: boolean;
+  /** 로딩 중 버튼 라벨 (미지정 시 nextLabel 유지) */
+  loadingLabel?: string;
 };
 
 export const BottomNav = ({
@@ -30,22 +34,33 @@ export const BottomNav = ({
   isNextDisabled = false,
   onNext,
   isLastStep = false,
+  isLoading = false,
+  loadingLabel,
 }: BottomNavProps) => {
   const router = useRouter();
 
   const handlePrev = () => {
+    if (isLoading) return;
     if (prevPath) router.push(prevPath);
     else router.back();
   };
 
   const handleNext = () => {
+    // 비활성 / 로딩 중 중복 실행 방지
+    if (isNextDisabled || isLoading) return;
     if (onNext) onNext();
     if (nextPath) router.push(nextPath);
   };
 
+  const nextIcon = isLoading ? (
+    <Loader2 size={16} className="animate-spin" />
+  ) : isLastStep ? (
+    <ArrowRight size={16} />
+  ) : undefined;
+
   return (
     <div className="flex items-center justify-between gap-4 py-6">
-      <Button variant="stroke" size="sm" onClick={handlePrev}>
+      <Button variant="stroke" size="sm" onClick={handlePrev} disabled={isLoading}>
         {prevLabel}
       </Button>
 
@@ -53,11 +68,12 @@ export const BottomNav = ({
         variant="primary"
         size="sm"
         onClick={handleNext}
-        disabled={isNextDisabled}
-        icon={isLastStep ? <ArrowRight size={16} /> : undefined}
+        disabled={isNextDisabled || isLoading}
+        aria-busy={isLoading}
+        icon={nextIcon}
         iconPosition="right"
       >
-        {nextLabel}
+        {isLoading ? (loadingLabel ?? nextLabel) : nextLabel}
       </Button>
     </div>
   );
