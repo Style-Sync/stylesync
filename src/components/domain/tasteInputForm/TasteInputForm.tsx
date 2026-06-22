@@ -34,6 +34,9 @@ export function TasteInputForm({
   isNextDisabled,
   onNext,
   guideMessage,
+  summary,
+  isNextLoading,
+  nextLoadingLabel,
 }: ITasteInputFormProps) {
   return (
     <div className="page-container section-wrapper">
@@ -76,12 +79,13 @@ export function TasteInputForm({
           className="w-full rounded-full bg-white py-3 pl-12 pr-5 text-sm shadow-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30"
         />
       </div>
-
       {guideMessage && (
-        <p className="type-title-lg keep-all mt-4 mb-12 text-center text-primary-container">
+        <p className="type-title-lg keep-all mt-4 mb-6 text-center text-primary-container">
           {guideMessage}
         </p>
       )}
+
+      {summary}
 
       <section className="min-h-[60vh]">{children}</section>
 
@@ -91,6 +95,8 @@ export function TasteInputForm({
         nextLabel="스타일 분석 시작하기"
         isNextDisabled={isNextDisabled}
         onNext={onNext}
+        isLoading={isNextLoading}
+        loadingLabel={nextLoadingLabel}
         isLastStep
       />
     </div>
