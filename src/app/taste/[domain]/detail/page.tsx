@@ -8,6 +8,8 @@ import { DomainGuard } from "@/components/domain/DomainGuard";
 import { MovieTasteCard } from "@/components/domain/movieTasteCard";
 import { MusicTasteCard } from "@/components/domain/musicTasteCard";
 import { TasteInputForm } from "@/components/domain/tasteInputForm";
+import { TasteSummary } from "@/components/domain/tasteSummary";
+import { getSelectionGuide } from "@/lib/taste/selectionGuide";
 import { useTasteStore } from "@/store/tasteStore";
 import type { Domain } from "@/types/taste";
 
@@ -64,20 +66,35 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
     if (domain === "fashion") router.replace("/taste/fashion");
   }, [domain, router]);
 
-  // 도메인별 선택 상태로 분기 (music/movie 영향 분리)
-  const isReady =
-    domain === "music"
-      ? musicSelections.length > 0
-      : domain === "movie"
-        ? movieSelections.length > 0
-        : false;
+  // 도메인별 선택 개수 (music/movie 영향 분리)
+  const selectionCount =
+    domain === "music" ? musicSelections.length : domain === "movie" ? movieSelections.length : 0;
+
+  const { isComplete, message } = getSelectionGuide(selectionCount);
 
   const [searchQuery, setSearchQuery] = useState("");
   const content = DETAIL_CONTENT[domain];
 
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
   const handleAnalyze = () => {
-    // TODO: 실제 분석 API 응답의 resultId 사용
+    if (isAnalyzing) return; // 중복 클릭 방지
+    setIsAnalyzing(true);
+    // TODO(#35): 실제 분석 API 응답의 resultId 사용
     router.push("/result/mock-1");
+  };
+
+  // 선택 요약 (#33) — 도메인별 라벨 매핑
+  const summaryItems =
+    domain === "music"
+      ? musicSelections.map((s) => ({ id: s.id, label: s.name }))
+      : domain === "movie"
+        ? movieSelections.map((s) => ({ id: String(s.id), label: s.title }))
+        : [];
+
+  const handleRemoveSelection = (id: string) => {
+    if (domain === "music") removeMusicSelection(id);
+    else if (domain === "movie") removeMovieSelection(Number(id));
   };
 
   const handleSelectArtist = (artist: (typeof MOCK_ARTISTS)[number]) => {
@@ -120,8 +137,12 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
         searchPlaceholder={content.searchPlaceholder}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        isNextDisabled={!isReady}
+        isNextDisabled={!isComplete}
         onNext={handleAnalyze}
+        guideMessage={message}
+        summary={<TasteSummary items={summaryItems} onRemove={handleRemoveSelection} />}
+        isNextLoading={isAnalyzing}
+        nextLoadingLabel="분석 중..."
       >
         {/* 2뎁스: TasteCard 그리드 */}
         <div className="grid-cols-responsive">
