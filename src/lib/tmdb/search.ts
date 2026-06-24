@@ -7,7 +7,6 @@ import { getBackdropUrl, getPosterUrl } from "./image";
 
 import type { TmdbGenreListResponse, TmdbSearchResponse } from "./types";
 
-
 // 장르 id→이름 맵 (모듈 캐시 — 매 검색마다 다시 안 부름)
 let genreMapCache: Map<number, string> | null = null;
 

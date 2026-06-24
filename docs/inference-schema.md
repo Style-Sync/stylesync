@@ -34,7 +34,7 @@ erDiagram
         string  id
         string  name
         string  image
-        array   genre        "string[]"
+        array   genres       "string[]"
         string  previewUrl   "nullable"
     }
 
@@ -49,12 +49,24 @@ erDiagram
 
     FashionSelection {
         array   styles       "string[]"
-        array   moods        "string[]"
+        array   fashionMoods "string[]"
+    }
+
+    StyleMood {
+        string  energy       "low | mid | high"
+        string  tone         "dark | neutral | bright"
+        string  aesthetic    "mainstream | indie | artistic | experimental"
+    }
+
+    StyleLabel {
+        string  title        "영문 스타일 이름 (max 30자)"
+        string  description  "한국어 감성 설명 (max 80자)"
+        string  themeColor   "파스텔 hex (#e6e6fa 등)"
+        object  mood         "StyleMood"
     }
 
     InferenceResponse {
-        string  styleLabel
-        string  description
+        object  styleLabel   "StyleLabel"
         array   music        "MusicRecommendation[]"
         array   movie        "MovieRecommendation[]"
         array   fashion      "FashionRecommendation[]"
@@ -76,16 +88,15 @@ erDiagram
     }
 
     FashionRecommendation {
-        string  id
-        string  name
+        string  keyword
         string  image
-        number  price
-        string  link
     }
 
-    InferenceRequest ||--o| MusicSelection    : "domain=music"
-    InferenceRequest ||--o| MovieSelection    : "domain=movie"
-    InferenceRequest ||--o| FashionSelection  : "domain=fashion"
+    InferenceRequest ||--|{ MusicSelection    : "domain=music (min 3)"
+    InferenceRequest ||--|{ MovieSelection    : "domain=movie (min 3)"
+    InferenceRequest ||--|{ FashionSelection  : "domain=fashion (min 1)"
+    StyleLabel ||--|| StyleMood             : "mood"
+    InferenceResponse ||--|| StyleLabel          : "styleLabel"
     InferenceResponse ||--|{ MusicRecommendation   : "music[]"
     InferenceResponse ||--|{ MovieRecommendation   : "movie[]"
     InferenceResponse ||--|{ FashionRecommendation : "fashion[]"
@@ -100,10 +111,11 @@ erDiagram
 | 필드명 | 타입 | 필수 | 설명 | 예시 |
 |---|---|:---:|---|---|
 | `domain` | `"music" \| "movie" \| "fashion"` | ✅ | 사용자가 선택한 추론 기준 도메인 | `"music"` |
-| `selections` | `MusicSelection \| MovieSelection \| FashionSelection` | ✅ | domain에 대응하는 취향 입력 객체 (discriminated union) | 아래 참조 |
-| `moods` | `string[]` | ✅ | 사용자가 선택한 감성 태그 목록 | `["몽환적", "차분한"]` |
+| `selections` | `MusicSelection[] \| MovieSelection[] \| FashionSelection[]` | ✅ | domain에 대응하는 취향 입력 배열 (discriminated union) · music/movie 최소 3개, fashion 최소 1개 | 아래 참조 |
+| `moods` | `string[]` | ✅ | 사용자가 선택한 감성 태그 목록 **최소 1개, 최대 5개** | `["몽환적", "차분한"]` |
 
-> `domain`과 `selections`의 타입은 반드시 일치해야 합니다. `domain: "music"`이면 `selections`는 `MusicSelection`이어야 합니다.
+> `domain`과 `selections`의 타입은 반드시 일치해야 합니다. `domain: "music"`이면 `selections`는 `MusicSelection[]`이어야 합니다.
+> `moods` 배열이 비어 있거나 6개 이상이면 `safeParseRequest()`가 실패합니다.
 
 ---
 
@@ -114,7 +126,7 @@ erDiagram
 | `id` | `string` | ✅ | Spotify 아티스트/트랙 ID | `"4Z8W4fKeB5YxbusRsdQVPb"` |
 | `name` | `string` | ✅ | 아티스트 또는 트랙명 | `"Radiohead"` |
 | `image` | `string` | ✅ | 커버 이미지 URL | `"https://i.scdn.co/..."` |
-| `genre` | `string[]` | ✅ | 장르 목록 | `["alternative rock", "art rock"]` |
+| `genres` | `string[]` | ✅ | 장르 목록 | `["alternative rock", "art rock"]` |
 | `previewUrl` | `string \| null` | ✅ | 30초 미리 듣기 URL (없으면 null) | `"https://p.scdn.co/..."` |
 
 ---
@@ -136,8 +148,10 @@ erDiagram
 
 | 필드명 | 타입 | 필수 | 설명 | 예시 |
 |---|---|:---:|---|---|
-| `styles` | `string[]` | ✅ | 선택한 스타일 키워드 목록 | `["미니멀", "스트릿"]` |
-| `moods` | `string[]` | ✅ | 패션 도메인 전용 감성 태그 | `["시크한", "캐주얼한"]` |
+| `styles` | `string[]` | ✅ | 선택한 스타일 키워드 목록 (각 항목 1자 이상) | `["미니멀", "스트릿"]` |
+| `fashionMoods` | `string[]` | ✅ | 패션 도메인 전용 감성 태그 **최소 1개** (각 항목 1자 이상) | `["시크한", "캐주얼한"]` |
+
+> `fashionMoods`는 최상위 `InferenceRequest.moods`(크로스도메인 감성 태그)와 별개입니다. `fashionMoods`는 패션 아이템의 무드 설명, `moods`는 전체 스타일 정체성의 감성 태그입니다.
 
 ---
 
@@ -145,11 +159,29 @@ erDiagram
 
 | 필드명 | 타입 | 필수 | 설명 | 예시 |
 |---|---|:---:|---|---|
-| `styleLabel` | `string` | ✅ | AI가 도출한 크로스 도메인 스타일 레이블 | `"Cinematic Minimalist"` |
-| `description` | `string` | ✅ | 스타일 레이블에 대한 설명 문장 | `"조용하지만 강렬한 서사를 담은 ..."` |
-| `music` | `MusicRecommendation[]` | ✅ | 음악 추천 카드 목록 | 아래 참조 |
-| `movie` | `MovieRecommendation[]` | ✅ | 영화 추천 카드 목록 | 아래 참조 |
-| `fashion` | `FashionRecommendation[]` | ✅ | 패션 추천 카드 목록 | 아래 참조 |
+| `styleLabel` | `StyleLabel` | ✅ | AI가 도출한 크로스 도메인 스타일 레이블 객체 | 아래 참조 |
+| `music` | `MusicRecommendation[]` | ✅ | 음악 추천 카드 목록 · 최대 10개, 빈 배열 허용 | 아래 참조 |
+| `movie` | `MovieRecommendation[]` | ✅ | 영화 추천 카드 목록 · 최대 10개, 빈 배열 허용 | 아래 참조 |
+| `fashion` | `FashionRecommendation[]` | ✅ | 패션 추천 카드 목록 · 최대 10개, 빈 배열 허용 | 아래 참조 |
+
+---
+
+### StyleLabel
+
+| 필드명 | 타입 | 필수 | 설명 | 예시 |
+|---|---|:---:|---|---|
+| `title` | `string` | ✅ | 영문 스타일 정체성 이름 (Grok 생성) · 최대 30자, 단어 첫 글자 대문자 | `"Melancholic Softboy"` |
+| `description` | `string` | ✅ | 한국어 감성 설명 2-3문장 · 최대 80자 | `"감성적이고 내향적인 무드..."` |
+| `themeColor` | `string` | ✅ | 공유 카드 배경 파스텔 hex (Grok 지정) | `"#e6e6fa"` |
+| `mood` | `StyleMood` | ✅ | Grok 3축 감성 태그 | 아래 참조 |
+
+### StyleMood
+
+| 필드명 | 타입 | 필수 | 설명 |
+|---|---|:---:|---|
+| `energy` | `"low" \| "mid" \| "high"` | ✅ | 에너지 레벨 |
+| `tone` | `"dark" \| "neutral" \| "bright"` | ✅ | 전반적 톤 |
+| `aesthetic` | `"mainstream" \| "indie" \| "artistic" \| "experimental"` | ✅ | 감성 계열 |
 
 ---
 
@@ -178,13 +210,12 @@ erDiagram
 
 ### FashionRecommendation
 
+> Unsplash API 연동 구조: `keyword`로 Unsplash 검색 → `image` URL 수신. `photographerName`/`photographerUrl`은 Unsplash wrapper에서 결과 페이지 렌더링 시 추가.
+
 | 필드명 | 타입 | 필수 | 설명 | 예시 |
 |---|---|:---:|---|---|
-| `id` | `string` | ✅ | 상품 고유 ID | `"item_001"` |
-| `name` | `string` | ✅ | 상품명 | `"오버핏 블랙 코트"` |
-| `image` | `string` | ✅ | 상품 이미지 URL | `"https://unsplash.com/..."` |
-| `price` | `number` | ✅ | 가격 (원 단위) | `89000` |
-| `link` | `string` | ✅ | 상품 상세 페이지 URL | `"https://..."` |
+| `keyword` | `string` | ✅ | Unsplash 검색 키워드 (Grok이 반환) | `"oversized denim jacket"` |
+| `image` | `string` | ✅ | Unsplash 이미지 URL (placeholder → 실제 연동 시 대체) | `"https://placehold.co/400x500"` |
 
 ---
 
@@ -201,5 +232,5 @@ POST /api/inference { domain, selections, moods }
     ↓
 Grok AI 추론
     ↓
-{ styleLabel, description, music[], movie[], fashion[] }
+{ styleLabel: { title, description, themeColor, mood }, music[], movie[], fashion[] }
 ```

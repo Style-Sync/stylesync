@@ -31,10 +31,6 @@ export type FashionRecommendation = {
 };
 
 export type InferenceResponse = {
-  /**
-   * Grok이 생성한 스타일 레이블
-   * title, description, themeColor, mood 포함
-   */
   styleLabel: StyleLabel;
   music: MusicRecommendation[];
   movie: MovieRecommendation[];
@@ -42,3 +38,18 @@ export type InferenceResponse = {
 };
 
 export type { Domain };
+
+// ─── Utility types ────────────────────────────────────────────────────────────
+
+export type { StyleLabel };
+
+export type InferenceResult = InferenceResponse & {
+  id: string;
+  createdAt: string;
+};
+
+// ─── Service interface ────────────────────────────────────────────────────────
+
+export interface IInferenceService {
+  call(request: InferenceRequest): Promise<InferenceResult>;
+}

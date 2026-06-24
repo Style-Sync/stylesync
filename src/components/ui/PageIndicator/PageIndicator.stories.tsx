@@ -4,7 +4,6 @@ import { PageIndicator } from "./PageIndicator";
 
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-
 const meta: Meta<typeof PageIndicator> = {
   title: "Layout/PageIndicator",
   component: PageIndicator,
