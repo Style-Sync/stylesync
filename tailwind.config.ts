@@ -86,6 +86,21 @@ const config: Config = {
       letterSpacing: {
         kerning: "-0.04em",
       },
+      keyframes: {
+        wink: {
+          "0%, 100%": { transform: "scaleY(1)" },
+          "45%, 55%": { transform: "scaleY(0.05)" },
+        },
+        // Equalizer bar — 재생 중 시각화. transform-origin: bottom 으로 아래에서 차오름.
+        eqBar: {
+          "0%, 100%": { transform: "scaleY(0.3)" },
+          "50%": { transform: "scaleY(1)" },
+        },
+      },
+      animation: {
+        wink: "wink 0.5s ease-in-out",
+        "eq-bar": "eqBar 0.9s ease-in-out infinite",
+      },
     },
   },
   plugins: [require("@tailwindcss/container-queries")],

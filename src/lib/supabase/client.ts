@@ -1,12 +1,17 @@
 import { createBrowserClient } from "@supabase/ssr";
 
-/**
- * 브라우저(Client Component)용 Supabase 클라이언트
- * "use client" 컴포넌트 또는 커스텀 훅 내부에서 사용
- */
-export function createClient() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-}
+export const createSupabaseBrowserClient = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabasePublishableKey =
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabasePublishableKey) {
+    throw new Error("Missing Supabase browser environment variables");
+  }
+
+  return createBrowserClient(supabaseUrl, supabasePublishableKey);
+};
+
+export const createClient = () => {
+  return createSupabaseBrowserClient();
+};

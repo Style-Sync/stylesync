@@ -1,0 +1,1 @@
+export { TasteInputForm } from "./TasteInputForm";
