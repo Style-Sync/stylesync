@@ -1,16 +1,15 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import { RecommendCard } from "@/components/result/recommendCard";
 import { ResultPageError } from "@/components/result/ResultPageError";
-import { ResultPageSkeleton } from "@/components/result/ResultPageSkeleton";
 import { ShareCard } from "@/components/result/shareCard";
 import { StyleLabelHero } from "@/components/result/styleLabel";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/Icon";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
-import type { StyleResult } from "@/types/result";
+import { useResultStore } from "@/store/resultStore";
 
 // X(Twitter) 아이콘 — Icon 레지스트리에 없어서 인라인 처리
 const XIcon = () => (
@@ -19,46 +18,13 @@ const XIcon = () => (
   </svg>
 );
 
-// ── Mock data (shell 단계 — 실제 API 연동 시 제거) ───────────────────────────
-const MOCK_RESULT: StyleResult = {
-  id: "mock-1",
-  styleLabel: {
-    title: "Melancholic Softboy",
-    description:
-      "향수 어린 빈티지 미학과 현대적인 감수성이 정교하게 어우러진 스타일입니다. 차분한 어스 톤과 오버사이즈 실루엣이 당신의 정체성을 정의합니다.",
-    themeColor: "#e6e6fa",
-    mood: { energy: "low", tone: "dark", aesthetic: "indie" },
-  },
-  music: [
-    { id: "1", name: "Blonde", artist: "Frank Ocean", image: "", previewUrl: null },
-    { id: "2", name: "Ivy", artist: "Frank Ocean", image: "", previewUrl: null },
-    { id: "3", name: "Nights", artist: "Frank Ocean", image: "", previewUrl: null },
-  ],
-  movie: [
-    { id: 1, title: "Call Me By Your Name", posterPath: "", genres: ["Drama", "Romance"] },
-    { id: 2, title: "Moonlight", posterPath: "", genres: ["Drama"] },
-    { id: 3, title: "Lost in Translation", posterPath: "", genres: ["Drama"] },
-  ],
-  fashion: [
-    { keyword: "Oversized Earth Tone Coat", image: "" },
-    { keyword: "Minimal Monochrome Set", image: "" },
-    { keyword: "Soft Denim Layer", image: "" },
-  ],
-  createdAt: new Date().toISOString(),
-};
-
-// ─────────────────────────────────────────────────────────────────────────────
-
 interface IResultPageProps {
   params: { id: string };
 }
 
-export default function ResultPage({ params: _params }: IResultPageProps) {
-  // TODO: _params.id로 API에서 실제 데이터 fetch
-  const [isLoading] = useState(false);
-  const [error] = useState<string | null>(null);
+export default function ResultPage({ params }: IResultPageProps) {
+  const result = useResultStore((s) => s.results[params.id]);
 
-  const { styleLabel, music, movie, fashion } = MOCK_RESULT;
   const { playingUrl, isPlaying: isAudioPlaying, toggle } = useAudioPlayer();
 
   const handleReanalyze = useCallback(() => {
@@ -69,8 +35,11 @@ export default function ResultPage({ params: _params }: IResultPageProps) {
     // TODO: 공유 카드 모달 연결
   }, []);
 
-  if (isLoading) return <ResultPageSkeleton />;
-  if (error) return <ResultPageError message={error} />;
+  if (!result) {
+    return <ResultPageError message="결과를 찾을 수 없어요. 다시 분석해 주세요." />;
+  }
+
+  const { styleLabel, music, movie, fashion } = result;
 
   return (
     <div className="bg-background">
