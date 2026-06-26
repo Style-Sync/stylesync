@@ -3,23 +3,27 @@ import "server-only";
 import type { MusicSelection } from "@/types/taste";
 
 import { spotifyFetch } from "./client";
+import { getArtistPreviewUrl } from "./preview";
 
 import type { SpotifySearchResponse } from "./types";
 
 const buildSearchPath = (query: string, type: "artist" | "track", limit: number) =>
   `/search?q=${encodeURIComponent(query)}&type=${type}&limit=${limit}`;
 
-// 아티스트 검색 → MusicSelection 형태로 정규화 (store와 동일 타입)
+// 아티스트 검색 → MusicSelection 형태로 정규화. iTunes API로 previewUrl 보강
 export const searchArtists = async (query: string, limit = 12): Promise<MusicSelection[]> => {
   const data = await spotifyFetch<SpotifySearchResponse>(buildSearchPath(query, "artist", limit));
+  const artists = data.artists?.items ?? [];
 
-  return (data.artists?.items ?? []).map((artist) => ({
-    id: artist.id,
-    name: artist.name,
-    image: artist.images[0]?.url ?? "",
-    genres: artist.genres,
-    previewUrl: null, // 아티스트엔 preview 없음 → #43에서 top-track으로 보강
-  }));
+  return Promise.all(
+    artists.map(async (artist) => ({
+      id: artist.id,
+      name: artist.name,
+      image: artist.images[0]?.url ?? "",
+      genres: artist.genres,
+      previewUrl: await getArtistPreviewUrl(artist.name),
+    }))
+  );
 };
 
 export type SpotifyTrackResult = {

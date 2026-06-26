@@ -1,20 +1,21 @@
 import "server-only";
 
-import { spotifyFetch } from "./client";
-
-type SpotifyTopTracksResponse = {
-  tracks: { id: string; name: string; preview_url: string | null }[];
+type ItunesSearchResponse = {
+  results: { previewUrl?: string }[];
 };
 
-// 아티스트 top-tracks 중 첫 번째 preview_url 반환 (없으면 null)
 export const getArtistPreviewUrl = async (
-  artistId: string,
-  market = "US"
+  artistName: string,
+  country = "KR"
 ): Promise<string | null> => {
-  const data = await spotifyFetch<SpotifyTopTracksResponse>(
-    `/artists/${artistId}/top-tracks?market=${market}`
-  );
+  const url = `https://itunes.apple.com/search?term=${encodeURIComponent(artistName)}&entity=song&limit=5&country=${country}`;
 
-  const trackWithPreview = data.tracks.find((track) => track.preview_url);
-  return trackWithPreview?.preview_url ?? null;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const data: ItunesSearchResponse = await res.json();
+    return data.results.find((r) => r.previewUrl)?.previewUrl ?? null;
+  } catch {
+    return null;
+  }
 };
