@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { enrichResponseWithTmdb } from "@/lib/inference/enrichResponse";
 import { getMockByDomain } from "@/lib/inference/inference.mocks";
 import { safeParseRequest, safeParseResponse } from "@/lib/inference/inference.schema";
 import type { InferenceResult } from "@/lib/inference/inference.types";
@@ -22,8 +23,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "추론 응답 검증에 실패했습니다." }, { status: 500 });
   }
 
+  // #78 — 영화 항목의 posterPath를 TMDB 검색으로 채움 (mock prefix 또는 빈 값 대상)
+  const enriched = await enrichResponseWithTmdb(parsedRes.data);
+
   const result: InferenceResult = {
-    ...parsedRes.data,
+    ...enriched,
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
   };
