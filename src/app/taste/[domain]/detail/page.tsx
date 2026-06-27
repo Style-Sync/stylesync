@@ -8,6 +8,9 @@ import { DomainGuard } from "@/components/domain/DomainGuard";
 import { MovieTasteCard } from "@/components/domain/movieTasteCard";
 import { MusicTasteCard } from "@/components/domain/musicTasteCard";
 import { TasteInputForm } from "@/components/domain/tasteInputForm";
+import { useInference } from "@/hooks/useInference";
+import { buildInferenceRequest } from "@/lib/inference/normalizeRequest";
+import { useResultStore } from "@/store/resultStore";
 import { useTasteStore } from "@/store/tasteStore";
 import type { Domain } from "@/types/taste";
 
@@ -58,6 +61,10 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
   const removeMusicSelection = useTasteStore((s) => s.removeMusicSelection);
   const addMovieSelection = useTasteStore((s) => s.addMovieSelection);
   const removeMovieSelection = useTasteStore((s) => s.removeMovieSelection);
+  const fashionSelections = useTasteStore((s) => s.fashionSelections);
+  const selectedStyles = useTasteStore((s) => s.selectedStyles);
+  const saveResult = useResultStore((s) => s.saveResult);
+  const { infer, isLoading: isAnalyzing } = useInference();
 
   // fashion은 2뎁스 미사용 → 1뎁스로 되돌림 (렌더 중 호출 X, useEffect)
   useEffect(() => {
@@ -75,9 +82,23 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const content = DETAIL_CONTENT[domain];
 
-  const handleAnalyze = () => {
-    // TODO: 실제 분석 API 응답의 resultId 사용
-    router.push("/result/mock-1");
+  const handleAnalyze = async () => {
+    try {
+      const request = buildInferenceRequest({
+        domain,
+        musicSelections,
+        movieSelections,
+        fashionSelections,
+        selectedStyles,
+      });
+      const result = await infer(request);
+      saveResult(result);
+      router.push(`/result/${result.id}`);
+    } catch (e) {
+      // 정규화 실패(예: 3개 미만) 또는 API 실패
+      console.error(e);
+      alert(e instanceof Error ? e.message : "분석에 실패했습니다.");
+    }
   };
 
   const handleSelectArtist = (artist: (typeof MOCK_ARTISTS)[number]) => {
@@ -120,7 +141,7 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
         searchPlaceholder={content.searchPlaceholder}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        isNextDisabled={!isReady}
+        isNextDisabled={!isReady || isAnalyzing}
         onNext={handleAnalyze}
       >
         {/* 2뎁스: TasteCard 그리드 */}
