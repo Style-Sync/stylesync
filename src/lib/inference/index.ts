@@ -27,3 +27,6 @@ export {
 } from "./inference.mocks";
 
 export { SYSTEM_PROMPT, buildUserPrompt } from "./inference.prompts";
+
+export { callGrok } from "@/lib/grok";
+export type { GrokMessage } from "@/lib/grok";
