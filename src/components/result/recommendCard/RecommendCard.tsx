@@ -65,31 +65,49 @@ const MusicCardContent = ({
         </div>
       </div>
 
-      {/* ── 30S PREVIEW 버튼 ─────────────────────────────────────────────── */}
+      {/* ── PREVIEW / Spotify fallback 버튼 ───────────────────────────────── */}
       <div className="px-5 pb-5 lg:px-10 lg:pb-10">
-        <button
-          type="button"
-          onClick={hasPreview ? onPreviewClick : undefined}
-          disabled={!hasPreview}
-          aria-label={hasPreview ? `${title} 30초 미리듣기` : "미리듣기를 사용할 수 없습니다"}
-          className={[
-            // rounded = DEFAULT = 1rem = 16px (design system token)
-            "w-full h-[33px] lg:h-[57px] rounded",
-            "flex items-center justify-center gap-3",
-            "font-korean font-medium text-body-sm text-on-background",
-            "transition-all duration-200",
-            hasPreview
-              ? "bg-surface hover:bg-surface/80 active:scale-[0.98]"
-              : "bg-surface/40 cursor-not-allowed opacity-50",
-          ].join(" ")}
-        >
-          {isPlaying ? (
-            <EqualizerBars size="sm" className="text-on-background" />
-          ) : (
+        {hasPreview ? (
+          <button
+            type="button"
+            onClick={onPreviewClick}
+            aria-label={`${title} 30초 미리듣기`}
+            className={[
+              "w-full h-[33px] lg:h-[57px] rounded",
+              "flex items-center justify-center gap-3",
+              "font-korean font-medium text-body-sm text-on-background",
+              "transition-all duration-200",
+              "bg-surface hover:bg-surface/80 active:scale-[0.98]",
+            ].join(" ")}
+          >
+            {isPlaying ? (
+              <EqualizerBars size="sm" className="text-on-background" />
+            ) : (
+              <Icon name="play" size={12} />
+            )}
+            <span className="tracking-widest uppercase">
+              {isPlaying ? "PLAYING" : "30S PREVIEW"}
+            </span>
+          </button>
+        ) : (
+          // #76 — iTunes preview 없을 시 Spotify 검색 페이지로 fallback (FT-002 명세)
+          <a
+            href={`https://open.spotify.com/search/${encodeURIComponent(`${subtitle ?? ""} ${title}`.trim())}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${title}을(를) Spotify에서 듣기`}
+            className={[
+              "w-full h-[33px] lg:h-[57px] rounded",
+              "flex items-center justify-center gap-3",
+              "font-korean font-medium text-body-sm text-on-background",
+              "transition-all duration-200",
+              "bg-surface hover:bg-surface/80 active:scale-[0.98]",
+            ].join(" ")}
+          >
             <Icon name="play" size={12} />
-          )}
-          <span className="tracking-widest uppercase">{isPlaying ? "PLAYING" : "30S PREVIEW"}</span>
-        </button>
+            <span className="tracking-widest uppercase">OPEN IN SPOTIFY</span>
+          </a>
+        )}
       </div>
     </>
   );
