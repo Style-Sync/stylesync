@@ -23,6 +23,11 @@ const SearchIcon = () => (
   </svg>
 );
 
+function getSelectionMessage(count: number, max: number): { text: string; done: boolean } {
+  if (count >= max) return { text: "완벽해요! 분석을 시작할게요", done: true };
+  return { text: `${max - count}개 더 선택해주세요`, done: false };
+}
+
 export function TasteInputForm({
   title,
   description,
@@ -33,7 +38,11 @@ export function TasteInputForm({
   children,
   isNextDisabled,
   onNext,
+  selectionCount,
+  maxSelections = 3,
 }: ITasteInputFormProps) {
+  const selectionMsg =
+    selectionCount !== undefined ? getSelectionMessage(selectionCount, maxSelections) : null;
   return (
     <div className="page-container section-wrapper">
       <header className="mb-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
@@ -77,6 +86,16 @@ export function TasteInputForm({
       </div>
 
       <section className="min-h-[60vh]">{children}</section>
+
+      {selectionMsg && (
+        <p
+          className={`mb-2 text-center text-sm font-medium ${
+            selectionMsg.done ? "text-primary-container" : "text-stone-400"
+          }`}
+        >
+          {selectionMsg.text}
+        </p>
+      )}
 
       <BottomNav
         prevPath={`/taste/${domain}`}

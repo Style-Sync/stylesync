@@ -71,13 +71,10 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
     if (domain === "fashion") router.replace("/taste/fashion");
   }, [domain, router]);
 
-  // 도메인별 선택 상태로 분기 (music/movie 영향 분리)
-  const isReady =
-    domain === "music"
-      ? musicSelections.length > 0
-      : domain === "movie"
-        ? movieSelections.length > 0
-        : false;
+  const selectionCount =
+    domain === "music" ? musicSelections.length : domain === "movie" ? movieSelections.length : 0;
+
+  const isReady = selectionCount >= 3;
 
   const [searchQuery, setSearchQuery] = useState("");
   const content = DETAIL_CONTENT[domain];
@@ -143,6 +140,7 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
         onSearchChange={setSearchQuery}
         isNextDisabled={!isReady || isAnalyzing}
         onNext={handleAnalyze}
+        selectionCount={selectionCount}
       >
         {/* 2뎁스: TasteCard 그리드 */}
         <div className="grid-cols-responsive">
