@@ -32,7 +32,6 @@ const FashionSelectionSchema = z.object({
   styles: z
     .array(z.string().min(1, { message: "스타일 항목은 비어있을 수 없습니다" }))
     .min(1, { message: "스타일은 최소 1개 이상 선택해주세요" }),
-  fashionMoods: z.array(MoodSchema).min(1, { message: "패션 무드는 최소 1개 이상 선택해주세요" }),
 });
 
 // ─── Request ──────────────────────────────────────────────────────────────────

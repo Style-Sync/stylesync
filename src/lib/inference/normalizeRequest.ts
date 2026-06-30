@@ -47,11 +47,10 @@ export const buildInferenceRequest = (args: BuildArgs): InferenceRequest => {
       moods: selectedStyles.movie ? [selectedStyles.movie] : [],
     };
   } else {
-    const fashion = args.fashionSelections[0] ?? { styles: [], fashionMoods: [] };
     candidate = {
       domain: "fashion",
       selections: args.fashionSelections,
-      moods: fashion.fashionMoods,
+      moods: selectedStyles.fashion ? [selectedStyles.fashion] : [],
     };
   }
 

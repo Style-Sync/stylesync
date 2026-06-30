@@ -25,7 +25,7 @@ export const useStepValidation = () => {
     if (selectedDomain === "fashion") {
       const first = fashionSelections[0];
       if (!first) return false;
-      return first.styles.length > 0 || first.fashionMoods.length > 0;
+      return first.styles.length > 0;
     }
     return false;
   })();

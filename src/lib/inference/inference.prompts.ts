@@ -128,7 +128,7 @@ moods 키워드가 selections보다 우선순위가 높습니다.
 }
 
 [예시 3 — 패션 취향 입력]
-입력: 패션 취향 — 스타일: 스트릿, 오버핏 / 무드: 캐주얼한, 자유로운 / 감성 태그: 활기찬, 강렬한
+입력: 패션 취향 — 스타일: 스트릿, 오버핏 / 감성 태그: 활기찬, 강렬한
 출력:
 {
   "styleLabel": {
@@ -171,12 +171,7 @@ export function buildUserPrompt(req: InferenceRequest): string {
 
   if (req.domain === "fashion") {
     const styles = Array.from(new Set(req.selections.flatMap((s) => s.styles))).join(", ");
-    const fashionMoods = Array.from(new Set(req.selections.flatMap((s) => s.fashionMoods))).join(
-      ", "
-    );
-    return [`패션 취향 — 스타일: ${styles}`, `무드: ${fashionMoods}`, `감성 태그: ${moods}`].join(
-      " / "
-    );
+    return [`패션 취향 — 스타일: ${styles}`, `감성 태그: ${moods}`].join(" / ");
   }
 
   const _exhaustive: never = req;

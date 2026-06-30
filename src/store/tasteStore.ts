@@ -18,7 +18,6 @@ type TasteStore = {
   addMovieSelection: (item: MovieSelection) => void;
   removeMovieSelection: (id: number) => void;
   setFashionStyles: (styles: string[]) => void;
-  setFashionMoods: (moods: string[]) => void;
   reset: () => void;
 };
 
@@ -27,7 +26,7 @@ const initialState = {
   selectedStyles: {} as Partial<Record<Domain, string>>,
   musicSelections: [],
   movieSelections: [],
-  fashionSelections: [{ styles: [], fashionMoods: [] }] as FashionSelection[],
+  fashionSelections: [{ styles: [] }] as FashionSelection[],
 };
 
 export const useTasteStore = create<TasteStore>()(
@@ -69,11 +68,6 @@ export const useTasteStore = create<TasteStore>()(
       setFashionStyles: (styles) =>
         set((state) => ({
           fashionSelections: [{ ...state.fashionSelections[0], styles }],
-        })),
-
-      setFashionMoods: (moods) =>
-        set((state) => ({
-          fashionSelections: [{ ...state.fashionSelections[0], fashionMoods: moods }],
         })),
 
       reset: () => set(initialState),
