@@ -1,52 +1,21 @@
 import type { StyleLabel } from "@/types/result";
-import type { Domain, MusicSelection, MovieSelection, FashionSelection } from "@/types/taste";
+import type { Domain } from "@/types/taste";
 
-// ─── Request ──────────────────────────────────────────────────────────────────
+import type { InferenceRequest, InferenceResult } from "./inference.schema";
 
-export type InferenceRequest =
-  | { domain: "music"; selections: MusicSelection[]; moods: string[] }
-  | { domain: "movie"; selections: MovieSelection[]; moods: string[] }
-  | { domain: "fashion"; selections: FashionSelection[]; moods: string[] };
-
-// ─── Response ─────────────────────────────────────────────────────────────────
-
-export type MusicRecommendation = {
-  id: string;
-  name: string;
-  artist: string;
-  image: string;
-  previewUrl: string | null;
-};
-
-export type MovieRecommendation = {
-  id: number;
-  title: string;
-  posterPath: string;
-  genres: string[];
-};
-
-export type FashionRecommendation = {
-  keyword: string;
-  image: string;
-};
-
-export type InferenceResponse = {
-  styleLabel: StyleLabel;
-  music: MusicRecommendation[];
-  movie: MovieRecommendation[];
-  fashion: FashionRecommendation[];
-};
-
-export type { Domain };
+export type {
+  MusicRecommendation,
+  MovieRecommendation,
+  FashionRecommendation,
+  InferenceRequest,
+  InferenceResponse,
+  InferenceResult,
+} from "./inference.schema";
 
 // ─── Utility types ────────────────────────────────────────────────────────────
 
+export type { Domain };
 export type { StyleLabel };
-
-export type InferenceResult = InferenceResponse & {
-  id: string;
-  createdAt: string;
-};
 
 // ─── Service interface ────────────────────────────────────────────────────────
 
