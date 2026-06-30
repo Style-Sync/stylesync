@@ -1,5 +1,5 @@
 import type { StyleLabel } from "@/types/result";
-import type { Domain, MusicSelection, MovieSelection, FashionSelection } from "@/types/taste";
+import type { MusicSelection, MovieSelection, FashionSelection } from "@/types/taste";
 
 // ─── Request ──────────────────────────────────────────────────────────────────
 
@@ -36,8 +36,6 @@ export type InferenceResponse = {
   movie: MovieRecommendation[];
   fashion: FashionRecommendation[];
 };
-
-export type { Domain };
 
 // ─── Utility types ────────────────────────────────────────────────────────────
 
