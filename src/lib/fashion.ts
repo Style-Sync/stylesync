@@ -1,2 +1,2 @@
-// TODO: Google Custom Search (패션 이미지)
-export {};
+export { searchFashionImages } from "./unsplash/search";
+export type { FashionImageResult } from "./unsplash/types";
