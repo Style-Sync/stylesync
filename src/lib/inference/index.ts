@@ -29,5 +29,7 @@ export { SYSTEM_PROMPT, buildUserPrompt } from "./inference.prompts";
 
 export { parseInferenceResponse } from "./inference.parser";
 
+export { normalizeInferenceResponse } from "./inference.normalize";
+
 export { callGrok } from "@/lib/grok";
 export type { GrokMessage } from "@/lib/grok";
