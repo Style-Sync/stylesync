@@ -1,6 +1,8 @@
+import type { Domain } from "@/types/taste";
+
 import { InferenceResponseSchema } from "./inference.schema";
 
-import type { Domain, InferenceResponse } from "./inference.types";
+import type { InferenceResponse } from "./inference.types";
 
 // ─── Music ────────────────────────────────────────────────────────────────────
 

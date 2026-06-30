@@ -123,6 +123,15 @@ export const InferenceResultSchema = InferenceResponseSchema.extend({
   createdAt: z.string(),
 });
 
+// ─── Derived types ────────────────────────────────────────────────────────────
+
+export type MusicRecommendation = z.infer<typeof MusicRecommendationSchema>;
+export type MovieRecommendation = z.infer<typeof MovieRecommendationSchema>;
+export type FashionRecommendation = z.infer<typeof FashionRecommendationSchema>;
+export type InferenceRequest = z.infer<typeof InferenceRequestSchema>;
+export type InferenceResponse = z.infer<typeof InferenceResponseSchema>;
+export type InferenceResult = z.infer<typeof InferenceResultSchema>;
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 export function safeParseRequest(input: unknown) {
