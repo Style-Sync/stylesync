@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -12,7 +12,7 @@ import { useInference } from "@/hooks/useInference";
 import { buildInferenceRequest } from "@/lib/inference/normalizeRequest";
 import { useResultStore } from "@/store/resultStore";
 import { useTasteStore } from "@/store/tasteStore";
-import type { Domain } from "@/types/taste";
+import type { Domain, MovieSelection, MusicSelection } from "@/types/taste";
 
 interface ITasteDetailPageProps {
   params: { domain: string };
@@ -38,19 +38,6 @@ const DETAIL_CONTENT: Record<
   fashion: { titleMain: "", description: "", searchPlaceholder: "" },
 };
 
-// 2뎁스 mock 카드 데이터 (TODO: #41 Spotify 검색 / #44 TMDB 연동으로 교체)
-const MOCK_ARTISTS = [
-  { id: "1", title: "NewJeans", genre: "Y2K Pop", imageUrl: "" },
-  { id: "2", title: "Keshi", genre: "Lo-fi", imageUrl: "" },
-  { id: "3", title: "IU", genre: "Ballad", imageUrl: "" },
-];
-
-const MOCK_MOVIES = [
-  { id: 1, title: "Interstellar", genre: "Sci-Fi", imageUrl: "" },
-  { id: 2, title: "La La Land", genre: "Romance", imageUrl: "" },
-  { id: 3, title: "Parasite", genre: "Thriller", imageUrl: "" },
-];
-
 export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
   const router = useRouter();
   const domain = params.domain as Domain;
@@ -66,18 +53,58 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
   const saveResult = useResultStore((s) => s.saveResult);
   const { infer, isLoading: isAnalyzing } = useInference();
 
-  // fashion은 2뎁스 미사용 → 1뎁스로 되돌림 (렌더 중 호출 X, useEffect)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<MusicSelection[] | MovieSelection[]>([]);
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
+
+  // fashion은 2뎁스 미사용 → 1뎁스로 되돌림
   useEffect(() => {
     if (domain === "fashion") router.replace("/taste/fashion");
   }, [domain, router]);
+
+  const fetchResults = useCallback(
+    async (query: string) => {
+      if (!query.trim()) {
+        setSearchResults([]);
+        return;
+      }
+
+      setIsSearchLoading(true);
+      setSearchError(null);
+
+      try {
+        const endpoint =
+          domain === "music"
+            ? `/api/spotify?q=${encodeURIComponent(query)}&type=artist`
+            : `/api/tmdb?q=${encodeURIComponent(query)}`;
+
+        const res = await fetch(endpoint);
+        if (!res.ok) throw new Error("검색에 실패했습니다.");
+        const data = await res.json();
+        setSearchResults(data.results ?? []);
+      } catch (e) {
+        setSearchError(e instanceof Error ? e.message : "검색에 실패했습니다.");
+        setSearchResults([]);
+      } finally {
+        setIsSearchLoading(false);
+      }
+    },
+    [domain]
+  );
+
+  // 300ms 디바운스 검색
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchResults(searchQuery);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery, fetchResults]);
 
   const selectionCount =
     domain === "music" ? musicSelections.length : domain === "movie" ? movieSelections.length : 0;
 
   const isReady = selectionCount >= 3;
-
-  const [searchQuery, setSearchQuery] = useState("");
-  const content = DETAIL_CONTENT[domain];
 
   const handleAnalyze = async () => {
     try {
@@ -92,42 +119,30 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
       saveResult(result);
       router.push(`/result/${result.id}`);
     } catch (e) {
-      // 정규화 실패(예: 3개 미만) 또는 API 실패
       console.error(e);
       alert(e instanceof Error ? e.message : "분석에 실패했습니다.");
     }
   };
 
-  const handleSelectArtist = (artist: (typeof MOCK_ARTISTS)[number]) => {
+  const handleSelectArtist = (artist: MusicSelection) => {
     if (musicSelections.some((item) => item.id === artist.id)) {
       removeMusicSelection(artist.id);
-      return;
+    } else {
+      addMusicSelection(artist);
     }
-    addMusicSelection({
-      id: artist.id,
-      name: artist.title,
-      image: artist.imageUrl,
-      genres: [artist.genre],
-      previewUrl: "",
-    });
   };
 
-  const handleSelectMovie = (movie: (typeof MOCK_MOVIES)[number]) => {
+  const handleSelectMovie = (movie: MovieSelection) => {
     if (movieSelections.some((item) => item.id === movie.id)) {
       removeMovieSelection(movie.id);
-      return;
+    } else {
+      addMovieSelection(movie);
     }
-    addMovieSelection({
-      id: movie.id,
-      title: movie.title,
-      posterPath: movie.imageUrl,
-      backdropPath: "",
-      genres: [movie.genre],
-      releaseYear: 2024,
-    });
   };
 
   if (domain === "fashion") return null;
+
+  const content = DETAIL_CONTENT[domain];
 
   return (
     <DomainGuard domain={params.domain}>
@@ -142,29 +157,50 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
         onNext={handleAnalyze}
         selectionCount={selectionCount}
       >
-        {/* 2뎁스: TasteCard 그리드 */}
         <div className="grid-cols-responsive">
+          {isSearchLoading && (
+            <p className="col-span-full py-10 text-center text-sm text-stone-400">검색 중...</p>
+          )}
+
+          {!isSearchLoading && searchError && (
+            <p className="col-span-full py-10 text-center text-sm text-red-400">{searchError}</p>
+          )}
+
+          {!isSearchLoading && !searchError && searchQuery && searchResults.length === 0 && (
+            <p className="col-span-full py-10 text-center text-sm text-stone-400">
+              검색 결과가 없습니다.
+            </p>
+          )}
+
+          {!isSearchLoading && !searchError && !searchQuery && (
+            <p className="col-span-full py-10 text-center text-sm text-stone-400">
+              {content.searchPlaceholder}을 입력해 결과를 확인하세요.
+            </p>
+          )}
+
           {domain === "music" &&
-            MOCK_ARTISTS.map((artist) => (
+            !isSearchLoading &&
+            (searchResults as MusicSelection[]).map((artist) => (
               <MusicTasteCard
                 key={artist.id}
                 domain="music"
-                title={artist.title}
-                genre={artist.genre}
-                imageUrl={artist.imageUrl}
+                title={artist.name}
+                genre={artist.genres.join(" / ")}
+                imageUrl={artist.image}
                 selected={musicSelections.some((item) => item.id === artist.id)}
                 onClick={() => handleSelectArtist(artist)}
               />
             ))}
 
           {domain === "movie" &&
-            MOCK_MOVIES.map((movie) => (
+            !isSearchLoading &&
+            (searchResults as MovieSelection[]).map((movie) => (
               <MovieTasteCard
                 key={movie.id}
                 domain="movie"
                 title={movie.title}
-                genre={movie.genre}
-                imageUrl={movie.imageUrl}
+                genre={movie.genres.join(" / ")}
+                imageUrl={movie.posterPath}
                 selected={movieSelections.some((item) => item.id === movie.id)}
                 onClick={() => handleSelectMovie(movie)}
               />
