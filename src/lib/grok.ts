@@ -30,10 +30,7 @@ export class GrokApiError extends Error {
   }
 }
 
-export async function callGrok(messages: GrokMessage[]): Promise<string> {
-  const apiKey = process.env.GROK_API_KEY;
-  if (!apiKey) throw new Error("GROK_API_KEY 환경변수가 설정되지 않았습니다.");
-
+async function fetchGrok(apiKey: string, messages: GrokMessage[]): Promise<string> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), GROK_TIMEOUT_MS);
 
@@ -61,4 +58,18 @@ export async function callGrok(messages: GrokMessage[]): Promise<string> {
   const content = data.choices[0]?.message?.content;
   if (!content) throw new Error("Grok 응답에 content가 없습니다.");
   return content;
+}
+
+export async function callGrok(messages: GrokMessage[]): Promise<string> {
+  const apiKey = process.env.GROK_API_KEY;
+  if (!apiKey) throw new Error("GROK_API_KEY 환경변수가 설정되지 않았습니다.");
+
+  try {
+    return await fetchGrok(apiKey, messages);
+  } catch (e) {
+    if (e instanceof GrokTimeoutError) {
+      return await fetchGrok(apiKey, messages);
+    }
+    throw e;
+  }
 }
