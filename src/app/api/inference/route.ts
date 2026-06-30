@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { callGrok } from "@/lib/grok";
 import { enrichResponseWithTmdb } from "@/lib/inference/enrichResponse";
-import { getMockByDomain } from "@/lib/inference/inference.mocks";
+import { SYSTEM_PROMPT, buildUserPrompt } from "@/lib/inference/inference.prompts";
 import { safeParseRequest, safeParseResponse } from "@/lib/inference/inference.schema";
 import type { InferenceResult } from "@/lib/inference/inference.types";
 
-// POST /api/inference — 요청 검증 → (현재) 도메인별 목 응답 반환
-// TODO(#58): 실제 Grok 호출로 교체
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
 
@@ -16,14 +15,30 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message }, { status: 400 });
   }
 
-  const mock = getMockByDomain(parsedReq.data.domain);
+  let raw: string;
+  try {
+    const userPrompt = buildUserPrompt(parsedReq.data);
+    raw = await callGrok([
+      { role: "system", content: SYSTEM_PROMPT },
+      { role: "user", content: userPrompt },
+    ]);
+  } catch (e) {
+    const message = e instanceof Error ? e.message : "Grok API 호출에 실패했습니다.";
+    return NextResponse.json({ message }, { status: 500 });
+  }
 
-  const parsedRes = safeParseResponse(mock);
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return NextResponse.json({ message: "추론 응답 파싱에 실패했습니다." }, { status: 500 });
+  }
+
+  const parsedRes = safeParseResponse(parsed);
   if (!parsedRes.success) {
     return NextResponse.json({ message: "추론 응답 검증에 실패했습니다." }, { status: 500 });
   }
 
-  // #78 — 영화 항목의 posterPath를 TMDB 검색으로 채움 (mock prefix 또는 빈 값 대상)
   const enriched = await enrichResponseWithTmdb(parsedRes.data);
 
   const result: InferenceResult = {
