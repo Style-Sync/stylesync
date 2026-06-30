@@ -6,7 +6,6 @@ export type {
   MovieRecommendation,
   FashionRecommendation,
   StyleLabel,
-  Domain,
   IInferenceService,
 } from "./inference.types";
 

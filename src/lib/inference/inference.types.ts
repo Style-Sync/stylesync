@@ -1,5 +1,4 @@
 import type { StyleLabel } from "@/types/result";
-import type { Domain } from "@/types/taste";
 
 import type { InferenceRequest, InferenceResult } from "./inference.schema";
 
@@ -14,7 +13,6 @@ export type {
 
 // ─── Utility types ────────────────────────────────────────────────────────────
 
-export type { Domain };
 export type { StyleLabel };
 
 // ─── Service interface ────────────────────────────────────────────────────────
