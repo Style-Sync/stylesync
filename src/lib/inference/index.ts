@@ -31,5 +31,7 @@ export { parseInferenceResponse } from "./inference.parser";
 
 export { normalizeInferenceResponse } from "./inference.normalize";
 
+export { applyFallback } from "./inference.fallback";
+
 export { callGrok } from "@/lib/grok";
 export type { GrokMessage } from "@/lib/grok";
