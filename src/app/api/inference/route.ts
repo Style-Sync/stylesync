@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { GrokApiError, GrokTimeoutError, callGrok } from "@/lib/grok";
 import { enrichResponseWithTmdb } from "@/lib/inference/enrichResponse";
+import { normalizeInferenceResponse } from "@/lib/inference/inference.normalize";
 import { parseInferenceResponse } from "@/lib/inference/inference.parser";
 import { SYSTEM_PROMPT, buildUserPrompt } from "@/lib/inference/inference.prompts";
 import { safeParseRequest } from "@/lib/inference/inference.schema";
@@ -38,7 +39,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: parsed.message }, { status: 422 });
   }
 
-  const enriched = await enrichResponseWithTmdb(parsed.data);
+  const normalized = normalizeInferenceResponse(parsed.data);
+  const enriched = await enrichResponseWithTmdb(normalized);
 
   const result: InferenceResult = {
     ...enriched,
