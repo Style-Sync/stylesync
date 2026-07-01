@@ -51,3 +51,4 @@ storybook-static/
 # Figma font-replace temp files
 font-replace-targets.json
 text-style-mappings.json
+package-lock.json
