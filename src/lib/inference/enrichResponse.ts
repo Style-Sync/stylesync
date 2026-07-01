@@ -37,11 +37,11 @@ export const enrichResponseWithTmdb = async (
 // image가 비어있거나 mock prefix("/mock/")로 시작하면 Unsplash 검색 대상
 const needsUnsplashEnrichment = (image: string): boolean => !image || image.startsWith("/mock/");
 
-// 키워드로 Unsplash 검색 → 첫 결과 imageUrl 반환
+// 키워드로 Unsplash 검색 → 첫 결과 url 반환 (FashionImage.url, #224 기준)
 const fetchFashionImage = async (keyword: string): Promise<string> => {
   try {
     const results = await searchFashionImages(keyword, 1);
-    return results[0]?.imageUrl ?? "";
+    return results[0]?.url ?? "";
   } catch {
     return "";
   }
