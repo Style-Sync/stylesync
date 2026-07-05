@@ -39,7 +39,7 @@ export const AuthEntrySection = ({
       </div>
 
       <Link
-        href="#"
+        href="/"
         className="mt-6 inline-flex items-center gap-2 type-label-md-regular text-on-background"
       >
         비회원으로 계속하기

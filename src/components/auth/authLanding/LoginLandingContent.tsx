@@ -112,7 +112,7 @@ export const LoginLandingContent = ({ onOpenEmail }: { onOpenEmail: () => void }
         </div>
 
         <Link
-          href="#"
+          href="/"
           className="mt-5 inline-flex items-center gap-2 type-label-md-regular text-on-background"
         >
           비회원으로 계속하기
