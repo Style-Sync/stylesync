@@ -80,6 +80,8 @@ TMDB_API_KEY=
 UNSPLASH_ACCESS_KEY=
 ```
 
+Preview 배포용 환경변수 등록은 [docs/vercel-preview-env.md](./docs/vercel-preview-env.md)를 참고하세요.
+
 ### 개발 서버 실행
 
 ```bash
