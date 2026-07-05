@@ -179,7 +179,7 @@ export const DomainSelectCard = ({ domain, onClick }: IDomainSelectCardProps) =>
         // Layout
         "flex flex-col text-left overflow-hidden",
         // Size
-        "w-full h-[435px]",
+        "w-full h-[400px]",
         "md:h-[320px]",
         "lg:h-[512px]",
         // Shape
@@ -198,7 +198,7 @@ export const DomainSelectCard = ({ domain, onClick }: IDomainSelectCardProps) =>
       ].join(" ")}
     >
       {/* ── 상단: 레이블 + 타이틀 ────────────────────────────────────────── */}
-      <div className="px-10 pt-10 pb-0 md:px-4 md:pt-[22px] lg:px-10 lg:pt-10">
+      <div className="px-6 pt-8 pb-0 md:px-4 md:pt-[22px] lg:px-10 lg:pt-10">
         <span className="block font-body font-medium text-body-sm text-primary-container">
           {variant.label}
         </span>
@@ -211,7 +211,7 @@ export const DomainSelectCard = ({ domain, onClick }: IDomainSelectCardProps) =>
       <div className="flex-1 flex items-center justify-center">
         <Mascot
           className={[
-            "w-[200px] h-[200px]",
+            "w-[160px] h-[160px]",
             "md:w-[100px] md:h-[100px]",
             "lg:w-[180px] lg:h-[180px]",
             "transition-transform duration-300 ease-out group-hover:-translate-y-2",
@@ -220,8 +220,8 @@ export const DomainSelectCard = ({ domain, onClick }: IDomainSelectCardProps) =>
       </div>
 
       {/* ── 하단: 설명 + 화살표 버튼 ──────────────────────────────────────── */}
-      <div className="flex items-end justify-between px-10 pb-10 md:px-4 md:pb-[22px] lg:px-10 lg:pb-10">
-        <p className="font-body text-label-md-regular text-on-surface-variant/60 max-w-[140px] md:max-w-[120px]">
+      <div className="flex items-end justify-between px-6 pb-8 md:px-4 md:pb-[22px] lg:px-10 lg:pb-10">
+        <p className="max-w-[160px] font-body text-label-md-regular text-on-surface-variant/60 md:max-w-[120px]">
           {variant.description}
         </p>
         <div

@@ -44,15 +44,15 @@ export const ShareCard = ({ styleLabel, themeColor, music, movie, fashion }: ISh
   };
 
   return (
-    <div className="relative w-full md:w-[400px] h-[554px] md:h-[680px] bg-white rounded-[3rem] overflow-hidden">
+    <div className="relative h-[520px] w-full overflow-hidden rounded-[2rem] bg-white md:h-[680px] md:w-[400px] md:rounded-[3rem]">
       {/* ── 배경 수직 텍스트 ─────────────────────────────────────────── */}
       {/* ARCHIVIST: Epilogue Black 72px, 5% opacity, top-[68px] right-[22px] */}
       <div
-        className="absolute top-[68px] right-[22px] pointer-events-none select-none"
+        className="pointer-events-none absolute right-4 top-10 select-none md:right-[22px] md:top-[68px]"
         aria-hidden="true"
       >
         <span
-          className="font-headline font-black text-[72px] leading-none text-on-background/5"
+          className="font-headline text-[52px] font-black leading-none text-on-background/5 md:text-[72px]"
           style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
         >
           {bgText}
@@ -62,7 +62,7 @@ export const ShareCard = ({ styleLabel, themeColor, music, movie, fashion }: ISh
       {/* STYLE SYNC PASS: Plus Jakarta Sans ExtraBold 12px, orange
             Figma 768px 기준 top=343px right=36px → sm 비율 보정 */}
       <div
-        className="absolute top-[280px] md:top-[343px] right-[30px] md:right-[36px] pointer-events-none select-none"
+        className="pointer-events-none absolute right-5 top-[248px] select-none md:right-[36px] md:top-[343px]"
         aria-hidden="true"
       >
         <span
@@ -74,7 +74,7 @@ export const ShareCard = ({ styleLabel, themeColor, music, movie, fashion }: ISh
       </div>
 
       {/* ── 콘텐츠 레이어 ─────────────────────────────────────────────── */}
-      <div className="relative z-10 flex flex-col h-full p-10">
+      <div className="relative z-10 flex h-full flex-col p-6 md:p-10">
         {/* ① 상단: STYLE IDENTITY 레이블 + 타이틀 (높이 ~115px) */}
         <div className="pb-4">
           {/* "STYLE IDENTITY": NotoSansKR Medium 14px, 30% opacity */}
@@ -82,10 +82,7 @@ export const ShareCard = ({ styleLabel, themeColor, music, movie, fashion }: ISh
             STYLE IDENTITY
           </span>
           {/* Headline: Epilogue Black 36px */}
-          <h2
-            className="font-headline font-black text-on-background whitespace-pre-line mt-2"
-            style={{ fontSize: "36px", lineHeight: "36.9px" }}
-          >
+          <h2 className="mt-2 whitespace-pre-line font-headline text-[28px] font-black leading-[1.05] text-on-background md:text-[36px] md:leading-[36.9px]">
             {styleLabel.title}
           </h2>
         </div>
@@ -96,14 +93,14 @@ export const ShareCard = ({ styleLabel, themeColor, music, movie, fashion }: ISh
               Figma 390px: 184.5×230 / Figma 768px+: 240×300
               overflow-visible: CURATED FEELS 배지 우측 overflow 허용 */}
           <div
-            className="relative shrink-0 overflow-visible w-[185px] h-[230px] md:w-[240px] md:h-[300px]"
+            className="relative h-[210px] w-[170px] shrink-0 overflow-visible md:h-[300px] md:w-[240px]"
             style={{ backgroundColor: themeColor, borderRadius: "48px" }}
           >
             {/* 마스코트 원 128×128
                 Figma 390px: top 51px left 28px / Figma 768px+: top 86px left 56px */}
             <div
               className="absolute bg-white rounded-full overflow-hidden
-                         top-[51px] left-[28px]
+                         left-[20px] top-[42px]
                          md:top-[86px] md:left-[56px]"
               style={{ width: "128px", height: "128px" }}
             >
@@ -114,7 +111,7 @@ export const ShareCard = ({ styleLabel, themeColor, music, movie, fashion }: ISh
                 Figma 390px: bottom 40px left 90px / Figma 768px+: bottom 40px left 145px */}
             <div
               className="absolute bg-primary-container rounded-full
-                         bottom-[40px] left-[90px]
+                         bottom-[28px] left-[76px]
                          md:bottom-[40px] md:left-[145px]"
               style={{ padding: "8px 20px" }}
             >
@@ -129,7 +126,7 @@ export const ShareCard = ({ styleLabel, themeColor, music, movie, fashion }: ISh
         </div>
 
         {/* ③ 하단: 도메인 태그 + StyleSync 브랜딩 (~125px) */}
-        <div className="pt-4 border-t border-on-background/5 flex items-end justify-between gap-4">
+        <div className="flex flex-col gap-4 border-t border-on-background/5 pt-4 md:flex-row md:items-end md:justify-between">
           {/* 도메인 태그 3개 (수직 스택) */}
           <div className="flex flex-col gap-[7px]">
             {(["music", "movie", "fashion"] as const).map((d) => {
@@ -167,7 +164,7 @@ export const ShareCard = ({ styleLabel, themeColor, music, movie, fashion }: ISh
 
           {/* StyleSync 로고 + DIGITAL LOOKBOOK V2.0 */}
           {/* Figma: "Style"(Epilogue Black 24px, dark) + "Sync"(Epilogue Black 24px, orange) */}
-          <div className="flex flex-col items-end gap-1 shrink-0">
+          <div className="flex shrink-0 flex-col items-start gap-1 md:items-end">
             <div className="flex items-baseline leading-none">
               <span
                 className="font-headline font-black text-on-background"
