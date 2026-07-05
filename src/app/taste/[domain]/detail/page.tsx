@@ -9,6 +9,7 @@ import { InputSummary } from "@/components/domain/inputSummary";
 import { MovieTasteCard } from "@/components/domain/movieTasteCard";
 import { MusicTasteCard } from "@/components/domain/musicTasteCard";
 import { TasteInputForm } from "@/components/domain/tasteInputForm";
+import { StatusPanel } from "@/components/ui/feedback/StatusPanel";
 import { useInference } from "@/hooks/useInference";
 import { buildInferenceRequest } from "@/lib/inference/normalizeRequest";
 import { useResultStore } from "@/store/resultStore";
@@ -188,23 +189,39 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
         )}
         <div className="grid-cols-responsive">
           {isSearchLoading && (
-            <p className="col-span-full py-10 text-center text-sm text-stone-400">검색 중...</p>
+            <StatusPanel
+              size="compact"
+              variant="loading"
+              title="검색 결과를 불러오는 중이에요"
+              description="입력한 키워드를 기준으로 추천 후보를 찾고 있습니다."
+            />
           )}
 
           {!isSearchLoading && searchError && (
-            <p className="col-span-full py-10 text-center text-sm text-red-400">{searchError}</p>
+            <StatusPanel
+              size="compact"
+              variant="error"
+              title="검색 결과를 불러오지 못했어요"
+              description={searchError}
+            />
           )}
 
           {!isSearchLoading && !searchError && searchQuery && searchResults.length === 0 && (
-            <p className="col-span-full py-10 text-center text-sm text-stone-400">
-              검색 결과가 없습니다.
-            </p>
+            <StatusPanel
+              size="compact"
+              variant="empty"
+              title="검색 결과가 없어요"
+              description="다른 키워드나 제목으로 다시 검색해보세요."
+            />
           )}
 
           {!isSearchLoading && !searchError && !searchQuery && (
-            <p className="col-span-full py-10 text-center text-sm text-stone-400">
-              {content.searchPlaceholder}을 입력해 결과를 확인하세요.
-            </p>
+            <StatusPanel
+              size="compact"
+              variant="empty"
+              title="검색어를 입력해보세요"
+              description={`${content.searchPlaceholder}를 입력하면 추천 후보를 보여드릴게요.`}
+            />
           )}
 
           {domain === "music" &&
