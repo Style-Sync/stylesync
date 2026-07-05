@@ -1,7 +1,9 @@
 import "server-only";
 
+import { getServerEnv } from "@/lib/env/server";
+
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
-const EXPIRY_BUFFER_MS = 60_000; // 만료 60초 전 선제 갱신
+const EXPIRY_BUFFER_MS = 60_000; // 만료 60초 전에 미리 갱신
 
 type SpotifyTokenResponse = {
   access_token: string;
@@ -18,12 +20,7 @@ let cachedToken: CachedToken | null = null;
 let inFlight: Promise<CachedToken> | null = null;
 
 const getCredentials = () => {
-  const clientId = process.env.SPOTIFY_CLIENT_ID;
-  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-
-  if (!clientId || !clientSecret) {
-    throw new Error("Spotify 환경변수 누락: SPOTIFY_CLIENT_ID / SPOTIFY_CLIENT_SECRET 확인");
-  }
+  const { SPOTIFY_CLIENT_ID: clientId, SPOTIFY_CLIENT_SECRET: clientSecret } = getServerEnv();
 
   return { clientId, clientSecret };
 };
@@ -58,9 +55,9 @@ const fetchNewToken = async (): Promise<CachedToken> => {
 export const getSpotifyToken = async (forceRefresh = false): Promise<string> => {
   const valid = cachedToken && cachedToken.expiresAt - EXPIRY_BUFFER_MS > Date.now();
 
-  if (!forceRefresh && valid) return cachedToken!.accessToken;
+  if (!forceRefresh && valid && cachedToken) return cachedToken.accessToken;
 
-  // 동시 요청이 토큰을 중복 발급하지 않도록 in-flight 공유
+  // 동시 요청에는 같은 토큰 발급 Promise를 공유해 중복 호출을 막습니다.
   if (!inFlight) {
     inFlight = fetchNewToken().finally(() => {
       inFlight = null;

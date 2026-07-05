@@ -1,5 +1,7 @@
 import "server-only";
 
+import { getServerEnv } from "@/lib/env/server";
+
 const GROK_API_URL = "https://api.x.ai/v1/chat/completions";
 const GROK_MODEL = "grok-3";
 const GROK_TIMEOUT_MS = 30_000;
@@ -15,7 +17,7 @@ type GrokApiResponse = {
 
 export class GrokTimeoutError extends Error {
   constructor() {
-    super("Grok API 응답 시간이 초과됐습니다.");
+    super("Grok API 응답 시간이 초과되었습니다.");
     this.name = "GrokTimeoutError";
   }
 }
@@ -61,8 +63,7 @@ async function fetchGrok(apiKey: string, messages: GrokMessage[]): Promise<strin
 }
 
 export async function callGrok(messages: GrokMessage[]): Promise<string> {
-  const apiKey = process.env.GROK_API_KEY;
-  if (!apiKey) throw new Error("GROK_API_KEY 환경변수가 설정되지 않았습니다.");
+  const { GROK_API_KEY: apiKey } = getServerEnv();
 
   try {
     return await fetchGrok(apiKey, messages);
