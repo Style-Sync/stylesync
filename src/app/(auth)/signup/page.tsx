@@ -38,7 +38,7 @@ const signupFields = [
 export default function SignupPage() {
   return (
     <main className="page-container section-wrapper">
-      {/* TODO(FT-006-1): Add required terms/privacy consent and optional marketing consent after the design is finalized. */}
+      {/* TODO(FT-006-1): 디자인이 보강되면 이용약관/개인정보 필수 동의와 마케팅 선택 동의 UI를 추가한다. */}
       <AuthSplitLayout
         entryTitle="회원가입"
         entryDescription="당신의 비전을 위한 공간입니다."
