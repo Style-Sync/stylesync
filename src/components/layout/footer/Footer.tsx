@@ -26,9 +26,9 @@ export const Footer = () => {
     <footer className="w-full border-t border-[#E9E8E5] bg-background @container">
       <div
         className="
-          flex h-[250px] w-full
+          flex min-h-[250px] w-full
           flex-col items-start justify-center gap-8 px-4
-          @md:flex-row @md:items-end @md:justify-between @md:gap-0 @md:px-6 @md:py-16
+          @md:h-[250px] @md:flex-row @md:items-end @md:justify-between @md:gap-0 @md:px-6 @md:py-16
           @lg:px-12
         "
       >
@@ -54,7 +54,7 @@ export const Footer = () => {
         </div>
 
         {/* ── 오른쪽: 링크 ── */}
-        <div className="flex items-center gap-3">
+        <div className="flex w-full flex-wrap items-center gap-x-3 gap-y-2 @md:w-auto @md:justify-end">
           {FOOTER_LINKS.map(({ label, href }) => (
             <Link
               key={href}
