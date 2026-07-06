@@ -63,8 +63,13 @@ cp .env.example .env.local
 ```env
 # Supabase
 NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+# Legacy fallback for older local setups only.
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
+
+# App
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 # AI
 GROK_API_KEY=
