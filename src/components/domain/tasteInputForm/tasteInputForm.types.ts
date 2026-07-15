@@ -15,6 +15,8 @@ export interface ITasteInputFormProps {
 
   isNextDisabled?: boolean;
   onNext?: () => void;
+  nextLabel?: string;
+  errorMessage?: string | null;
 
   selectionCount?: number;
   maxSelections?: number;

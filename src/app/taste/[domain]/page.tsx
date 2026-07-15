@@ -1,11 +1,18 @@
 "use client";
 
+import { useCallback, useState } from "react";
+
+import { useRouter } from "next/navigation";
+
 import { DomainGuard } from "@/components/domain/DomainGuard";
 import { FashionInput } from "@/components/domain/fashionInput";
 import { MovieInput } from "@/components/domain/movieInput";
 import { MusicInput } from "@/components/domain/musicInput";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { ProgressBar } from "@/components/layout/ProgressBar";
+import { useInference } from "@/hooks/useInference";
+import { buildInferenceRequest } from "@/lib/inference/normalizeRequest";
+import { useResultStore } from "@/store/resultStore";
 import { useTasteStore } from "@/store/tasteStore";
 import type { Domain } from "@/types/taste";
 
@@ -28,21 +35,50 @@ const DOMAIN_CONTENT: Record<Domain, { titleMain: string; description: string }>
   },
 };
 
-// TODO: 실제 분석 resultId로 교체 (현재 mock 매칭용)
-const RESULT_PATH = "/result/mock-1";
-
 export default function TasteStep1Page({ params }: ITastePageProps) {
+  const router = useRouter();
   const domain = params.domain as Domain;
   const content = DOMAIN_CONTENT[domain];
 
-  // 1뎁스 스타일 선택 여부로 다음 버튼 활성화
   const selectedStyles = useTasteStore((s) => s.selectedStyles);
+  const musicSelections = useTasteStore((s) => s.musicSelections);
+  const movieSelections = useTasteStore((s) => s.movieSelections);
+  const fashionSelections = useTasteStore((s) => s.fashionSelections);
   const isStyleSelected = Boolean(selectedStyles[domain]);
 
-  // fashion은 detail(2뎁스) 없이 결과로 직행
+  const saveResult = useResultStore((s) => s.saveResult);
+  const { infer, isLoading: isAnalyzing } = useInference();
+
+  const [analyzeError, setAnalyzeError] = useState<string | null>(null);
+
   const isFashion = domain === "fashion";
-  const nextPath = isFashion ? RESULT_PATH : `/taste/${domain}/detail`;
   const totalSteps = isFashion ? 1 : 2;
+
+  const handleFashionAnalyze = useCallback(async () => {
+    setAnalyzeError(null);
+    try {
+      const request = buildInferenceRequest({
+        domain: "fashion",
+        musicSelections,
+        movieSelections,
+        fashionSelections,
+        selectedStyles,
+      });
+      const result = await infer(request);
+      saveResult(result);
+      router.push(`/result/${result.id}`);
+    } catch (e) {
+      setAnalyzeError(e instanceof Error ? e.message : "분석에 실패했습니다.");
+    }
+  }, [
+    musicSelections,
+    movieSelections,
+    fashionSelections,
+    selectedStyles,
+    infer,
+    saveResult,
+    router,
+  ]);
 
   return (
     <DomainGuard domain={params.domain}>
@@ -63,7 +99,23 @@ export default function TasteStep1Page({ params }: ITastePageProps) {
           {domain === "fashion" && <FashionInput />}
         </section>
 
-        <BottomNav prevPath="/select" nextPath={nextPath} isNextDisabled={!isStyleSelected} />
+        {analyzeError && <p className="mb-4 text-center text-sm text-red-400">{analyzeError}</p>}
+
+        {isFashion ? (
+          <BottomNav
+            prevPath="/select"
+            isNextDisabled={!isStyleSelected || isAnalyzing}
+            onNext={handleFashionAnalyze}
+            nextLabel={isAnalyzing ? "분석 중..." : "스타일 분석 시작하기"}
+            isLastStep
+          />
+        ) : (
+          <BottomNav
+            prevPath="/select"
+            nextPath={`/taste/${domain}/detail`}
+            isNextDisabled={!isStyleSelected}
+          />
+        )}
       </div>
     </DomainGuard>
   );
