@@ -16,13 +16,40 @@ export type AppServerEnv = {
   UNSPLASH_ACCESS_KEY: string;
 };
 
+const getRequiredServerEnv = (key: keyof AppServerEnv) => {
+  return requireServerEnv(key, process.env[key]);
+};
+
+const getSpotifyClientId = () => getRequiredServerEnv("SPOTIFY_CLIENT_ID");
+
+const getSpotifyClientSecret = () => getRequiredServerEnv("SPOTIFY_CLIENT_SECRET");
+
+export const getGrokApiKey = () => getRequiredServerEnv("GROK_API_KEY");
+
+export const getSpotifyCredentials = () => ({
+  clientId: getSpotifyClientId(),
+  clientSecret: getSpotifyClientSecret(),
+});
+
+export const getTmdbApiKey = () => getRequiredServerEnv("TMDB_API_KEY");
+
+export const getUnsplashAccessKey = () => getRequiredServerEnv("UNSPLASH_ACCESS_KEY");
+
+// 개별 getter로 필요한 키만 검증하되, 기존 getServerEnv 호출부와도 호환됩니다.
 export const getServerEnv = (): AppServerEnv => ({
-  GROK_API_KEY: requireServerEnv("GROK_API_KEY", process.env.GROK_API_KEY),
-  SPOTIFY_CLIENT_ID: requireServerEnv("SPOTIFY_CLIENT_ID", process.env.SPOTIFY_CLIENT_ID),
-  SPOTIFY_CLIENT_SECRET: requireServerEnv(
-    "SPOTIFY_CLIENT_SECRET",
-    process.env.SPOTIFY_CLIENT_SECRET
-  ),
-  TMDB_API_KEY: requireServerEnv("TMDB_API_KEY", process.env.TMDB_API_KEY),
-  UNSPLASH_ACCESS_KEY: requireServerEnv("UNSPLASH_ACCESS_KEY", process.env.UNSPLASH_ACCESS_KEY),
+  get GROK_API_KEY() {
+    return getGrokApiKey();
+  },
+  get SPOTIFY_CLIENT_ID() {
+    return getSpotifyClientId();
+  },
+  get SPOTIFY_CLIENT_SECRET() {
+    return getSpotifyClientSecret();
+  },
+  get TMDB_API_KEY() {
+    return getTmdbApiKey();
+  },
+  get UNSPLASH_ACCESS_KEY() {
+    return getUnsplashAccessKey();
+  },
 });

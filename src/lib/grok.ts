@@ -1,6 +1,6 @@
 import "server-only";
 
-import { getServerEnv } from "@/lib/env/server";
+import { getGrokApiKey } from "@/lib/env/server";
 
 const GROK_API_URL = "https://api.x.ai/v1/chat/completions";
 const GROK_MODEL = "grok-3";
@@ -63,7 +63,7 @@ async function fetchGrok(apiKey: string, messages: GrokMessage[]): Promise<strin
 }
 
 export async function callGrok(messages: GrokMessage[]): Promise<string> {
-  const { GROK_API_KEY: apiKey } = getServerEnv();
+  const apiKey = getGrokApiKey();
 
   try {
     return await fetchGrok(apiKey, messages);

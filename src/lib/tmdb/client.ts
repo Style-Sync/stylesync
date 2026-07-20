@@ -1,11 +1,11 @@
 import "server-only";
 
-import { getServerEnv } from "@/lib/env/server";
+import { getTmdbApiKey } from "@/lib/env/server";
 
 const API_BASE = "https://api.themoviedb.org/3";
 
 const getApiKey = () => {
-  return getServerEnv().TMDB_API_KEY;
+  return getTmdbApiKey();
 };
 
 // TMDB GET 요청 시 api_key/언어를 자동 주입하고 오류를 일관되게 처리합니다.

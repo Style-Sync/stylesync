@@ -1,6 +1,6 @@
 import "server-only";
 
-import { getServerEnv } from "@/lib/env/server";
+import { getSpotifyCredentials } from "@/lib/env/server";
 
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
 const EXPIRY_BUFFER_MS = 60_000; // 만료 60초 전에 미리 갱신
@@ -20,9 +20,7 @@ let cachedToken: CachedToken | null = null;
 let inFlight: Promise<CachedToken> | null = null;
 
 const getCredentials = () => {
-  const { SPOTIFY_CLIENT_ID: clientId, SPOTIFY_CLIENT_SECRET: clientSecret } = getServerEnv();
-
-  return { clientId, clientSecret };
+  return getSpotifyCredentials();
 };
 
 const fetchNewToken = async (): Promise<CachedToken> => {
