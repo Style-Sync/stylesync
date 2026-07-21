@@ -1,16 +1,14 @@
 import "server-only";
 
+import { getTmdbApiKey } from "@/lib/env/server";
+
 const API_BASE = "https://api.themoviedb.org/3";
 
 const getApiKey = () => {
-  const apiKey = process.env.TMDB_API_KEY;
-  if (!apiKey) {
-    throw new Error("TMDB 환경변수 누락: TMDB_API_KEY 확인");
-  }
-  return apiKey;
+  return getTmdbApiKey();
 };
 
-// TMDB GET 요청 — api_key/언어 자동 주입 + 에러 처리
+// TMDB GET 요청 시 api_key/언어를 자동 주입하고 오류를 일관되게 처리합니다.
 export const tmdbFetch = async <T>(
   endpoint: string,
   params: Record<string, string> = {}
