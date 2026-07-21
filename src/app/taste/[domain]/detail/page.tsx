@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { DomainGuard } from "@/components/domain/DomainGuard";
+import { InputSummary } from "@/components/domain/inputSummary";
 import { MovieTasteCard } from "@/components/domain/movieTasteCard";
 import { MusicTasteCard } from "@/components/domain/musicTasteCard";
 import { TasteInputForm } from "@/components/domain/tasteInputForm";
@@ -157,6 +158,24 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
         onNext={handleAnalyze}
         selectionCount={selectionCount}
       >
+        {domain === "music" && (
+          <InputSummary
+            label="선택한 아티스트"
+            items={musicSelections.map((s) => ({ id: s.id, name: s.name, imageUrl: s.image }))}
+            onRemove={(id) => removeMusicSelection(id as string)}
+          />
+        )}
+        {domain === "movie" && (
+          <InputSummary
+            label="선택한 영화"
+            items={movieSelections.map((s) => ({
+              id: s.id,
+              name: s.title,
+              imageUrl: s.posterPath,
+            }))}
+            onRemove={(id) => removeMovieSelection(id as number)}
+          />
+        )}
         <div className="grid-cols-responsive">
           {isSearchLoading && (
             <p className="col-span-full py-10 text-center text-sm text-stone-400">검색 중...</p>
