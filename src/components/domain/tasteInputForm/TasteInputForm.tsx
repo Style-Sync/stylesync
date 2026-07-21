@@ -38,6 +38,8 @@ export function TasteInputForm({
   children,
   isNextDisabled,
   onNext,
+  nextLabel,
+  errorMessage,
   selectionCount,
   maxSelections = 3,
 }: ITasteInputFormProps) {
@@ -97,10 +99,12 @@ export function TasteInputForm({
         </p>
       )}
 
+      {errorMessage && <p className="mb-4 text-center text-sm text-red-400">{errorMessage}</p>}
+
       <BottomNav
         prevPath={`/taste/${domain}`}
         prevLabel="이전으로"
-        nextLabel="스타일 분석 시작하기"
+        nextLabel={nextLabel ?? "스타일 분석 시작하기"}
         isNextDisabled={isNextDisabled}
         onNext={onNext}
         isLastStep

@@ -58,6 +58,7 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
   const [searchResults, setSearchResults] = useState<MusicSelection[] | MovieSelection[]>([]);
   const [isSearchLoading, setIsSearchLoading] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
+  const [analyzeError, setAnalyzeError] = useState<string | null>(null);
 
   // fashion은 2뎁스 미사용 → 1뎁스로 되돌림
   useEffect(() => {
@@ -108,6 +109,7 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
   const isReady = selectionCount >= 3;
 
   const handleAnalyze = async () => {
+    setAnalyzeError(null);
     try {
       const request = buildInferenceRequest({
         domain,
@@ -120,8 +122,7 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
       saveResult(result);
       router.push(`/result/${result.id}`);
     } catch (e) {
-      console.error(e);
-      alert(e instanceof Error ? e.message : "분석에 실패했습니다.");
+      setAnalyzeError(e instanceof Error ? e.message : "분석에 실패했습니다.");
     }
   };
 
@@ -156,6 +157,8 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
         onSearchChange={setSearchQuery}
         isNextDisabled={!isReady || isAnalyzing}
         onNext={handleAnalyze}
+        nextLabel={isAnalyzing ? "분석 중..." : undefined}
+        errorMessage={analyzeError}
         selectionCount={selectionCount}
       >
         {domain === "music" && (
