@@ -44,7 +44,19 @@ const LoginCard = ({
   );
 };
 
-export const LoginLandingContent = ({ onOpenEmail }: { onOpenEmail: () => void }) => {
+type LoginLandingContentProps = {
+  onOpenEmail: () => void;
+  onSignInWithGoogle: () => void | Promise<void>;
+  isSubmitting?: boolean;
+  errorMessage?: string | null;
+};
+
+export const LoginLandingContent = ({
+  onOpenEmail,
+  onSignInWithGoogle,
+  isSubmitting = false,
+  errorMessage,
+}: LoginLandingContentProps) => {
   return (
     <section className="header-gap relative min-h-[640px] lg:mt-0 lg:min-h-[780px]">
       <h2 className="sr-only">로그인</h2>
@@ -86,12 +98,22 @@ export const LoginLandingContent = ({ onOpenEmail }: { onOpenEmail: () => void }
           <Button
             fullWidth
             size="md"
+            type="button"
+            disabled={isSubmitting}
+            onClick={onSignInWithGoogle}
             className="h-[58px] text-title-md md:h-[60px]"
             icon={<Icon name="google" size={24} className="text-primary-foreground" />}
             iconPosition="left"
           >
-            Google로 시작하기
+            {isSubmitting ? "처리 중..." : "Google로 시작하기"}
           </Button>
+
+          {errorMessage ? (
+            <p className="mt-6 type-label-md-regular text-destructive" role="alert">
+              {errorMessage}
+            </p>
+          ) : null}
+
           <p className="mt-10 type-label-md-regular text-on-surface-variant">또는</p>
           <Button
             type="button"

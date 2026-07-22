@@ -13,4 +13,9 @@ export interface IAuthEntrySectionProps {
   footerHref: string;
   footerLinkText: string;
   fields: IAuthEntryField[];
+  onSubmit?: (formData: FormData) => void | Promise<void>;
+  isSubmitting?: boolean;
+  errorMessage?: string | null;
+  statusMessage?: string | null;
+  fieldErrors?: Partial<Record<string, string>>;
 }

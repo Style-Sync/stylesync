@@ -1,3 +1,5 @@
+"use client";
+
 import { AuthEntrySection } from "@/components/auth/authEntrySection";
 
 import type { IAuthSplitLayoutProps } from "./authSplitLayout.types";
@@ -10,6 +12,11 @@ export const AuthSplitLayout = ({
   footerHref,
   footerLinkText,
   fields,
+  onSubmit,
+  isSubmitting,
+  errorMessage,
+  statusMessage,
+  fieldErrors,
   leadEyebrow,
   leadTitle,
   leadHeadline,
@@ -19,8 +26,10 @@ export const AuthSplitLayout = ({
 }: IAuthSplitLayoutProps) => {
   return (
     <section className="grid grid-cols-1 items-start gap-12 lg:mt-0 lg:grid-cols-[1fr_512px] lg:items-center lg:justify-between lg:gap-20">
-      <section className="hidden text-center lg:flex flex-col items-center">
-        {leadEyebrow ? <p className="type-headline-sm text-[#d4d0ca]">{leadEyebrow}</p> : null}
+      <section className="hidden lg:flex flex-col items-center text-center">
+        {leadEyebrow ? (
+          <p className="type-headline-sm text-on-surface-variant">{leadEyebrow}</p>
+        ) : null}
 
         {leadTitle ? (
           <div className="font-headline text-[5.6rem] font-black leading-[0.92] tracking-[-0.06em] text-on-background">
@@ -53,6 +62,11 @@ export const AuthSplitLayout = ({
           footerHref={footerHref}
           footerLinkText={footerLinkText}
           fields={fields}
+          onSubmit={onSubmit}
+          isSubmitting={isSubmitting}
+          errorMessage={errorMessage}
+          statusMessage={statusMessage}
+          fieldErrors={fieldErrors}
         />
       </section>
     </section>
