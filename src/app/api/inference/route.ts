@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { GrokApiError, GrokTimeoutError, callGrok } from "@/lib/grok";
-import { enrichResponseWithTmdb } from "@/lib/inference/enrichResponse";
+import { enrichResponseWithTmdb, enrichResponseWithUnsplash } from "@/lib/inference/enrichResponse";
 import { applyFallback } from "@/lib/inference/inference.fallback";
 import { normalizeInferenceResponse } from "@/lib/inference/inference.normalize";
 import { parseInferenceResponse } from "@/lib/inference/inference.parser";
@@ -42,7 +42,8 @@ export async function POST(req: NextRequest) {
 
   const normalized = normalizeInferenceResponse(parsed.data);
   const fallbacked = applyFallback(normalized, parsedReq.data.domain);
-  const enriched = await enrichResponseWithTmdb(fallbacked);
+  const tmdbEnriched = await enrichResponseWithTmdb(fallbacked);
+  const enriched = await enrichResponseWithUnsplash(tmdbEnriched);
 
   const result: InferenceResult = {
     ...enriched,

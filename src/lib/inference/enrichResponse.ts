@@ -1,6 +1,7 @@
 import "server-only";
 
 import { searchMovies } from "@/lib/tmdb/search";
+import { searchFashionImages } from "@/lib/unsplash/search";
 
 import type { InferenceResponse } from "./inference.types";
 
@@ -31,4 +32,32 @@ export const enrichResponseWithTmdb = async (
   );
 
   return { ...response, movie: enrichedMovies };
+};
+
+// image가 비어있거나 mock prefix("/mock/")로 시작하면 Unsplash 검색 대상
+const needsUnsplashEnrichment = (image: string): boolean => !image || image.startsWith("/mock/");
+
+// 키워드로 Unsplash 검색 → 첫 결과 url 반환 (FashionImage.url, #224 기준)
+const fetchFashionImage = async (keyword: string): Promise<string> => {
+  try {
+    const results = await searchFashionImages(keyword, 1);
+    return results[0]?.url ?? "";
+  } catch {
+    return "";
+  }
+};
+
+// Grok 응답의 패션 항목에 Unsplash 이미지 URL을 채워 넣음 (#39)
+export const enrichResponseWithUnsplash = async (
+  response: InferenceResponse
+): Promise<InferenceResponse> => {
+  const enrichedFashion = await Promise.all(
+    response.fashion.map(async (item) => {
+      if (!needsUnsplashEnrichment(item.image)) return item;
+      const image = await fetchFashionImage(item.keyword);
+      return image ? { ...item, image } : item;
+    })
+  );
+
+  return { ...response, fashion: enrichedFashion };
 };
