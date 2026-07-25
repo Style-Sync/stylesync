@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { RecommendCard } from "@/components/result/recommendCard";
 import { ResultPageError } from "@/components/result/ResultPageError";
@@ -26,6 +26,8 @@ export default function ResultPage({ params }: IResultPageProps) {
   const result = useResultStore((s) => s.results[params.id]);
 
   const { playingUrl, isPlaying: isAudioPlaying, toggle } = useAudioPlayer();
+  const shareCardRef = useRef<HTMLDivElement>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const handleReanalyze = useCallback(() => {
     // TODO: 재분석 플로우 연결
@@ -34,6 +36,29 @@ export default function ResultPage({ params }: IResultPageProps) {
   const handleShareCard = useCallback(() => {
     // TODO: 공유 카드 모달 연결
   }, []);
+
+  const handleDownloadCard = useCallback(async () => {
+    if (!shareCardRef.current || isDownloading) return;
+    setIsDownloading(true);
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const canvas = await html2canvas(shareCardRef.current, {
+        backgroundColor: null,
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      });
+      const url = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = result
+        ? `StyleSync_${result.styleLabel.title.replace(/\s+/g, "_")}.png`
+        : "StyleSync_card.png";
+      link.click();
+    } finally {
+      setIsDownloading(false);
+    }
+  }, [isDownloading, result]);
 
   if (!result) {
     return <ResultPageError message="결과를 찾을 수 없어요. 다시 분석해 주세요." />;
@@ -160,25 +185,37 @@ export default function ResultPage({ params }: IResultPageProps) {
                 <Button variant="dark" size="sm" icon={<XIcon />} iconPosition="left">
                   Twitter 공유
                 </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  icon={<Icon name="download" size={20} />}
+                  iconPosition="left"
+                  onClick={handleDownloadCard}
+                  disabled={isDownloading}
+                >
+                  {isDownloading ? "저장 중..." : "이미지 저장"}
+                </Button>
               </div>
             </div>
 
             {/* ShareCard 프리뷰 — TODO: ISSUE-168-169 머지 후 새 props로 교체 */}
             <div className="lg:w-[376px] flex-shrink-0 flex justify-center lg:justify-start">
-              <ShareCard
-                styleLabel={{
-                  title: styleLabel.title,
-                  description: styleLabel.description,
-                }}
-                themeColor={styleLabel.themeColor}
-                mood={styleLabel.mood}
-                music={{
-                  title: music[0]?.name ?? "",
-                  artist: music[0]?.artist ?? "",
-                }}
-                movie={{ title: movie[0]?.title ?? "" }}
-                fashion={{ keyword: fashion[0]?.keyword ?? "" }}
-              />
+              <div ref={shareCardRef} className="w-full">
+                <ShareCard
+                  styleLabel={{
+                    title: styleLabel.title,
+                    description: styleLabel.description,
+                  }}
+                  themeColor={styleLabel.themeColor}
+                  mood={styleLabel.mood}
+                  music={{
+                    title: music[0]?.name ?? "",
+                    artist: music[0]?.artist ?? "",
+                  }}
+                  movie={{ title: movie[0]?.title ?? "" }}
+                  fashion={{ keyword: fashion[0]?.keyword ?? "" }}
+                />
+              </div>
             </div>
           </div>
         </section>
