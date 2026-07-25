@@ -9,7 +9,7 @@ import { FashionInput } from "@/components/domain/fashionInput";
 import { MovieInput } from "@/components/domain/movieInput";
 import { MusicInput } from "@/components/domain/musicInput";
 import { BottomNav } from "@/components/layout/BottomNav";
-import { ProgressBar } from "@/components/layout/ProgressBar";
+import { StepIndicator } from "@/components/ui/StepIndicator";
 import { useInference } from "@/hooks/useInference";
 import { buildInferenceRequest } from "@/lib/inference/normalizeRequest";
 import { useResultStore } from "@/store/resultStore";
@@ -90,7 +90,7 @@ export default function TasteStep1Page({ params }: ITastePageProps) {
             </h1>
             <p className="type-body-lg keep-all text-on-surface-variant">{content?.description}</p>
           </div>
-          <ProgressBar currentStep={1} totalSteps={totalSteps} />
+          <StepIndicator current={1} total={totalSteps} />
         </header>
 
         <section className="min-h-[60vh]">

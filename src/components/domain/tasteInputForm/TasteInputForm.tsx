@@ -1,7 +1,7 @@
 "use client";
 
 import { BottomNav } from "@/components/layout/BottomNav";
-import { ProgressBar } from "@/components/layout/ProgressBar";
+import { StepIndicator } from "@/components/ui/StepIndicator";
 
 import type { ITasteInputFormProps } from "./tasteInputForm.types";
 
@@ -57,7 +57,7 @@ export function TasteInputForm({
           <p className="type-body-lg text-stone-600">{description}</p>
         </div>
 
-        <ProgressBar currentStep={2} totalSteps={2} />
+        <StepIndicator current={2} total={2} />
       </header>
 
       {/* 
