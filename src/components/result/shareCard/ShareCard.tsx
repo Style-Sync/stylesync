@@ -50,6 +50,7 @@ export const ShareCard = ({ styleLabel, themeColor, music, movie, fashion }: ISh
       <div
         className="pointer-events-none absolute right-4 top-10 select-none md:right-[22px] md:top-[68px]"
         aria-hidden="true"
+        data-html2canvas-ignore="true"
       >
         <span
           className="font-headline text-[52px] font-black leading-none text-on-background/5 md:text-[72px]"
@@ -64,6 +65,7 @@ export const ShareCard = ({ styleLabel, themeColor, music, movie, fashion }: ISh
       <div
         className="pointer-events-none absolute right-5 top-[248px] select-none md:right-[36px] md:top-[343px]"
         aria-hidden="true"
+        data-html2canvas-ignore="true"
       >
         <span
           className="font-body font-extrabold text-[12px] leading-none text-primary-container"

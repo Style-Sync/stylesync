@@ -47,6 +47,7 @@ export default function ResultPage({ params }: IResultPageProps) {
         scale: 2,
         useCORS: true,
         logging: false,
+        ignoreElements: (el) => el.getAttribute("data-html2canvas-ignore") === "true",
       });
       const url = canvas.toDataURL("image/png");
       const link = document.createElement("a");
@@ -54,7 +55,9 @@ export default function ResultPage({ params }: IResultPageProps) {
       link.download = result
         ? `StyleSync_${result.styleLabel.title.replace(/\s+/g, "_")}.png`
         : "StyleSync_card.png";
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
     } finally {
       setIsDownloading(false);
     }
@@ -200,7 +203,7 @@ export default function ResultPage({ params }: IResultPageProps) {
 
             {/* ShareCard 프리뷰 — TODO: ISSUE-168-169 머지 후 새 props로 교체 */}
             <div className="lg:w-[376px] flex-shrink-0 flex justify-center lg:justify-start">
-              <div ref={shareCardRef} className="w-full">
+              <div ref={shareCardRef} className="w-full md:w-[400px]">
                 <ShareCard
                   styleLabel={{
                     title: styleLabel.title,
