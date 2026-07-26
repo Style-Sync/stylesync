@@ -20,15 +20,17 @@ export function InputSummary({ items, onRemove, label }: IInputSummaryProps) {
             key={item.id}
             className="relative flex w-16 flex-shrink-0 flex-col items-center gap-1.5"
           >
-            <div className="relative h-14 w-14 overflow-hidden rounded-full bg-surface-variant">
-              {item.imageUrl && (
-                <Image src={item.imageUrl} alt={item.name} fill className="object-cover" />
-              )}
+            <div className="relative h-14 w-14">
+              <div className="h-full w-full overflow-hidden rounded-full bg-surface-variant">
+                {item.imageUrl && (
+                  <Image src={item.imageUrl} alt={item.name} fill className="object-cover" />
+                )}
+              </div>
               <button
                 type="button"
                 onClick={() => onRemove(item.id)}
                 aria-label={`${item.name} 선택 해제`}
-                className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary-container text-xs leading-none text-white shadow-sm"
+                className="absolute -right-0.5 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-primary-container text-xs leading-none text-white shadow-sm"
               >
                 ×
               </button>
