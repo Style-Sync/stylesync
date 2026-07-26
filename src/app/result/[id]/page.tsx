@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -30,6 +30,7 @@ export default function ResultPage({ params }: IResultPageProps) {
   const router = useRouter();
   const result = useResultStore((s) => s.results[params.id]);
   const saveStatus = useResultStore((s) => s.saveStatuses[params.id]);
+  const saveResult = useResultStore((s) => s.saveResult);
   const resetTaste = useTasteStore((s) => s.reset);
 
   const isAuthenticated = useAuthSessionStore((s) => s.isAuthenticated);
@@ -37,6 +38,22 @@ export default function ResultPage({ params }: IResultPageProps) {
 
   const { playingUrl, isPlaying: isAudioPlaying, toggle } = useAudioPlayer();
   const [shareCopied, setShareCopied] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+  const [fetchFailed, setFetchFailed] = useState(false);
+
+  // 세션스토리지에 없으면 DB에서 조회
+  useEffect(() => {
+    if (result || isFetching || fetchFailed) return;
+    setIsFetching(true);
+    fetch(`/api/results/${params.id}`)
+      .then((res) => {
+        if (!res.ok) throw new Error();
+        return res.json();
+      })
+      .then((data) => saveResult(data.result))
+      .catch(() => setFetchFailed(true))
+      .finally(() => setIsFetching(false));
+  }, [result, params.id, isFetching, fetchFailed, saveResult]);
 
   const handleReanalyze = useCallback(() => {
     resetTaste();
@@ -67,6 +84,13 @@ export default function ResultPage({ params }: IResultPageProps) {
   }, [isAuthenticated, result]);
 
   if (!result) {
+    if (isFetching) {
+      return (
+        <div className="flex min-h-[60vh] items-center justify-center">
+          <p className="type-body-lg text-on-surface-variant">결과를 불러오는 중...</p>
+        </div>
+      );
+    }
     return <ResultPageError message="결과를 찾을 수 없어요. 다시 분석해 주세요." />;
   }
 
