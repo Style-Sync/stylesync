@@ -1,6 +1,8 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useRef, useState } from "react";
+
+import { useRouter } from "next/navigation";
 
 import { RecommendCard } from "@/components/result/recommendCard";
 import { ResultPageError } from "@/components/result/ResultPageError";
@@ -9,7 +11,9 @@ import { StyleLabelHero } from "@/components/result/styleLabel";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/Icon";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
+import { useAuthSessionStore } from "@/store/authSessionStore";
 import { useResultStore } from "@/store/resultStore";
+import { useTasteStore } from "@/store/tasteStore";
 
 // X(Twitter) 아이콘 — Icon 레지스트리에 없어서 인라인 처리
 const XIcon = () => (
@@ -23,17 +27,43 @@ interface IResultPageProps {
 }
 
 export default function ResultPage({ params }: IResultPageProps) {
+  const router = useRouter();
   const result = useResultStore((s) => s.results[params.id]);
+  const resetTaste = useTasteStore((s) => s.reset);
+
+  const isAuthenticated = useAuthSessionStore((s) => s.isAuthenticated);
+  const loginBannerRef = useRef<HTMLElement>(null);
 
   const { playingUrl, isPlaying: isAudioPlaying, toggle } = useAudioPlayer();
+  const [shareCopied, setShareCopied] = useState(false);
 
   const handleReanalyze = useCallback(() => {
-    // TODO: 재분석 플로우 연결
-  }, []);
+    resetTaste();
+    router.push("/select");
+  }, [resetTaste, router]);
 
-  const handleShareCard = useCallback(() => {
-    // TODO: 공유 카드 모달 연결
-  }, []);
+  const handleShareCard = useCallback(async () => {
+    if (!isAuthenticated) {
+      loginBannerRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+    const shareData = {
+      title: result ? `${result.styleLabel.title} — StyleSync` : "StyleSync",
+      text: result?.styleLabel.description ?? "나만의 크로스 도메인 스타일을 확인해보세요.",
+      url: window.location.href,
+    };
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch {
+        // 사용자 취소 시 무시
+      }
+    }
+    await navigator.clipboard.writeText(window.location.href);
+    setShareCopied(true);
+    setTimeout(() => setShareCopied(false), 2000);
+  }, [isAuthenticated, result]);
 
   if (!result) {
     return <ResultPageError message="결과를 찾을 수 없어요. 다시 분석해 주세요." />;
@@ -154,10 +184,26 @@ export default function ResultPage({ params }: IResultPageProps) {
                   size="sm"
                   icon={<Icon name="instagram" size={20} />}
                   iconPosition="left"
+                  onClick={handleShareCard}
                 >
-                  Instagram 공유
+                  {shareCopied ? "링크 복사됨!" : "Instagram 공유"}
                 </Button>
-                <Button variant="dark" size="sm" icon={<XIcon />} iconPosition="left">
+                <Button
+                  variant="dark"
+                  size="sm"
+                  icon={<XIcon />}
+                  iconPosition="left"
+                  onClick={() => {
+                    const text = result
+                      ? `${result.styleLabel.title}\n${result.styleLabel.description} #StyleSync`
+                      : "#StyleSync";
+                    window.open(
+                      `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`,
+                      "_blank",
+                      "noopener,noreferrer"
+                    );
+                  }}
+                >
                   Twitter 공유
                 </Button>
               </div>
@@ -184,7 +230,10 @@ export default function ResultPage({ params }: IResultPageProps) {
         </section>
 
         {/* ── Guest Save Banner ─────────────────────────────────────────────── */}
-        <section className="flex flex-col items-center gap-4 text-center bg-surface-variant rounded-[24px] px-8 py-8 md:flex-row md:items-center md:justify-between md:text-left md:py-0 md:h-[116px]">
+        <section
+          ref={loginBannerRef}
+          className="flex flex-col items-center gap-4 text-center bg-surface-variant rounded-[24px] px-8 py-8 md:flex-row md:items-center md:justify-between md:text-left md:py-0 md:h-[116px]"
+        >
           <div className="flex flex-col items-center gap-2 md:flex-row md:gap-3">
             <span className="text-[24px]" aria-hidden="true">
               ✨
