@@ -1,27 +1,10 @@
 "use client";
 
 import { BottomNav } from "@/components/layout/BottomNav";
+import { Icon } from "@/components/ui/Icon";
 import { StepIndicator } from "@/components/ui/StepIndicator";
 
 import type { ITasteInputFormProps } from "./tasteInputForm.types";
-
-// TODO: 디자인 시스템 Icon 세트로 교체 필요
-// (lucide-react 등 공용 라이브러리 사용 가능)
-const SearchIcon = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <circle cx="11" cy="11" r="8" />
-    <path d="m21 21-4.3-4.3" />
-  </svg>
-);
 
 function getSelectionMessage(count: number, max: number): { text: string; done: boolean } {
   if (count >= max) return { text: "완벽해요! 분석을 시작할게요", done: true };
@@ -75,7 +58,7 @@ export function TasteInputForm({
       {/* 검색바 */}
       <div className="relative mb-8 w-full">
         <div className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-stone-400">
-          <SearchIcon />
+          <Icon name="search" size={20} />
         </div>
 
         <input
