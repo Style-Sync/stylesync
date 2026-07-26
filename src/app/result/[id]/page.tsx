@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -11,6 +11,7 @@ import { StyleLabelHero } from "@/components/result/styleLabel";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/Icon";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
+import { useAuthSessionStore } from "@/store/authSessionStore";
 import { useResultStore } from "@/store/resultStore";
 import { useTasteStore } from "@/store/tasteStore";
 
@@ -30,6 +31,9 @@ export default function ResultPage({ params }: IResultPageProps) {
   const result = useResultStore((s) => s.results[params.id]);
   const resetTaste = useTasteStore((s) => s.reset);
 
+  const isAuthenticated = useAuthSessionStore((s) => s.isAuthenticated);
+  const loginBannerRef = useRef<HTMLElement>(null);
+
   const { playingUrl, isPlaying: isAudioPlaying, toggle } = useAudioPlayer();
   const [shareCopied, setShareCopied] = useState(false);
 
@@ -39,6 +43,10 @@ export default function ResultPage({ params }: IResultPageProps) {
   }, [resetTaste, router]);
 
   const handleShareCard = useCallback(async () => {
+    if (!isAuthenticated) {
+      loginBannerRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
     const shareData = {
       title: result ? `${result.styleLabel.title} — StyleSync` : "StyleSync",
       text: result?.styleLabel.description ?? "나만의 크로스 도메인 스타일을 확인해보세요.",
@@ -55,7 +63,7 @@ export default function ResultPage({ params }: IResultPageProps) {
     await navigator.clipboard.writeText(window.location.href);
     setShareCopied(true);
     setTimeout(() => setShareCopied(false), 2000);
-  }, [result]);
+  }, [isAuthenticated, result]);
 
   if (!result) {
     return <ResultPageError message="결과를 찾을 수 없어요. 다시 분석해 주세요." />;
@@ -222,7 +230,10 @@ export default function ResultPage({ params }: IResultPageProps) {
         </section>
 
         {/* ── Guest Save Banner ─────────────────────────────────────────────── */}
-        <section className="flex flex-col items-center gap-4 text-center bg-surface-variant rounded-[24px] px-8 py-8 md:flex-row md:items-center md:justify-between md:text-left md:py-0 md:h-[116px]">
+        <section
+          ref={loginBannerRef}
+          className="flex flex-col items-center gap-4 text-center bg-surface-variant rounded-[24px] px-8 py-8 md:flex-row md:items-center md:justify-between md:text-left md:py-0 md:h-[116px]"
+        >
           <div className="flex flex-col items-center gap-2 md:flex-row md:gap-3">
             <span className="text-[24px]" aria-hidden="true">
               ✨
