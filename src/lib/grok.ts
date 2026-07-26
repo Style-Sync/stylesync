@@ -3,7 +3,9 @@ import "server-only";
 import { getGrokApiKey } from "@/lib/env/server";
 
 const GROK_API_URL = "https://api.x.ai/v1/chat/completions";
+const GROK_EMBED_URL = "https://api.x.ai/v1/embeddings";
 const GROK_MODEL = "grok-3";
+const GROK_EMBED_MODEL = "v1";
 const GROK_TIMEOUT_MS = 30_000;
 
 export type GrokMessage = {
@@ -72,5 +74,37 @@ export async function callGrok(messages: GrokMessage[]): Promise<string> {
       return await fetchGrok(apiKey, messages);
     }
     throw e;
+  }
+}
+
+type EmbedApiResponse = {
+  data: { embedding: number[] }[];
+};
+
+/**
+ * 텍스트를 xAI embedding API로 벡터화. 실패 시 null 반환 (저장 흐름 블로킹 방지).
+ */
+export async function embedText(text: string): Promise<number[] | null> {
+  const apiKey = getGrokApiKey();
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), GROK_TIMEOUT_MS);
+
+  try {
+    const res = await fetch(GROK_EMBED_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({ model: GROK_EMBED_MODEL, input: text }),
+      signal: controller.signal,
+    });
+    if (!res.ok) return null;
+    const data: EmbedApiResponse = await res.json();
+    return data.data[0]?.embedding ?? null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
   }
 }
