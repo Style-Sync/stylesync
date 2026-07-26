@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { embedText } from "@/lib/grok";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { StyleResult } from "@/types/result";
 import type { Domain } from "@/types/taste";
@@ -60,6 +61,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ id: result.id });
     }
     return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  // best-effort: styleLabel 텍스트를 embedding으로 변환 후 저장
+  // 실패해도 201 응답은 이미 결정됐으므로 무시
+  const embeddingText = [
+    result.styleLabel?.title,
+    result.styleLabel?.description,
+    result.styleLabel?.mood,
+  ]
+    .filter(Boolean)
+    .join(". ");
+
+  const embedding = await embedText(embeddingText);
+  if (embedding) {
+    await supabase.from("results").update({ embedding }).eq("id", data.id);
   }
 
   return NextResponse.json({ id: data.id }, { status: 201 });
