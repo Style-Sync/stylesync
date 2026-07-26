@@ -11,6 +11,7 @@ import { MusicTasteCard } from "@/components/domain/musicTasteCard";
 import { TasteInputForm } from "@/components/domain/tasteInputForm";
 import { useInference } from "@/hooks/useInference";
 import { buildInferenceRequest } from "@/lib/inference/normalizeRequest";
+import { useAuthSessionStore } from "@/store/authSessionStore";
 import { useResultStore } from "@/store/resultStore";
 import { useTasteStore } from "@/store/tasteStore";
 import type { Domain, MovieSelection, MusicSelection } from "@/types/taste";
@@ -52,6 +53,7 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
   const fashionSelections = useTasteStore((s) => s.fashionSelections);
   const selectedStyles = useTasteStore((s) => s.selectedStyles);
   const saveResult = useResultStore((s) => s.saveResult);
+  const isAuthenticated = useAuthSessionStore((s) => s.isAuthenticated);
   const { infer, isLoading: isAnalyzing } = useInference();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -120,6 +122,13 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
       });
       const result = await infer(request);
       saveResult(result);
+      if (isAuthenticated) {
+        fetch("/api/results", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ result, startDomain: domain, requestPayload: request }),
+        }).catch(() => {});
+      }
       router.push(`/result/${result.id}`);
     } catch (e) {
       setAnalyzeError(e instanceof Error ? e.message : "분석에 실패했습니다.");

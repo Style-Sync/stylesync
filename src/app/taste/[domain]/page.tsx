@@ -12,6 +12,7 @@ import { BottomNav } from "@/components/layout/BottomNav";
 import { StepIndicator } from "@/components/ui/StepIndicator";
 import { useInference } from "@/hooks/useInference";
 import { buildInferenceRequest } from "@/lib/inference/normalizeRequest";
+import { useAuthSessionStore } from "@/store/authSessionStore";
 import { useResultStore } from "@/store/resultStore";
 import { useTasteStore } from "@/store/tasteStore";
 import type { Domain } from "@/types/taste";
@@ -47,6 +48,7 @@ export default function TasteStep1Page({ params }: ITastePageProps) {
   const isStyleSelected = Boolean(selectedStyles[domain]);
 
   const saveResult = useResultStore((s) => s.saveResult);
+  const isAuthenticated = useAuthSessionStore((s) => s.isAuthenticated);
   const { infer, isLoading: isAnalyzing } = useInference();
 
   const [analyzeError, setAnalyzeError] = useState<string | null>(null);
@@ -66,17 +68,26 @@ export default function TasteStep1Page({ params }: ITastePageProps) {
       });
       const result = await infer(request);
       saveResult(result);
+      if (isAuthenticated) {
+        fetch("/api/results", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ result, startDomain: domain, requestPayload: request }),
+        }).catch(() => {});
+      }
       router.push(`/result/${result.id}`);
     } catch (e) {
       setAnalyzeError(e instanceof Error ? e.message : "분석에 실패했습니다.");
     }
   }, [
+    domain,
     musicSelections,
     movieSelections,
     fashionSelections,
     selectedStyles,
     infer,
     saveResult,
+    isAuthenticated,
     router,
   ]);
 

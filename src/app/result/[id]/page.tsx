@@ -229,28 +229,46 @@ export default function ResultPage({ params }: IResultPageProps) {
           </div>
         </section>
 
-        {/* ── Guest Save Banner ─────────────────────────────────────────────── */}
-        <section
-          ref={loginBannerRef}
-          className="flex flex-col items-center gap-4 text-center bg-surface-variant rounded-[24px] px-8 py-8 md:flex-row md:items-center md:justify-between md:text-left md:py-0 md:h-[116px]"
-        >
-          <div className="flex flex-col items-center gap-2 md:flex-row md:gap-3">
-            <span className="text-[24px]" aria-hidden="true">
-              ✨
-            </span>
-            <p className="font-korean font-normal text-body-lg text-on-background keep-all">
-              결과를 저장하고 싶다면? 로그인하면 나만의 스타일 히스토리를 쌓을 수 있어요.
-            </p>
-          </div>
-          <div className="flex items-center gap-3 flex-shrink-0">
-            <Button variant="dark" size="sm">
-              Google로 시작하기
-            </Button>
-            <Button variant="ghost" size="sm">
-              나중에 할게요 →
-            </Button>
-          </div>
-        </section>
+        {/* ── Save Banner ───────────────────────────────────────────────────── */}
+        {isAuthenticated ? (
+          <section className="flex flex-col items-center gap-4 text-center bg-surface-variant rounded-[24px] px-8 py-8 md:flex-row md:items-center md:justify-between md:text-left md:py-0 md:h-[116px]">
+            <div className="flex flex-col items-center gap-2 md:flex-row md:gap-3">
+              <span className="text-[24px]" aria-hidden="true">
+                ✅
+              </span>
+              <p className="font-korean font-normal text-body-lg text-on-background keep-all">
+                분석 결과가 히스토리에 저장됐어요. 마이 페이지에서 다시 확인할 수 있어요.
+              </p>
+            </div>
+            <div className="flex items-center gap-3 flex-shrink-0">
+              <Button variant="dark" size="sm" onClick={() => router.push("/profile")}>
+                히스토리 보기
+              </Button>
+            </div>
+          </section>
+        ) : (
+          <section
+            ref={loginBannerRef}
+            className="flex flex-col items-center gap-4 text-center bg-surface-variant rounded-[24px] px-8 py-8 md:flex-row md:items-center md:justify-between md:text-left md:py-0 md:h-[116px]"
+          >
+            <div className="flex flex-col items-center gap-2 md:flex-row md:gap-3">
+              <span className="text-[24px]" aria-hidden="true">
+                ✨
+              </span>
+              <p className="font-korean font-normal text-body-lg text-on-background keep-all">
+                결과를 저장하고 싶다면? 로그인하면 나만의 스타일 히스토리를 쌓을 수 있어요.
+              </p>
+            </div>
+            <div className="flex items-center gap-3 flex-shrink-0">
+              <Button variant="dark" size="sm" onClick={() => router.push("/login")}>
+                Google로 시작하기
+              </Button>
+              <Button variant="ghost" size="sm">
+                나중에 할게요 →
+              </Button>
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
