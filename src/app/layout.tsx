@@ -42,6 +42,7 @@ export const metadata: Metadata = {
     title: "StyleSync",
     description: "음악 × 영화 × 패션, 당신의 취향을 하나로 연결하세요",
     siteName: "StyleSync",
+    images: ["/api/og?variant=og"],
   },
 };
 

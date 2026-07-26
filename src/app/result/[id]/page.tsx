@@ -40,6 +40,8 @@ export default function ResultPage({ params }: IResultPageProps) {
   const [shareCopied, setShareCopied] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [fetchFailed, setFetchFailed] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
 
   // 세션스토리지에 없으면 DB에서 조회
   useEffect(() => {
@@ -82,6 +84,39 @@ export default function ResultPage({ params }: IResultPageProps) {
     setShareCopied(true);
     setTimeout(() => setShareCopied(false), 2000);
   }, [isAuthenticated, result]);
+
+  const handleDownloadCard = useCallback(async () => {
+    if (!result || isDownloading) return;
+    setIsDownloading(true);
+    try {
+      const searchParams = new URLSearchParams({
+        variant: "story",
+        title: result.styleLabel.title,
+        description: result.styleLabel.description,
+        themeColor: result.styleLabel.themeColor,
+        music: result.music[0]?.name ?? "",
+        movie: result.movie[0]?.title ?? "",
+        fashion: result.fashion[0]?.keyword ?? "",
+      });
+      const res = await fetch(`/api/og?${searchParams.toString()}`);
+      if (!res.ok) throw new Error("이미지 생성에 실패했습니다.");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `StyleSync_${result.styleLabel.title.replace(/\s+/g, "_")}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error(e);
+      setDownloadError("이미지 저장에 실패했습니다. 다시 시도해주세요.");
+      setTimeout(() => setDownloadError(null), 3000);
+    } finally {
+      setIsDownloading(false);
+    }
+  }, [result, isDownloading]);
 
   if (!result) {
     if (isFetching) {
@@ -231,7 +266,22 @@ export default function ResultPage({ params }: IResultPageProps) {
                 >
                   Twitter 공유
                 </Button>
+                <Button
+                  variant="dark"
+                  size="sm"
+                  icon={<Icon name="download" size={20} />}
+                  iconPosition="left"
+                  onClick={handleDownloadCard}
+                  disabled={isDownloading}
+                >
+                  {isDownloading ? "저장 중..." : "이미지 저장"}
+                </Button>
               </div>
+              {downloadError && (
+                <p className="font-korean text-body-sm text-red-400" role="alert">
+                  {downloadError}
+                </p>
+              )}
             </div>
 
             {/* ShareCard 프리뷰 — TODO: ISSUE-168-169 머지 후 새 props로 교체 */}
