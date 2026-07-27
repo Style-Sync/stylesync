@@ -207,14 +207,14 @@ const StoryCard = ({ data }: { data: CardData }) => {
         </span>
       </div>
 
-      {/* 마스코트 영역 (55%) */}
+      {/* 마스코트 영역 — Figma ShareCard 실측(240x300 @ 400w 기준) × 스케일 2.7(=1080/400) */}
       <div style={{ flex: 1, display: "flex", alignItems: "center", marginTop: 40 }}>
         <div
           style={{
             position: "relative",
-            width: 440,
-            height: 550,
-            borderRadius: 88,
+            width: 648,
+            height: 810,
+            borderRadius: 130,
             background: data.themeColor,
             display: "flex",
             alignItems: "center",
@@ -223,9 +223,9 @@ const StoryCard = ({ data }: { data: CardData }) => {
         >
           <div
             style={{
-              width: 240,
-              height: 240,
-              borderRadius: 120,
+              width: 346,
+              height: 346,
+              borderRadius: 173,
               background: "white",
               display: "flex",
               alignItems: "center",
@@ -233,23 +233,23 @@ const StoryCard = ({ data }: { data: CardData }) => {
               overflow: "hidden",
             }}
           >
-            <MascotFace scale={1.8} />
+            <MascotFace scale={2.7} />
           </div>
           <div
             style={{
               position: "absolute",
-              bottom: 64,
+              bottom: 108,
               display: "flex",
               background: "#FF5C00",
               borderRadius: 9999,
-              padding: "14px 32px",
+              padding: "22px 54px",
             }}
           >
             <span
               style={{
                 fontFamily: "Plus Jakarta Sans",
                 fontWeight: 800,
-                fontSize: 20,
+                fontSize: 27,
                 color: "white",
                 letterSpacing: 2,
               }}
