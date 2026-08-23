@@ -32,7 +32,10 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ items: [], nextCursor: null });
   }
 
-  // 팔로잉 사용자들의 공개 결과 최신순 조회
+  // 팔로잉 사용자들의 공개 결과 최신순 조회.
+  // 작성자가 프로필을 'private'으로 설정한 경우 팔로워 피드에서도 제외한다.
+  // ('public'/'followers'는 뷰어가 팔로워이므로 노출 정상 — 피드 자체가 팔로잉 대상.)
+  // profiles!inner + 임베드 컬럼 필터라 부모(results) 행까지 함께 걸러진다.
   let query = supabase
     .from("results")
     .select(
@@ -43,12 +46,14 @@ export async function GET(req: NextRequest) {
       created_at,
       profiles!inner (
         username,
-        display_name
+        display_name,
+        visibility
       )
     `
     )
     .eq("is_public", true)
     .in("profile_id", followingIds)
+    .neq("profiles.visibility", "private")
     .order("created_at", { ascending: false })
     .limit(limit);
 
