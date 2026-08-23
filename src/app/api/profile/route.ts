@@ -71,6 +71,23 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "업데이트할 필드가 없습니다." }, { status: 400 });
   }
 
+  // 비공개 전환 시 기존 저장 결과도 공개 목록에서 즉시 숨긴다 (프라이버시 kill-switch).
+  // is_public만 보는 이미 배포된 유사도 검색(match_results/match_users)까지 반영하기 위함.
+  // 프로필 업데이트보다 먼저 수행 — 실패 시 프로필도 바꾸지 않아 노출 상태로 남지 않게 한다.
+  // public/followers 복귀 시 자동 재공개하지 않음(재공개는 결과별 명시적 액션).
+  if (visibility === "private") {
+    const { error: hideError } = await supabase
+      .from("results")
+      .update({ is_public: false })
+      .eq("profile_id", user.id);
+    if (hideError) {
+      return NextResponse.json(
+        { error: "비공개 전환 중 기존 결과 숨김에 실패했습니다. 다시 시도해주세요." },
+        { status: 500 }
+      );
+    }
+  }
+
   const { data, error } = await supabase
     .from("profiles")
     .update(updates)
