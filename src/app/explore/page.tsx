@@ -68,7 +68,7 @@ export default function ExplorePage() {
       {isAuthenticated && !isLoading && !error && users.length === 0 && (
         <div className="flex flex-col items-center justify-center min-h-[40vh] gap-3 text-center">
           <p className="type-body-lg text-on-surface-variant keep-all">
-            아직 비교할 스타일 데이터가 없어요.
+            아직 탐색할 유사 스타일 사용자가 없어요.
           </p>
           <p className="type-body-md text-on-surface-variant">먼저 스타일 분석을 완료해 보세요.</p>
         </div>

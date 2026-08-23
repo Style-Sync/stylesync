@@ -38,7 +38,7 @@ export function FollowButton({ targetUserId, initialIsFollowing }: IFollowButton
       }
       setIsFollowing(next);
     } catch {
-      // 네트워크 오류 시 다음 렌더에서 서버 상태와 재동기화
+      // 네트워크 오류 시 상태 복원 안 함 — 다음 렌더에서 서버 상태와 재동기화
     } finally {
       setIsLoading(false);
     }
