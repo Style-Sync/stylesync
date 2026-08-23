@@ -47,7 +47,9 @@ export async function POST(req: NextRequest) {
       music_recommendations: result.music,
       movie_recommendations: result.movie,
       fashion_recommendations: result.fashion,
-      is_public: true,
+      // 기본 비공개 — 저장 시점엔 본인만 볼 수 있고, 공유는 별도 액션에서 명시적으로 공개 전환한다.
+      // (#97 "저장 데이터는 해당 사용자만 볼 수 있다")
+      is_public: false,
     })
     .select("id")
     .single();

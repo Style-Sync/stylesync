@@ -48,6 +48,7 @@ export default function TasteStep1Page({ params }: ITastePageProps) {
   const isStyleSelected = Boolean(selectedStyles[domain]);
 
   const saveResult = useResultStore((s) => s.saveResult);
+  const setSaveStatus = useResultStore((s) => s.setSaveStatus);
   const isAuthenticated = useAuthSessionStore((s) => s.isAuthenticated);
   const { infer, isLoading: isAnalyzing } = useInference();
 
@@ -69,11 +70,14 @@ export default function TasteStep1Page({ params }: ITastePageProps) {
       const result = await infer(request);
       saveResult(result);
       if (isAuthenticated) {
+        setSaveStatus(result.id, "saving");
         fetch("/api/results", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ result, startDomain: domain, requestPayload: request }),
-        }).catch(() => {});
+        })
+          .then((res) => setSaveStatus(result.id, res.ok ? "saved" : "error"))
+          .catch(() => setSaveStatus(result.id, "error"));
       }
       router.push(`/result/${result.id}`);
     } catch (e) {
@@ -87,6 +91,7 @@ export default function TasteStep1Page({ params }: ITastePageProps) {
     selectedStyles,
     infer,
     saveResult,
+    setSaveStatus,
     isAuthenticated,
     router,
   ]);
