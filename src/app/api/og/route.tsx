@@ -402,6 +402,10 @@ const OgCard = ({ data }: { data: CardData }) => (
   </div>
 );
 
+// 모듈 스코프 캐싱 — NotoSansKR.ttf(10.4MB) 등을 매 요청마다 디스크에서 다시 읽지 않도록
+// 프로세스 생존 기간 동안 메모리에 유지한다. 실패 시엔 캐싱하지 않아 다음 요청에서 재시도된다.
+let fontsCache: Awaited<ReturnType<typeof loadFonts>> | null = null;
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const variantParam = searchParams.get("variant");
@@ -409,7 +413,8 @@ export async function GET(req: NextRequest) {
   const size = SIZES[variant];
   const data = readCardData(searchParams);
 
-  const fonts = await loadFonts();
+  if (!fontsCache) fontsCache = await loadFonts();
+  const fonts = fontsCache;
 
   return new ImageResponse(variant === "og" ? <OgCard data={data} /> : <StoryCard data={data} />, {
     width: size.width,
