@@ -32,6 +32,20 @@ export function useAudioPlayer(): IUseAudioPlayerReturn {
     setPlayingUrl(null);
   }, []);
 
+  // play()는 Promise를 반환하며 iOS Safari 자동재생 정책(NotAllowedError) 등으로
+  // 거절될 수 있다. 실패 시 재생 상태를 롤백해 UI가 실제 상태와 어긋나지 않게 한다.
+  // 신규 재생·재개 두 경로가 공유한다. (#296)
+  const playSafely = useCallback((audio: HTMLAudioElement, url: string) => {
+    setPlayingUrl(url);
+    setIsPlaying(true);
+    audio.play().catch(() => {
+      // 재생 시작 실패 — 그 사이 다른 트랙으로 교체됐다면 최신 상태를 건드리지 않는다
+      if (audioRef.current !== audio) return;
+      setIsPlaying(false);
+      setPlayingUrl(null);
+    });
+  }, []);
+
   const toggle = useCallback(
     (url: string) => {
       // 동일 URL — 재생/일시정지 토글
@@ -39,9 +53,8 @@ export function useAudioPlayer(): IUseAudioPlayerReturn {
         if (isPlaying) {
           audioRef.current?.pause();
           setIsPlaying(false);
-        } else {
-          audioRef.current?.play();
-          setIsPlaying(true);
+        } else if (audioRef.current) {
+          playSafely(audioRef.current, url);
         }
         return;
       }
@@ -52,14 +65,9 @@ export function useAudioPlayer(): IUseAudioPlayerReturn {
       const audio = new Audio(url);
       audio.addEventListener("ended", handleEnded);
       audioRef.current = audio;
-      audio.play().catch(() => {
-        setIsPlaying(false);
-        setPlayingUrl(null);
-      });
-      setPlayingUrl(url);
-      setIsPlaying(true);
+      playSafely(audio, url);
     },
-    [playingUrl, isPlaying, stop, handleEnded]
+    [playingUrl, isPlaying, stop, handleEnded, playSafely]
   );
 
   // 언마운트 시 재생 중단
