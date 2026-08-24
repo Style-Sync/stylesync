@@ -62,6 +62,38 @@
 - [ ] 4.5 API 오류 처리 확인
 - [ ] 4.6 비로그인 플로우 확인
 
+## 4-B. 소셜 / 피드 기능 QA
+
+| # | 플로우 | 확인 항목 |
+|---|--------|----------|
+| B.1 | 팔로우 | `/explore` → 유저 카드 팔로우 버튼 클릭 → 상태 토글 정상 동작 |
+| B.2 | 피드 | `/feed` → 팔로우 유저의 결과 카드 노출 → 무한 스크롤 동작 |
+| B.3 | 결과 비교 | `/compare?a={id}&b={id}` → 두 결과 나란히 렌더, 유사도 % 표시 |
+| B.4 | 타임라인 | `/timeline` → 본인 결과 시간순 목록 → themeColor 점 및 카드 렌더 |
+| B.5 | 프로필 비공개 | `PATCH /api/profile` visibility=private 설정 → 비공개 결과가 피드·탐색에서 제외 확인 |
+| B.6 | 재분석 | 결과 페이지 재분석 → 새 UUID로 새 결과 생성 → `/result/{newId}` 렌더 |
+
+- [ ] B.1 팔로우/언팔로우 토글 확인
+- [ ] B.2 피드 무한 스크롤 확인
+- [ ] B.3 결과 비교 페이지 확인
+- [ ] B.4 타임라인 페이지 확인
+- [ ] B.5 비공개 설정 격리 확인
+- [ ] B.6 재분석 API 확인
+
+## 4-C. pgvector / 임베딩 QA
+
+| # | 항목 | 확인 방법 |
+|---|------|----------|
+| C.1 | 임베딩 저장 | 분석 결과 저장 후 Supabase → `results.embedding` 컬럼 NULL이 아님 |
+| C.2 | 유사 결과 조회 | `GET /api/results/similar?id={id}&limit=5` → 200 + items 배열 반환 |
+| C.3 | 유사 유저 조회 | `GET /api/users/similar?user_id={uid}&limit=5` → 200 + items 배열 반환 |
+| C.4 | RPC 권한 | anon 토큰으로 `match_results` 호출 가능, `match_users`는 authenticated 전용 확인 |
+
+- [ ] C.1 임베딩 컬럼 저장 확인
+- [ ] C.2 유사 결과 API 확인
+- [ ] C.3 유사 유저 API 확인
+- [ ] C.4 RPC 함수 권한 격리 확인
+
 ## 5. 모바일 레이아웃
 
 | # | 항목 |
