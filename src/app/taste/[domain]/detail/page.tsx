@@ -65,8 +65,15 @@ export default function TasteStep2Page({ params }: ITasteDetailPageProps) {
 
   // fashion은 2뎁스 미사용 → 1뎁스로 되돌림
   useEffect(() => {
-    if (domain === "fashion") router.replace("/taste/fashion");
-  }, [domain, router]);
+    if (domain === "fashion") {
+      router.replace("/taste/fashion");
+      return;
+    }
+
+    if (!selectedStyles[domain]) {
+      router.replace(`/taste/${domain}`);
+    }
+  }, [domain, router, selectedStyles]);
 
   const fetchResults = useCallback(
     async (query: string) => {
