@@ -34,10 +34,10 @@ export function TasteInputForm({
         <div className="flex flex-col gap-4">
           <h1 className="type-headline-lg">
             {title}
-            <span className="text-orange-500"> 선택</span>
+            <span className="text-primary-container"> 선택</span>
           </h1>
 
-          <p className="type-body-lg text-stone-600">{description}</p>
+          <p className="type-body-lg text-on-surface-variant">{description}</p>
         </div>
 
         <StepIndicator current={2} total={2} />
@@ -57,7 +57,7 @@ export function TasteInputForm({
       */}
       {/* 검색바 */}
       <div className="relative mb-8 w-full">
-        <div className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-stone-400">
+        <div className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant/60">
           <Icon name="search" size={20} />
         </div>
 
@@ -66,7 +66,7 @@ export function TasteInputForm({
           value={searchQuery}
           onChange={(event) => onSearchChange(event.target.value)}
           placeholder={searchPlaceholder}
-          className="w-full rounded-full bg-white py-3 pl-12 pr-5 text-sm shadow-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30"
+          className="w-full rounded-full bg-white py-3 pl-12 pr-5 text-sm shadow-sm placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-primary-container/30"
         />
       </div>
 
@@ -82,7 +82,7 @@ export function TasteInputForm({
         </p>
       )}
 
-      {errorMessage && <p className="mb-4 text-center text-sm text-red-400">{errorMessage}</p>}
+      {errorMessage && <p className="mb-4 text-center text-sm text-error">{errorMessage}</p>}
 
       <BottomNav
         prevPath={`/taste/${domain}`}
