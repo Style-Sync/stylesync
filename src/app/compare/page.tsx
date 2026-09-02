@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -144,7 +144,7 @@ function CompareSide({
   );
 }
 
-export default function ComparePage() {
+function CompareContent() {
   const searchParams = useSearchParams();
   const idA = searchParams.get("a");
   const idB = searchParams.get("b");
@@ -175,5 +175,20 @@ export default function ComparePage() {
         <CompareSide {...sideB} label="결과 B" />
       </div>
     </div>
+  );
+}
+
+// useSearchParams()는 정적 프리렌더 시 Suspense 경계가 필요하다 (Next.js CSR bailout).
+export default function ComparePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="page-container section-wrapper">
+          <p className="type-body-lg text-on-surface-variant">불러오는 중...</p>
+        </div>
+      }
+    >
+      <CompareContent />
+    </Suspense>
   );
 }
